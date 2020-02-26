@@ -8,15 +8,46 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "country-list": "^2.2.0",
     "expo": "~36.0.0",
+    "expo-asset-utils": "^1.2.0",
+    "expo-pixi": "^1.2.0",
+    "expokit": "^36.0.1",
+    "mobx": "^5.15.4",
+    "mobx-persist": "^0.4.1",
+    "mobx-react": "^6.1.8",
+    "moment": "^2.24.0",
+    "numeral": "^2.0.6",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
-    "react-native-web": "~0.11.7"
+    "react-native-cached-image": "^1.4.3",
+    "react-native-color": "^0.0.10",
+    "react-native-fast-image-expo": "^0.0.5",
+    "react-native-fetch-blob": "^0.10.8",
+    "react-native-firebase": "^5.6.0",
+    "react-native-gesture-handler": "^1.6.0",
+    "react-native-hyperlink": "^0.0.19",
+    "react-native-image-pan-zoom": "^2.1.11",
+    "react-native-image-view": "^2.1.9",
+    "react-native-modal": "^11.5.4",
+    "react-native-pinch-zoom-view": "^0.2.0",
+    "react-native-reanimated": "^1.7.0",
+    "react-native-swipe-gestures": "^1.0.4",
+    "react-native-web": "~0.11.7",
+    "react-native-web-swiper": "^2.1.0",
+    "react-navigation": "^4.2.1",
+    "react-navigation-stack": "^2.2.1",
+    "react-navigation-switch-transitioner": "^0.1.1",
+    "react-navigation-transitions": "^1.0.12",
+    "resize-base64": "^1.0.12",
+    "stream-chat-expo": "^0.6.6",
+    "title-case": "^3.0.2"
   },
   "devDependencies": {
-    "babel-preset-expo": "~8.0.0",
-    "@babel/core": "^7.0.0"
+    "@babel/core": "^7.0.0",
+    "babel-preset-expo": "~8.0.0"
   },
   "private": true
 }
