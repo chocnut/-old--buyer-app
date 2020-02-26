@@ -26,13 +26,15 @@ import RequestWizard from "../screens/App/RequestWizard";
 const Stack = createStackNavigator();
 
 export default AppNavigator = () => (
-  <Stack.Navigator>
-    {/* <Stack.Screen name="AuthLoading" component={AuthLoadingScreen} />
-    <Stack.Screen name="AuthHome" component={AuthHomeScreen} /> */}
-    {/* <Stack.Screen component={SignUpScreen} /> */}
-    {/* <Stack.Screen component={ForgotPasswordScreen} /> */}
+  <Stack.Navigator initialRouteName="SignUpScreen">
+    <Stack.Screen name="AuthHome" component={AuthHomeScreen} />
+    <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+    <Stack.Screen
+      name="ForgotPasswordScreen"
+      component={ForgotPasswordScreen}
+    />
     <Stack.Screen name="LoginScreen" component={LogInScreen} />
-    {/* <Stack.Screen name="Requests" component={Requests} />
-    <Stack.Screen name="RequestWizard" component={RequestWizard} /> */}
+    <Stack.Screen name="Requests" component={Requests} />
+    <Stack.Screen name="RequestWizard" component={RequestWizard} />
   </Stack.Navigator>
 );
