@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Blank Template",
+    "name": "Eewoo",
     "slug": "buyer-app",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -9,13 +9,23 @@
       "android",
       "web"
     ],
+    "packagerOpts": {
+      "sourceExts": [
+        "js",
+        "ts",
+        "jsx",
+        "tsx",
+        "json"
+      ]
+    },
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "assets/images/icon.png",
+    "primaryColor": "#F03758",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F03758"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
