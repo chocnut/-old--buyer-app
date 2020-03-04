@@ -1,11 +1,12 @@
 import React, { Children } from "react";
 import HeaderBtn from "../../components/HeaderBtn";
-import { StyleSheet, View, Text, TextInput, StatusBar, KeyboardAvoidingView, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, StatusBar, KeyboardAvoidingView } from "react-native";
 import colors from "../../constants/Colors";
 import Constants from 'expo-constants';
 
 import HeaderBackground from '../../components/HeaderBackground';
 import Chat from '../../components/Chat';
+import ChatMessageInput from '../../components/ChatMessageInput';
 
 let mockData = [
   {
@@ -64,18 +65,13 @@ let mockData = [
 
 export default class ChartScreen extends React.Component {
   render() {
-
-    const chat = (data) => {
-      return <Chat data={data} />
-    }
-
     const keyboardAvoidingViewBehavior = Constants.platform.ios ? 'padding' : 'height';
 
     return (
       <KeyboardAvoidingView style={styles.container} behavior={keyboardAvoidingViewBehavior} enabled>
         <StatusBar
           barStyle = "light-content"
-          backgroundColor = "#555064"
+          backgroundColor = {colors.graphite}
         />
         <View style={styles.statusBar} />
         <View style={styles.header}>
@@ -88,14 +84,10 @@ export default class ChartScreen extends React.Component {
           <HeaderBackground />
         </View>
 
-        {chat(mockData)}
+        <Chat data={mockData} />
 
-        <SafeAreaView>
-          <TextInput
-            style={styles.messageInput}
-            placeholder="Message"
-          />
-        </SafeAreaView>
+        <ChatMessageInput />
+
       </KeyboardAvoidingView>
     );
   }
@@ -122,10 +114,7 @@ const styles = StyleSheet.create({
   btnBack: {
     position: "absolute",
     top: 8,
-    // width: 32,
-    // height: 32,
     left: 8,
-    // padding: 0,
   },
   container: {
     flex: 1,
@@ -135,13 +124,5 @@ const styles = StyleSheet.create({
     margin: 20,
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  messageInput: {
-    // alignSelf: 'flex-end',
-    padding: 18,
-    borderWidth: 1,
-    borderColor: '#F8F8F8',
-    color: colors.graphite,
-    fontSize: 14,
   },
 });
