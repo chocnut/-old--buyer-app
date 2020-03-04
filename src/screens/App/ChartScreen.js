@@ -10,6 +10,12 @@ import ChatMessageInput from '../../components/ChatMessageInput';
 
 let mockData = [
   {
+    img: require('../../../assets/images/icon.png'),
+    type: 'request',
+    title: 'Mini Portable Projector Mini Portable Projector Mini Portable Projector',
+    date: '12 Mar 2019'
+  },
+  {
     avatar: require('../../../assets/images/icon.png'),
     userName: 'Mark Liu',
     message: 'Hello Johnatan! I saw your request and I think our company can help you with this bags. Tell me please - are you going to add some branding ?',
