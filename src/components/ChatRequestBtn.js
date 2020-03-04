@@ -9,7 +9,7 @@ export default class ChatRequestBtn extends React.Component {
             <Image source={require('../../assets/images/icon.png')} style={styles.img} />
             <View style={styles.body}>
                 <Text style={styles.title} numberOfLines={1}>{this.props.item.title}</Text>
-                <Text>{this.props.item.date}</Text>
+                <Text style={styles.date} >{this.props.item.date}</Text>
             </View>
             <Image source={require('../../assets/images/chevrone-right-icon.png')} style={styles.icon} />
         </TouchableOpacity>
