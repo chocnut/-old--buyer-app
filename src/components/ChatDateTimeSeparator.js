@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2',
   },
   date: {
-    padding: 12,
+    paddingHorizontal: 12,
+    marginVertical: 16,
     fontFamily: "Quicksand-Bold",
     fontSize: 12,
     textAlign: 'center',

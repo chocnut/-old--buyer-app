@@ -21,7 +21,6 @@ export default class ChatRequestBtn extends React.Component {
 const styles = StyleSheet.create({
     container: {
         height: 60,
-        marginBottom: 8,
         backgroundColor: '#fff',
         shadowColor: "#000",
         shadowOffset: {
@@ -30,6 +29,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.15,
         shadowRadius: 2,
+        //android
+        elevation: 1,
     },
     btn: {
         paddingVertical: 8,

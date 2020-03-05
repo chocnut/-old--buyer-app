@@ -3,7 +3,15 @@ import {Text, View, StyleSheet, Image } from 'react-native';
 
 export default class ChatMessage extends React.Component {
   render() {
-    const messageHolderStyle = [styles.messageHolder, this.props.item.userName == 'Me' ? {borderBottomRightRadius: 0, backgroundColor: '#F4F4F4'} : {borderBottomLeftRadius: 0}];
+    const messageHolderStyle = [styles.messageHolder];
+    if (this.props.item.userName == 'Me') {
+      messageHolderStyle.push(styles.messageHolderSelf)
+    }
+    if (this.props.item.lastInGroup && this.props.item.userName != 'Me') {
+      messageHolderStyle.push(styles.messageHolderLastInGroup)
+    } else if (this.props.item.lastInGroup && this.props.item.userName == 'Me') {
+      messageHolderStyle.push(styles.messageHolderSelfLastInGroup)
+    }
 
     let attachment;
 
@@ -13,13 +21,21 @@ export default class ChatMessage extends React.Component {
       attachment = false;
     }
 
-    const containerStyle = this.props.item.userName == 'Me' ? [styles.container, styles.containerSelf] : styles.container;
+    const containerStyle = [styles.container];
+    if (this.props.item.userName == 'Me') {
+      containerStyle.push(styles.containerSelf);
+    }
+    if (this.props.item.lastInGroup) {
+      containerStyle.push(styles.containerLastInGroup);
+    }
 
     return (
       <View style={containerStyle}>
         {this.props.item.userName !== 'Me' &&
         <View style={styles.logoHolder}>
-          <Image style={styles.logo} source={this.props.item.avatar} />
+          {this.props.item.lastInGroup &&
+            <Image style={styles.logo} source={this.props.item.avatar} />
+          }
         </View>}
 
         <View style={messageHolderStyle}>
@@ -45,13 +61,16 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'flex-end',
     flexDirection: 'row',
-    paddingVertical: 4,
+    marginVertical: 4,
     paddingHorizontal: 8,
     backgroundColor: 'white',
 
   },
   containerSelf: {
     justifyContent: 'flex-end'
+  },
+  containerLastInGroup: {
+    marginBottom: 8
   },
   logoHolder: {
     width: 44,
@@ -68,9 +87,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     maxWidth: 280
   },
-  messageHolderSelf: {
-
+  messageHolderLastInGroup: {
+    borderBottomLeftRadius: 0,
   },
+  messageHolderSelf: {
+    backgroundColor: '#F4F4F4'
+  },
+  messageHolderSelfLastInGroup: {
+    borderBottomRightRadius: 0
+},
   messageBody: {
     display: 'flex',
     flexWrap: 'wrap',
