@@ -12,7 +12,7 @@ import Btn from "../components/Btn";
 import Layout from "../constants/Layout";
 const logo = require("../../assets/images/splash.png");
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({ navigation }) => {
   const imgWidth = Layout.window.width;
   const imgHeight = Math.round(imgWidth * (833 / 1500));
 
@@ -22,10 +22,17 @@ const WelcomeScreen = () => {
         <Image source={logo} style={styles.logo} resizeMode="contain" />
       </View>
       <CloudFooter color="white" width={imgWidth} height={imgHeight}>
-        <Btn onPress={null} title="Create account" width={190}>
+        <Btn
+          onPress={() => navigation.navigate("Signup")}
+          title="Create account"
+          width={190}
+        >
           Sign up
         </Btn>
-        <TouchableOpacity onPress={null} activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          activeOpacity={0.8}
+        >
           <Text style={styles.textLink}>
             Already have an account? <Text style={styles.hlink}>Login</Text>
           </Text>

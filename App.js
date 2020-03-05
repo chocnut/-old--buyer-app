@@ -1,3 +1,5 @@
+import "react-native-gesture-handler";
+
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
@@ -7,7 +9,7 @@ import { AppLoading } from "expo";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./src/redux/store";
-import WelcomeScreen from "./src/screens/WelcomeScreen";
+import AppNavigator from "./src/navigation";
 
 export default function App() {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -76,7 +78,7 @@ export default function App() {
       <ReduxProvider store={store}>
         <PersistGate persistor={persistor}>
           <View style={styles.container}>
-            <WelcomeScreen />
+            <AppNavigator />
           </View>
         </PersistGate>
       </ReduxProvider>

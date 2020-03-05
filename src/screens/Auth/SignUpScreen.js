@@ -150,7 +150,10 @@ export default class SignUpScreen extends React.Component {
           >
             Create account
           </Btn>
-          <TouchableOpacity onPress={this.login} activeOpacity={0.8}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Login")}
+            activeOpacity={0.8}
+          >
             <Text style={styles.textLink}>
               Already have an account? <Text style={styles.hlink}>Login</Text>
             </Text>
