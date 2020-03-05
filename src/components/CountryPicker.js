@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontFamily: "QuicksandBold",
+    fontFamily: "Quicksand-Bold",
     color: colors.graphite,
     paddingTop: 10
   },
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 0,
     fontSize: 13,
-    fontFamily: "QuicksandRegular"
+    fontFamily: "Quicksand-Regular"
   },
   placeholder: {
     color: colors.graphiteOpacity
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     height: 20
   },
   listText: {
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     fontSize: 14,
     color: colors.graphite,
     width: "100%",

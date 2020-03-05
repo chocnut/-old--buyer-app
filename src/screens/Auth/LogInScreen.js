@@ -1,5 +1,5 @@
 import React from "react";
-import { observer } from "mobx-react";
+// import { observer } from "mobx-react";
 import {
   StyleSheet,
   Text,
@@ -16,7 +16,8 @@ import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 
-@observer
+const loginLogo = require("../../../assets/images/logo-red.png");
+// @observer
 export default class LogInScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -95,12 +96,7 @@ export default class LogInScreen extends React.Component {
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.title}>Welcome to</Text>
-
-          <Image
-            source={require("../../assets/images/logo-red.png")}
-            style={styles.logo}
-          />
+          <Text style={styles.title}>Login</Text>
 
           <EewooInput
             label="Email"
@@ -128,18 +124,16 @@ export default class LogInScreen extends React.Component {
         </ScrollView>
 
         <CloudFooter color="red" width={imgWidth} height={imgHeight}>
-          <Btn
-            onPress={this.validateForm}
-            title="Login"
-            secondary
-            disabled={btnDisabled}
-            width={196}
-          >
+          <Btn onPress={this.validateForm} title="Login" secondary width={196}>
             Login
           </Btn>
-          <TouchableOpacity onPress={this.signup} activeOpacity={0.8}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Signup")}
+            activeOpacity={0.8}
+          >
             <Text style={styles.textLink}>
-              <Text style={styles.hlink}>Sign up</Text> for an account
+              <Text>Don't have an account? </Text>
+              <Text style={styles.hlink}>Sign up</Text>
             </Text>
           </TouchableOpacity>
         </CloudFooter>
@@ -173,14 +167,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontFamily: "QuicksandMedium",
-    color: colors.red,
+    fontFamily: "Quicksand-Medium",
+    color: colors.graphite,
     textAlign: "center",
     marginTop: -20
   },
   textLink: {
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: "white",
     padding: 8
   },
@@ -191,7 +185,7 @@ const styles = StyleSheet.create({
     color: "#D8D8D8",
     textAlign: "right",
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     paddingVertical: 10
   }
 });

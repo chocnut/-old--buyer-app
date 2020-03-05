@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontFamily: "QuicksandMedium",
+    fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     textAlign: "center",
     marginTop: 20
@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
   },
   textLink: {
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: colors.graphite,
     padding: 8,
     textAlign: "center"
   },
   hlink: {
     textDecorationLine: "underline",
-    fontFamily: "QuicksandBold",
+    fontFamily: "Quicksand-Bold",
     color: colors.red
   }
 });

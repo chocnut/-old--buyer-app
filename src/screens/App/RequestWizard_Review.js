@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    fontFamily: "QuicksandBold",
+    fontFamily: "Quicksand-Bold",
     width: 105,
     marginRight: 20,
     color: colors.graphite
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 14,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: colors.graphite,
     flex: 1,
     lineHeight: 20,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     color: colors.graphiteOpacity,
-    fontFamily: "QuicksandRegular"
+    fontFamily: "Quicksand-Regular"
   },
   media: {
     flexDirection: "row",
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 14,
     color: colors.graphite,
-    fontFamily: "QuicksandBold",
+    fontFamily: "Quicksand-Bold",
     paddingBottom: 4
   }
 });
