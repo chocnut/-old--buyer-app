@@ -69,7 +69,7 @@ let mockData = [
   },
 ];
 
-export default class ChartScreen extends React.Component {
+export default class ChatScreen extends React.Component {
   render() {
     const keyboardAvoidingViewBehavior = Constants.platform.ios ? 'padding' : 'height';
 
