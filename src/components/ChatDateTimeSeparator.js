@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   date: {
     padding: 12,
-    fontWeight: 'bold',
+    fontFamily: "Quicksand-Bold",
     fontSize: 12,
     textAlign: 'center',
     color: '#A9A9A9'

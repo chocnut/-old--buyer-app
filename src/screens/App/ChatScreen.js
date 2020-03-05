@@ -112,8 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   headerTitle: {
-    // fontFamily: "QuicksandBold",
-    fontWeight: 'bold',
+    fontFamily: "Quicksand-Bold",
     fontSize: 18,
     color: 'white',
   },
@@ -125,10 +124,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  heading: {
-    margin: 20,
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });

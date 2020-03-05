@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
     title: {
         color: '#555064',
         fontSize: 14,
-        fontWeight: 'bold',
+        fontFamily: "Quicksand-Bold",
     },
     date: {
         marginTop: 4,
         fontSize: 14,
         color: '#9996A2',
-        fontWeight: 'bold',
+        fontFamily: "Quicksand-Regular",
     },
     body: {
         flexShrink: 1,

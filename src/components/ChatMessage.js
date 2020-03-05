@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   userName: {
-    fontWeight: 'bold',
+    fontFamily: "Quicksand-Bold",
     marginBottom: 6,
     color: '#9996A2',
     fontSize: 14
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
     color: '#555064',
     fontSize: 16,
     flexGrow: 1,
-    flexBasis: 'auto'
+    flexBasis: 'auto',
+    fontFamily: "Quicksand-Regular",
   },
   logo: {
     height: 44,
@@ -100,7 +101,8 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     color: '#9996A2',
     fontSize: 12,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    fontFamily: "Quicksand-Regular",
   },
   attachmentIcon: {
     width: 22,

@@ -49,5 +49,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     color: colors.graphite,
     flex: 1,
+    fontFamily: "Quicksand-Bold",
   },
 });
