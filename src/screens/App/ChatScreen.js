@@ -7,14 +7,16 @@ import Constants from 'expo-constants';
 import HeaderBackground from '../../components/HeaderBackground';
 import Chat from '../../components/Chat';
 import ChatMessageInput from '../../components/ChatMessageInput';
+import ChatRequestBtn from '../../components/ChatRequestBtn';
+
+let requestMockData = {
+  img: require('../../../assets/images/icon.png'),
+  type: 'request',
+  title: 'Mini Portable Projector Mini Portable Projector Mini Portable Projector',
+  date: '12 Mar 2019'
+};
 
 let mockData = [
-  {
-    img: require('../../../assets/images/icon.png'),
-    type: 'request',
-    title: 'Mini Portable Projector Mini Portable Projector Mini Portable Projector',
-    date: '12 Mar 2019'
-  },
   {
     avatar: require('../../../assets/images/icon.png'),
     userName: 'Mark Liu',
@@ -82,6 +84,7 @@ export default class ChatScreen extends React.Component {
         <View style={styles.statusBar} />
         <View style={styles.header}>
           <HeaderBtn
+            onPress={() => this.props.navigation.goBack()}
             title="Back"
             image={require("../../../assets/images/arrow-left-icon.png")}
             style={styles.btnBack}
@@ -89,6 +92,8 @@ export default class ChatScreen extends React.Component {
           <Text style={styles.headerTitle}>Inbox</Text>
           <HeaderBackground />
         </View>
+
+        <ChatRequestBtn data={requestMockData}/>
 
         <Chat data={mockData} />
 

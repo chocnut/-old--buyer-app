@@ -8,8 +8,8 @@ export default class ChatRequestBtn extends React.Component {
           <TouchableOpacity style={styles.btn} onPress={this.props.onPress} activeOpacity={0.6}>
             <Image source={require('../../assets/images/icon.png')} style={styles.img} />
             <View style={styles.body}>
-                <Text style={styles.title} numberOfLines={1}>{this.props.item.title}</Text>
-                <Text style={styles.date} >{this.props.item.date}</Text>
+                <Text style={styles.title} numberOfLines={1}>{this.props.data.title}</Text>
+                <Text style={styles.date} >{this.props.data.date}</Text>
             </View>
             <Image source={require('../../assets/images/chevrone-right-icon.png')} style={styles.icon} />
         </TouchableOpacity>
