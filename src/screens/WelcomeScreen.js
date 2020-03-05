@@ -1,13 +1,10 @@
 import React from "react";
-import colors from "../constants/Colors";
 import {
-  ActivityIndicator,
   StatusBar,
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
   Image
 } from "react-native";
 import CloudFooter from "../components/CloudFooter";
