@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain"
   },
   description: {
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     fontSize: 13,
     color: Colors.graphite,
     paddingLeft: 12,

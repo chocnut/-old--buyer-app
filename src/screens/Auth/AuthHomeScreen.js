@@ -158,13 +158,13 @@ const styles = StyleSheet.create({
   },
   byline: {
     fontSize: 24,
-    fontFamily: "QuicksandMedium",
+    fontFamily: "Quicksand-Medium",
     textAlign: "center",
     color: "white"
   },
   textLink: {
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: colors.graphite,
     padding: 8
   },

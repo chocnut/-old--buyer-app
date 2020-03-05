@@ -93,7 +93,7 @@ export default class RequestSearch extends React.Component {
               onChange={search_term => this.handleSearch(search_term)}
               styleObject={{
                 fontSize: 24,
-                fontFamily: "QuicksandMedium",
+                fontFamily: "Quicksand-Medium",
                 paddingBottom: 6
               }}
             />
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   count: {
     fontSize: 14,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: colors.graphite,
     marginTop: 5,
     marginBottom: 20

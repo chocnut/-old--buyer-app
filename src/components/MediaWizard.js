@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
     paddingTop: 40
   },
   headerText: {
-    fontFamily: "QuicksandBold",
+    fontFamily: "Quicksand-Bold",
     fontSize: 18,
     textAlign: "center",
     color: colors.graphite,
@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
     borderColor: "#F1F1F1",
     borderRadius: 4,
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: colors.graphite,
     paddingLeft: 13,
     paddingRight: 60,
@@ -562,7 +562,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: "white",
-    fontFamily: "QuicksandBold",
+    fontFamily: "Quicksand-Bold",
     fontSize: 14,
     textAlign: "center"
   },

@@ -1,5 +1,4 @@
 import React from "react";
-import { observer } from "mobx-react";
 import {
   StyleSheet,
   Text,
@@ -13,10 +12,9 @@ import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
-import titleCase from "title-case";
-import api from "../../api";
+// import api from "../../api";
 
-@observer
+//@observer
 export default class SignUpScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -33,7 +31,7 @@ export default class SignUpScreen extends React.Component {
   }
 
   componentDidMount = async () => {
-    this.store = this.props.screenProps.appStore;
+    //this.store = this.props.screenProps.appStore;
   };
 
   nameIsValid = () => {
@@ -79,25 +77,25 @@ export default class SignUpScreen extends React.Component {
 
   signUp = async () => {
     const trimmedName = this.state.name.replace(/  /g, " ").trim();
-    const name = titleCase(trimmedName);
+    const name = trimmedName;
     const email = this.state.email.trim().toLowerCase();
     const password = this.state.password.trim();
 
     try {
-      await this.store.createUser({ name, email, password });
-      await this.store.login(email, password);
-      api.postToSlack("A new eewoo user signed up to use the app!", "Signup", {
-        name,
-        email
-      });
-      this.props.navigation.navigate("Requests");
+      //await this.store.createUser({ name, email, password });
+      //await this.store.login(email, password);
+      // api.postToSlack("A new eewoo user signed up to use the app!", "Signup", {
+      //   name,
+      //   email
+      // });
+      //this.props.navigation.navigate("Requests");
     } catch (e) {
       console.log(e);
     }
   };
 
   login = () => {
-    this.props.navigation.navigate("LogIn");
+    //this.props.navigation.navigate("LogIn");
   };
 
   render() {
@@ -106,6 +104,7 @@ export default class SignUpScreen extends React.Component {
     const btnDisabled =
       !this.state.name || !this.state.email || !this.state.password;
 
+    //return <Text>asdasd</Text>;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontFamily: "QuicksandMedium",
+    fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     textAlign: "center",
     marginTop: -20,
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
   },
   textLink: {
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: "white",
     padding: 8
   },

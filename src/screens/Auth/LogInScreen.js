@@ -173,14 +173,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontFamily: "QuicksandMedium",
+    fontFamily: "Quicksand-Medium",
     color: colors.red,
     textAlign: "center",
     marginTop: -20
   },
   textLink: {
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     color: "white",
     padding: 8
   },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     color: "#D8D8D8",
     textAlign: "right",
     fontSize: 13,
-    fontFamily: "QuicksandRegular",
+    fontFamily: "Quicksand-Regular",
     paddingVertical: 10
   }
 });

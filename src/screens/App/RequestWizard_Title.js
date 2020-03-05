@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: "center",
     fontSize: 24,
-    fontFamily: "QuicksandMedium",
+    fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     marginTop: 30,
     marginBottom: -40

@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.red
   },
   prevButtonStyle: {
-    fontFamily: "QuicksandBold",
+    fontFamily: "Quicksand-Bold",
     color: "#555064",
     fontSize: 14,
     opacity: 1,
