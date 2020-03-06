@@ -4,7 +4,7 @@ import {Text, View, StyleSheet } from 'react-native';
 
 const ChatDateTimeSeparator = (props) => {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, props.lastInGroup ? {marginTop: 8} : {}]}>
             <View style={styles.separatorLine}></View>
             <Text style={styles.date}>
                 {props.title}
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flexDirection: 'row',
-
+    marginVertical: 12,
   },
   separatorLine: {
     height: 1,
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   },
   date: {
     paddingHorizontal: 12,
-    marginVertical: 16,
     fontFamily: "Quicksand-Bold",
     fontSize: 12,
     textAlign: 'center',

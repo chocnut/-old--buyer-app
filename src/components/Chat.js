@@ -7,7 +7,7 @@ import ChatDateTimeSeparator from './ChatDateTimeSeparator';
 const Chat = (props) => {
     const chatMessage = (item) => {
         return (
-            item.type == 'separator' ? <ChatDateTimeSeparator title={item.date}/> : <ChatMessage item={item}/>
+            item.type == 'separator' ? <ChatDateTimeSeparator title={item.date} lastInGroup={item.lastInGroup}/> : <ChatMessage item={item}/>
         )
     }
 
@@ -28,6 +28,7 @@ const Chat = (props) => {
                 data.push({
                     type: 'separator',
                     date: item.date,
+                    lastInGroup: prevItem.lastInGroup,
                 })
             }
         }
