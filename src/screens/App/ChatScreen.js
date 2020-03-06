@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, StatusBar, KeyboardAvoidingView } from "react-n
 import colors from "../../constants/Colors";
 import Constants from 'expo-constants';
 
-import HeaderBackground from '../../components/HeaderBackground';
+import HeaderSecondary from '../../components/HeaderSecondary';
 import Chat from '../../components/Chat';
 import ChatMessageInput from '../../components/ChatMessageInput';
 import ChatRequestBtn from '../../components/ChatRequestBtn';
@@ -84,21 +84,7 @@ export default class ChatScreen extends React.Component {
 
     return (
       <KeyboardAvoidingView style={styles.container} behavior={keyboardAvoidingViewBehavior} enabled>
-        <StatusBar
-          barStyle = "light-content"
-          backgroundColor = {colors.graphite}
-        />
-        <View style={styles.statusBar} />
-        <View style={styles.header}>
-          <HeaderBtn
-            onPress={() => this.props.navigation.goBack()}
-            title="Back"
-            image={require("../../../assets/images/arrow-left-icon.png")}
-            style={styles.btnBack}
-          />
-          <Text style={styles.headerTitle}>Inbox</Text>
-          <HeaderBackground />
-        </View>
+        <HeaderSecondary onPress={() => {this.props.navigation.goBack()}} title="Inbox"/>
 
         <ChatRequestBtn data={requestMockData}/>
 
@@ -113,12 +99,12 @@ export default class ChatScreen extends React.Component {
 
 const styles = StyleSheet.create({
   statusBar: {
-    backgroundColor: colors.graphite,
+    backgroundColor: colors.secondary,
     height: Constants.statusBarHeight
   },
   header: {
     height: 64,
-    backgroundColor: colors.graphite,
+    backgroundColor: colors.secondary,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
