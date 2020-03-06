@@ -1,23 +1,18 @@
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import ChatMessage from './ChatMessage';
 import ChatDateTimeSeparator from './ChatDateTimeSeparator';
 
 const Chat = (props) => {
-    const chatDateTimeSeparator = (item) => {
-        return item.date && !item.hideDateSeparator ? <ChatDateTimeSeparator title={item.date}/> : false
-    }
     const chatMessage = (item) => {
         return (
-            <View>
-                {chatDateTimeSeparator(item)}
-                <ChatMessage item={item}/>
-            </View>
+            item.type == 'separator' ? <ChatDateTimeSeparator title={item.date}/> : <ChatMessage item={item}/>
         )
     }
 
-    const data = props.data.map((item, index, array) => {
+    const data = [];
+    props.data.map((item, index, array) => {
         if (index > 0) {
             let prevItem = array[index - 1];
 
@@ -29,12 +24,15 @@ const Chat = (props) => {
                 item.lastInGroup = true;
             }
 
-            if (prevItem.date == item.date) {
-                item.hideDateSeparator = true;
+            if (prevItem.date != item.date) {
+                data.push({
+                    type: 'separator',
+                    date: item.date,
+                })
             }
         }
-        return item;
-    })
+        data.push(item);
+    });
 
     return (
         <FlatList
