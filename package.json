@@ -20,7 +20,7 @@
     "subTaskConcurrency": 1,
     "linters": {
       "*.{js,jsx}": [
-        "npm run prettier",
+        "prettier --write",
         "git add"
       ]
     }
