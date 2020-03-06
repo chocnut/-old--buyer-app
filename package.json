@@ -10,14 +10,7 @@
     "prettier": "prettier --write \"**/*.js\""
   },
   "lint-staged": {
-    "concurrent": false,
-    "subTaskConcurrency": 1,
-    "linters": {
-      "*.{js,jsx}": [
-        "npm run prettier",
-        "git add"
-      ]
-    }
+    "*.{js,jsx}": "npm run prettier"
   },
   "husky": {
     "hooks": {
@@ -48,8 +41,7 @@
     "babel-preset-expo": "~8.0.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.8",
-    "prettier": "^1.19.1",
-    "solidarity": "^2.3.1"
+    "prettier": "^1.19.1"
   },
   "private": true
 }
