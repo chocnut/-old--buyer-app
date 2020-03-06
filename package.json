@@ -5,7 +5,25 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "solidarity": "solidarity",
+    "lint": "eslint --debug \"**/*.js\"",
+    "prettier": "prettier --write \"**/*.js\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run solidarity && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "concurrent": false,
+    "subTaskConcurrency": 1,
+    "linters": {
+      "*.{js,jsx}": [
+        "npm run prettier",
+        "git add"
+      ]
+    }
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.8.1",
@@ -28,7 +46,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "babel-preset-expo": "~8.0.0"
+    "babel-preset-expo": "~8.0.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
+    "prettier": "^1.19.1",
+    "solidarity": "^2.3.1"
   },
   "private": true
 }
