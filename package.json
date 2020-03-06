@@ -6,23 +6,22 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "solidarity": "solidarity",
     "lint": "eslint --debug \"**/*.js\"",
     "prettier": "prettier --write \"**/*.js\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run solidarity && lint-staged"
-    }
   },
   "lint-staged": {
     "concurrent": false,
     "subTaskConcurrency": 1,
     "linters": {
       "*.{js,jsx}": [
-        "prettier --write",
+        "npm run prettier",
         "git add"
       ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
   },
   "dependencies": {
