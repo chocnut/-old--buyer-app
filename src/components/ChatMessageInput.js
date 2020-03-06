@@ -3,18 +3,27 @@ import { TextInput, View, StyleSheet, SafeAreaView, TouchableOpacity, Image } fr
 import colors from "../constants/Colors";
 
 export default class ChatMessageInput extends React.Component {
+  state = {
+    disabled: true,
+  };
+  onChanged = text => {
+    const disabled = text.length ? false : true;
+    this.setState({disabled: disabled});
+  };
   render() {
     return (
         <SafeAreaView>
             <View style={styles.container}>
-                <TouchableOpacity style={styles.btn} onPress={this.props.onPress} title='Attachment' activeOpacity={0.6}>
+                <TouchableOpacity style={styles.btn} onPress={this.props.onPressAttachment} title='Attachment' activeOpacity={0.6}>
                     <Image style={styles.btnIcon} source={require('../../assets/images/paperclip-icon.png')} />
                 </TouchableOpacity>
                 <TextInput
                     style={styles.messageInput}
                     placeholder="Message"
+                    onChangeText={this.onChanged}
+                    value={this.props.value}
                 />
-                <TouchableOpacity style={[styles.btn, styles.btnSendDisabled]} onPress={this.props.onPress} title='Send' activeOpacity={0.6} disabled={true}>
+                <TouchableOpacity style={[styles.btn, this.state.disabled ? styles.btnSendDisabled : {}]} onPress={this.props.onPressSend} title='Send' activeOpacity={0.6} disabled={this.state.disabled}>
                     <Image style={styles.btnIcon} source={require('../../assets/images/send-icon.png')} />
                 </TouchableOpacity>
             </View>
@@ -47,7 +56,7 @@ const styles = StyleSheet.create({
   messageInput: {
     fontSize: 14,
     paddingVertical: 16,
-    color: colors.graphite,
+    color: colors.secondary,
     flex: 1,
     fontFamily: "Quicksand-Bold",
   },
