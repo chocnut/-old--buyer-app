@@ -1,11 +1,11 @@
 import React from "react";
 import {
+  Text,
   View,
   TextInput,
   StyleSheet,
   Image,
   TouchableOpacity,
-  Animated
 } from "react-native";
 import PropTypes from "prop-types";
 import colors from "../constants/Colors";
@@ -15,10 +15,6 @@ const passwordIconInvisible = require("../../assets/images/eye-cross.png");
 export default class EewooInput extends React.Component {
   constructor(props) {
     super(props);
-
-    this.labelPosition_On = 0;
-    this.labelPosition_Off = -28;
-    this.labelPosition = new Animated.Value(this.labelPosition_On);
 
     this.state = {
       passwordVisible: false,
@@ -33,15 +29,6 @@ export default class EewooInput extends React.Component {
   };
 
   changeLabelPosition = hasFocus => {
-    const toValue =
-      hasFocus || this.props.value
-        ? this.labelPosition_Off
-        : this.labelPosition_On;
-    Animated.timing(this.labelPosition, {
-      toValue,
-      duration: 200,
-      useNativeDriver: true
-    }).start();
     this.setState({ hasFocus });
 
     if (hasFocus && this.props.onFocus) {
@@ -56,20 +43,6 @@ export default class EewooInput extends React.Component {
     return this.props.multiline ? "default" : "done";
   };
 
-  getLabelStyles = () => {
-    const labelStyles = [styles.label];
-
-    if (this.props.value || this.state.hasFocus) {
-      labelStyles.push(styles.smallLabel);
-    }
-
-    if (this.props.error) {
-      labelStyles.push(styles.errorLabel);
-    }
-
-    return labelStyles;
-  };
-
   getInputStyles = () => {
     const inputStyles = [styles.input];
 
@@ -81,9 +54,9 @@ export default class EewooInput extends React.Component {
       inputStyles.push(this.props.styleObject);
     }
 
-    if (this.state.hasFocus) {
-      inputStyles.push(styles.hasFocus);
-    }
+    // if (this.state.hasFocus) {
+    //   inputStyles.push(styles.hasFocus);
+    // }
 
     if (this.props.error || this.props.placeholderError) {
       inputStyles.push(styles.hasError);
@@ -128,8 +101,8 @@ export default class EewooInput extends React.Component {
     }
 
     const icon = this.state.passwordVisible
-      ? passwordIconVisible
-      : passwordIconInvisible;
+      ? passwordIconInvisible
+      : passwordIconVisible;
 
     return (
       <TouchableOpacity
@@ -145,14 +118,7 @@ export default class EewooInput extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Animated.Text
-          style={[
-            ...this.getLabelStyles(),
-            { transform: [{ translateY: this.labelPosition }] }
-          ]}
-        >
-          {this.props.error || this.props.label}
-        </Animated.Text>
+        <Text style={styles.label}>{this.props.label}</Text>
         <TextInput
           style={this.getInputStyles()}
           onChangeText={this.onChanged}
@@ -180,6 +146,7 @@ export default class EewooInput extends React.Component {
         />
         <Image />
         {this.renderPasswordButton()}
+        <Text style={styles.errorLabel}>{this.props.error}</Text>
       </View>
     );
   }
@@ -187,17 +154,18 @@ export default class EewooInput extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 60,
+    marginTop: 24,
     position: "relative"
   },
   label: {
     color: colors.graphite,
     fontSize: 14,
-    fontFamily: "Quicksand-Regular",
-    position: "absolute",
-    left: 0,
-    top: 10,
-    zIndex: -1
+    fontFamily: "Quicksand-Bold",
+    textTransform: 'uppercase',
+    // position: "absolute",
+    // left: 0,
+    // top: 10,
+    // zIndex: -1
   },
   smallLabel: {
     textTransform: "uppercase",
@@ -207,25 +175,29 @@ const styles = StyleSheet.create({
     color: "white"
   },
   errorLabel: {
+    marginTop: 4,
+    fontSize: 10,
+    lineHeight: 14,
     color: colors.red,
     textTransform: "none",
     fontFamily: "Quicksand-Bold"
   },
   input: {
-    paddingTop: 11,
-    paddingBottom: 19,
+    paddingTop: 12,
+    paddingBottom: 15,
     borderBottomWidth: 1,
     borderColor: colors.graphiteOpacityFeint,
     color: colors.graphite,
     fontSize: 14,
+    lineHeight: 18,
     fontFamily: "Quicksand-Regular",
     width: "100%",
     letterSpacing: 0.3,
     maxHeight: 200
   },
-  hasFocus: {
-    borderColor: colors.graphite
-  },
+  // hasFocus: {
+  //   borderColor: colors.graphite
+  // },
   passwordInput: {
     paddingRight: 40
   },
@@ -236,12 +208,12 @@ const styles = StyleSheet.create({
     color: colors.red
   },
   toggleBtn: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     position: "absolute",
     zIndex: 1,
-    bottom: -2,
-    right: -15,
+    bottom: 15,
+    right: -12,
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
