@@ -12,6 +12,7 @@ import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
+import Constants from "expo-constants";
 // import api from "../../api";
 
 //@observer
@@ -114,7 +115,8 @@ export default class SignUpScreen extends React.Component {
           <Text style={styles.title}>Get started!</Text>
 
           <EewooInput
-            label="Full name"
+            label="Name"
+            placeholder="Full name"
             value={this.state.name}
             onChange={name => this.setState({ name })}
             error={this.state.errors.name}
@@ -123,6 +125,7 @@ export default class SignUpScreen extends React.Component {
 
           <EewooInput
             label="Email"
+            placeholder="Email address"
             value={this.state.email}
             onChange={email => this.setState({ email })}
             keyboard="email-address"
@@ -132,6 +135,7 @@ export default class SignUpScreen extends React.Component {
 
           <EewooInput
             label="Password"
+            placeholder="At least 6 characters"
             value={this.state.password}
             onChange={password => this.setState({ password })}
             type="password"
@@ -169,7 +173,7 @@ export default class SignUpScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: "white",
     position: "relative"
   },
@@ -177,16 +181,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "stretch",
     justifyContent: "center",
-    paddingLeft: 33,
-    paddingRight: 33
+    paddingLeft: 8,
+    paddingRight: 8,
+    alignSelf: 'center',
+    width: '100%',
+    maxWidth: 356,
   },
   title: {
     fontSize: 24,
     fontFamily: "Quicksand-Medium",
-    color: colors.graphite,
+    color: colors.secondary,
     textAlign: "center",
     marginTop: -20,
-    marginBottom: -20
+    marginBottom: 25
   },
   textLink: {
     fontSize: 13,

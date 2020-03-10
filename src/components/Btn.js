@@ -41,11 +41,11 @@ export default class Btn extends React.Component {
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: colors.red,
+    backgroundColor: colors.primary,
     borderRadius: 5,
-    borderColor: colors.red,
-    borderWidth: 1,
-    height: 40,
+    // borderColor: colors.primary,
+    // borderWidth: 1,
+    height: 42,
     textAlign: "center",
     margin: 6,
     marginBottom: 10,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     marginTop: -1
   },
   textSecondary: {
-    color: colors.red
+    color: colors.primary
   },
   disabled: {
     color: "#D8D8D8"
