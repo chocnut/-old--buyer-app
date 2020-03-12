@@ -1,20 +1,21 @@
 import React from "react";
-import { observer } from "mobx-react";
+// import { observer } from "mobx-react";
 import {
   StyleSheet,
   Text,
   View,
   StatusBar,
-  ScrollView,
-  TouchableOpacity
+  ScrollView
 } from "react-native";
+import Constants from "expo-constants";
 import CloudFooter from "../../components/CloudFooter";
 import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
+import HeaderBtn from "../../components/HeaderBtn";
 
-@observer
+// @observer
 export default class ForgotPasswordScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -63,7 +64,7 @@ export default class ForgotPasswordScreen extends React.Component {
       const res = await this.store.resetPassword(email);
       await this.showAlert({
         visible: true,
-        image: require("../../assets/images/check.png"),
+        image: require("../../../assets/images/check.png"),
         title: "Done",
         body:
           "Please check your email and follow the link to reset your password",
@@ -78,7 +79,7 @@ export default class ForgotPasswordScreen extends React.Component {
   };
 
   login = () => {
-    this.props.navigation.navigate("LogIn");
+    this.props.navigation.navigate("Login");
   };
 
   render() {
@@ -88,14 +89,24 @@ export default class ForgotPasswordScreen extends React.Component {
 
     return (
       <View style={styles.container}>
+        <View style={styles.header}>
+          <HeaderBtn
+            onPress={this.login}
+            title="Back"
+            image={require("../../../assets/images/arrow-left-grey-icon.png")}
+            style={styles.btnBack}
+          />
+        </View>
+
         <ScrollView
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.title}>Forgotten password</Text>
+          <Text style={styles.title}>Forgot password?</Text>
 
           <EewooInput
             label="Email"
+            placeholder="Email address"
             value={this.state.email}
             onChange={email => this.setState({ email })}
             keyboard="email-address"
@@ -103,22 +114,19 @@ export default class ForgotPasswordScreen extends React.Component {
             textContentType="username"
           />
 
-          <View id="placeholder" style={{ width: "100%", height: 200 }}></View>
+          {/* <View id="placeholder" style={{ width: "100%", height: 200 }}></View> */}
         </ScrollView>
 
         <CloudFooter color="red" width={imgWidth} height={imgHeight}>
           <Btn
             onPress={this.validateForm}
-            title="Login"
+            title="Reset password"
             secondary
             disabled={btnDisabled}
             width={196}
           >
             Reset password
           </Btn>
-          <TouchableOpacity onPress={this.login} activeOpacity={0.8}>
-            <Text style={styles.textLink}>Back to login</Text>
-          </TouchableOpacity>
         </CloudFooter>
         <StatusBar barStyle="dark-content" />
       </View>
@@ -129,39 +137,26 @@ export default class ForgotPasswordScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: "white",
-    position: "relative"
+  },
+  header: {
+    height: 44,
   },
   content: {
-    flex: 1,
-    alignItems: "stretch",
-    justifyContent: "center",
-    paddingLeft: 33,
-    paddingRight: 33
-  },
-  logo: {
-    width: 165,
-    height: 62,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: 10,
-    marginBottom: -20
+    alignSelf: 'center',
+    paddingLeft: 8,
+    paddingRight: 8,
+    width: '100%',
+    maxWidth: 356,
   },
   title: {
+    alignSelf: 'center',
     fontSize: 24,
     fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     textAlign: "center",
-    marginTop: -20
+    marginTop: Layout.window.height > 667 ? (Layout.window.height / 100 * 8) - 44 : Layout.window.height / 100 * 1,
+    marginBottom: Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 5,
   },
-  textLink: {
-    fontSize: 13,
-    fontFamily: "Quicksand-Regular",
-    color: "white",
-    padding: 8
-  },
-  hlink: {
-    textDecorationLine: "underline"
-  }
 });
