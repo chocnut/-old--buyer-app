@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight
   },
   title: {
-    marginTop: Layout.isSmallDevice ? '10%' : '18%',
+    // marginTop: Layout.isSmallDevice ? '10%' : '18%',
+    marginTop: Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6,
     color: colors.secondary,
     fontFamily: "Quicksand-Medium",
     fontSize: 24,
