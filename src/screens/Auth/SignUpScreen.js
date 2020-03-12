@@ -175,12 +175,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
     backgroundColor: "white",
-    position: "relative"
+    position: "relative",
   },
   content: {
-    flex: 1,
-    alignItems: "stretch",
-    justifyContent: "center",
     paddingLeft: 8,
     paddingRight: 8,
     alignSelf: 'center',
@@ -192,8 +189,8 @@ const styles = StyleSheet.create({
     fontFamily: "Quicksand-Medium",
     color: colors.secondary,
     textAlign: "center",
-    marginTop: -20,
-    marginBottom: 25
+    marginTop: Layout.window.height >= 667 ? Layout.window.height / 100 * 8 :  Layout.window.height / 100 * 6,
+    marginBottom: Layout.window.height >= 667 ? Layout.window.height / 100 * 3 :  0,
   },
   textLink: {
     fontSize: 13,
