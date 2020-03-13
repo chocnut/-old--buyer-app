@@ -10,7 +10,7 @@ import {
 import PropTypes from "prop-types";
 import colors from "../constants/Colors";
 const passwordIconVisible = require("../../assets/images/eye.png");
-const passwordIconInvisible = require("../../assets/images/eye-cross.png");
+const passwordIconInvisible = require("../../assets/images/eye-slash.png");
 
 export default class EewooInput extends React.Component {
   constructor(props) {
@@ -219,8 +219,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   toggleBtnImg: {
-    width: 34,
-    height: 34
+    width: 20,
+    height: 20
   }
 });
 
