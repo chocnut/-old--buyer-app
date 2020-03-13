@@ -116,11 +116,11 @@ export default class LogInScreen extends React.Component {
             textContentType="password"
           />
 
-          {/*
+          
           <TouchableOpacity style={styles.forgot} onPress={this.resetPassword} activeOpacity={0.9}>
             <Text style={styles.forgotText}>Forgotten password</Text>
           </TouchableOpacity>
-          */}
+         
         </ScrollView>
 
         <CloudFooter color="red" width={imgWidth} height={imgHeight}>
