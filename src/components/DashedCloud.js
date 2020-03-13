@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     flexGrow: 1
   },
   cloud: {
+    marginTop: 18,
     width: 300,
     height: 191,
     display: 'flex',
