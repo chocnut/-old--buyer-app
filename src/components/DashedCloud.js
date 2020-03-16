@@ -6,20 +6,20 @@ import {
 } from "react-native";
 
 
-export default class DashedCloud extends React.Component {
-  render() {
-    return (
-      <View style={[styles.container, this.props.style]}>
-        <ImageBackground
-          source={require('../../assets/images/dashed-cloud.png')}
-          style={styles.cloud}
-        >
-          {this.props.children}
-        </ImageBackground>
-      </View>
-    )
-  }
+function DashedCloud(props) {
+  return (
+    <View style={[styles.container, props.style]}>
+      <ImageBackground
+        source={require('../../assets/images/dashed-cloud.png')}
+        style={styles.cloud}
+      >
+        {props.children}
+      </ImageBackground>
+    </View>
+  )
 }
+
+export default DashedCloud;
 
 const styles = StyleSheet.create({
   container: {
