@@ -14,6 +14,14 @@ import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 
+const titleTop = () => {
+  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6;
+}
+
+const titleBottom = () => {
+  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 5;
+}
+
 // @observer
 export default class ChangePasswordScreen extends React.Component {
   static navigationOptions = {
@@ -128,7 +136,7 @@ const styles = StyleSheet.create({
     fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     textAlign: "center",
-    marginTop: Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6,
-    marginBottom: Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 5,
+    marginTop: titleTop(),
+    marginBottom: titleBottom(),
   },
 });
