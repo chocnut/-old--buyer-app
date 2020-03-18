@@ -9,14 +9,22 @@ import {
   StatusBar,
   ScrollView
 } from "react-native";
-// import { Constants } from "expo-constants";
+import Constants from "expo-constants";
 import CloudFooter from "../../components/CloudFooter";
 import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 
-const loginLogo = require("../../../assets/images/logo-red.png");
+
+const titleTop = () => {
+  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6;
+}
+
+const titleBottom = () => {
+  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6;
+}
+
 // @observer
 export default class LogInScreen extends React.Component {
   static navigationOptions = {
@@ -100,6 +108,7 @@ export default class LogInScreen extends React.Component {
 
           <EewooInput
             label="Email"
+            placeholder='Email address'
             value={this.state.email}
             onChange={email => this.setState({ email })}
             keyboard="email-address"
@@ -109,6 +118,7 @@ export default class LogInScreen extends React.Component {
 
           <EewooInput
             label="Password"
+            placeholder='At least 6 characters'
             value={this.state.password}
             onChange={password => this.setState({ password })}
             type="password"
@@ -116,11 +126,11 @@ export default class LogInScreen extends React.Component {
             textContentType="password"
           />
 
-          {/*
+          
           <TouchableOpacity style={styles.forgot} onPress={this.resetPassword} activeOpacity={0.9}>
             <Text style={styles.forgotText}>Forgotten password</Text>
           </TouchableOpacity>
-          */}
+         
         </ScrollView>
 
         <CloudFooter color="red" width={imgWidth} height={imgHeight}>
@@ -146,31 +156,23 @@ export default class LogInScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: Constants.statusBarHeight,
     backgroundColor: "white",
-    position: "relative"
   },
   content: {
-    flex: 1,
-    alignItems: "stretch",
-    justifyContent: "center",
-    paddingLeft: 33,
-    paddingRight: 33
-  },
-  logo: {
-    width: 165,
-    height: 62,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: 10,
-    marginBottom: -20
+    alignSelf: 'center',
+    paddingLeft: 8,
+    paddingRight: 8,
+    width: '100%',
+    maxWidth: 356,
   },
   title: {
     fontSize: 24,
     fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     textAlign: "center",
-    marginTop: -20
+    marginTop: titleTop(),
+    marginBottom: titleBottom(),
   },
   textLink: {
     fontSize: 13,
@@ -182,10 +184,11 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline"
   },
   forgotText: {
-    color: "#D8D8D8",
+    color: colors.primary,
     textAlign: "right",
     fontSize: 13,
     fontFamily: "Quicksand-Regular",
-    paddingVertical: 10
+    paddingVertical: 10,
+    textDecorationLine: "underline",
   }
 });
