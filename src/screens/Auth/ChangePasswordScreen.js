@@ -59,7 +59,15 @@ export default class ChangePasswordScreen extends React.Component {
     this.setState({ errors });
 
     if (!errors.password && !errors.confirmPassword) {
-      // this.props.navigation.navigate("PasswordChanged");
+      this.props.navigation.navigate('Info', {
+        title: "Password changed!",
+        body: "Your password has been successfully changed.\nPlease use your new password to login.",
+        icon: require('../../../assets/images/check.png'),
+        btn: {
+          title: 'Login to account',
+          onPress: ()=>{this.props.navigation.navigate("Login")}
+        }
+      });
     }
   };
 

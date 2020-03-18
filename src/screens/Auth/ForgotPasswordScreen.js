@@ -5,7 +5,9 @@ import {
   Text,
   View,
   StatusBar,
-  ScrollView
+  ScrollView,
+  Linking,
+  Platform
 } from "react-native";
 import Constants from "expo-constants";
 import CloudFooter from "../../components/CloudFooter";
@@ -57,25 +59,37 @@ export default class ForgotPasswordScreen extends React.Component {
     }
   };
 
+  openMail = () => {
+    if (Platform.OS === 'android') {
+      alert('Coming soon')
+      return;
+    }
+    Linking.openURL("message:0");
+    return;
+  };
+
   sendResetPasswordRequest = async () => {
     const email = this.state.email.trim().toLowerCase();
 
-    try {
-      const res = await this.store.resetPassword(email);
-      await this.showAlert({
-        visible: true,
-        image: require("../../../assets/images/check.png"),
-        title: "Done",
-        body:
-          "Please check your email and follow the link to reset your password",
-        btnText: "OK",
-        onClose: this.closeAlert,
-        onAccept: this.closeAlert,
-        allowClose: false
-      });
-    } catch (e) {
-      this.handleError(e);
-    }
+    // try {
+    //   const res = await this.store.resetPassword(email);
+    //   await 
+    this.props.navigation.navigate('Info', {
+      title: "Check your email!",
+      body: "We’ve sent an email to: " + email + " It has a magic link that’ll restore\n your password",
+      icon: require('../../../assets/images/check.png'),
+      btn: {
+        title: 'OPEN EMAIL APP',
+        onPress: ()=>{this.openMail()}
+      },
+      btnLink: {
+        title: 'I didn’t receive my email',
+        onPress: ()=>{this.props.navigation.goBack()}
+      }
+    });
+    // } catch (e) {
+    //   this.handleError(e);
+    // }
   };
 
   login = () => {
@@ -113,8 +127,6 @@ export default class ForgotPasswordScreen extends React.Component {
             error={this.state.errors}
             textContentType="username"
           />
-
-          {/* <View id="placeholder" style={{ width: "100%", height: 200 }}></View> */}
         </ScrollView>
 
         <CloudFooter color="red" width={imgWidth} height={imgHeight}>
