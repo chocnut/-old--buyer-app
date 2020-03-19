@@ -15,7 +15,7 @@ import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
-
+import { Formik } from 'formik';
 
 const titleTop = () => {
   return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6;
@@ -61,8 +61,8 @@ export default class LogInScreen extends React.Component {
     const emailValid = this.emailIsValid();
     if (!emailValid) errors.email = "Please enter valid email address";
 
-    if (!this.state.password)
-      errors.password = "Please enter a minimum of 8 characters";
+    if (!this.state.password || this.state.password.length < 6)
+      errors.password = "Please enter a minimum of 6 characters";
 
     this.setState({ errors });
 
@@ -81,7 +81,16 @@ export default class LogInScreen extends React.Component {
       this.props.navigation.navigate("App", { forceRefresh: true });
     } catch (e) {
       console.log(e);
-      this.props.navigation.navigate("LogInError");
+      // this.props.navigation.navigate("LogInError");
+      this.props.navigation.navigate('Info', {
+        title: "Network Error",
+        body: "Something wrong on our end.\nPlease try again later.",
+        icon: require('../../../assets/images/sad.png'),
+        btn: {
+          title: 'Try again',
+          onPress: ()=>{this.props.navigation.navigate("Login")}
+        }
+      });
     }
   };
 
@@ -99,56 +108,62 @@ export default class LogInScreen extends React.Component {
     const btnDisabled = !this.state.email || !this.state.password;
 
     return (
-      <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps="handled"
-        >
-          <Text style={styles.title}>Login</Text>
+      <Formik
+        initialValues={this.state}
+        onSubmit={values => {
+          this.setState(values)
+          this.validateForm();
+        }}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <View style={styles.container}>
+            <ScrollView
+              contentContainerStyle={styles.content}
+              keyboardShouldPersistTaps="handled"
+            >
+              <Text style={styles.title}>Login</Text>
+              <EewooInput
+                label="Email"
+                placeholder='Email address'
+                onChange={handleChange('email')}
+                keyboard="email-address"
+                error={this.state.errors.email}
+                textContentType="username"
+              />
 
-          <EewooInput
-            label="Email"
-            placeholder='Email address'
-            value={this.state.email}
-            onChange={email => this.setState({ email })}
-            keyboard="email-address"
-            error={this.state.errors.email}
-            textContentType="username"
-          />
+              <EewooInput
+                label="Password"
+                placeholder='At least 6 characters'
+                onChange={handleChange('password')}
+                type="password"
+                error={this.state.errors.password}
+                textContentType="password"
+              />
 
-          <EewooInput
-            label="Password"
-            placeholder='At least 6 characters'
-            value={this.state.password}
-            onChange={password => this.setState({ password })}
-            type="password"
-            error={this.state.errors.password}
-            textContentType="password"
-          />
+              <TouchableOpacity style={styles.forgot} onPress={this.resetPassword} activeOpacity={0.9}>
+                <Text style={styles.forgotText}>Forgotten password</Text>
+              </TouchableOpacity>
 
-          
-          <TouchableOpacity style={styles.forgot} onPress={this.resetPassword} activeOpacity={0.9}>
-            <Text style={styles.forgotText}>Forgotten password</Text>
-          </TouchableOpacity>
-         
-        </ScrollView>
+            </ScrollView>
 
-        <CloudFooter color="red" width={imgWidth} height={imgHeight}>
-          <Btn onPress={this.validateForm} title="Login" secondary width={196}>
-            Login
-          </Btn>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Signup")}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.textLink}>
-              <Text>Don't have an account? </Text>
-              <Text style={styles.hlink}>Sign up</Text>
-            </Text>
-          </TouchableOpacity>
-        </CloudFooter>
-        <StatusBar barStyle="dark-content" />
-      </View>
+            <CloudFooter color="red" width={imgWidth} height={imgHeight}>
+              <Btn onPress={handleSubmit} title="Login" secondary width={196}>
+                Login
+              </Btn>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("Signup")}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.textLink}>
+                  <Text>Don't have an account? </Text>
+                  <Text style={styles.hlink}>Sign up</Text>
+                </Text>
+              </TouchableOpacity>
+            </CloudFooter>
+            <StatusBar barStyle="dark-content" />
+          </View>
+        )}
+      </Formik>
     );
   }
 }
