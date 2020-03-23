@@ -3,7 +3,6 @@ import {View, Text, TouchableOpacity, StyleSheet} from "react-native"
 import colors from "../constants/Colors";
 
 const RadioButton = (props) => {
-  console.log(props.status)
   return (
     <TouchableOpacity
       onPress={()=>{props.onPress(props.value)}}
