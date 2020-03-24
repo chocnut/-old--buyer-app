@@ -93,14 +93,7 @@ export default class SignUpScreen extends React.Component {
 
     try {
       const response = await signupUser({ email, password, name });
-
-      //await this.store.createUser({ name, email, password });
-      //await this.store.login(email, password);
-      // api.postToSlack("A new eewoo user signed up to use the app!", "Signup", {
-      //   name,
-      //   email
-      // });
-      //this.props.navigation.navigate("Requests");
+      this.props.navigation.navigate("Main");
     } catch (e) {
       console.log(e);
     }
