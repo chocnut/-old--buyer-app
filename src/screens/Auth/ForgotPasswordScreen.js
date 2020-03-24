@@ -60,8 +60,8 @@ export default class ForgotPasswordScreen extends React.Component {
   };
 
   openMail = () => {
-    if (Platform.OS === 'android') {
-      alert('Coming soon')
+    if (Platform.OS === "android") {
+      alert("Coming soon");
       return;
     }
     Linking.openURL("message:0");
@@ -73,18 +73,25 @@ export default class ForgotPasswordScreen extends React.Component {
 
     // try {
     //   const res = await this.store.resetPassword(email);
-    //   await 
-    this.props.navigation.navigate('Info', {
+    //   await
+    this.props.navigation.navigate("Info", {
       title: "Check your email!",
-      body: "We’ve sent an email to: " + email + " It has a magic link that’ll restore\n your password",
-      icon: require('../../../assets/images/check.png'),
+      body:
+        "We’ve sent an email to: " +
+        email +
+        " It has a magic link that’ll restore\n your password",
+      icon: require("../../../assets/images/check.png"),
       btn: {
-        title: 'OPEN EMAIL APP',
-        onPress: ()=>{this.openMail()}
+        title: "OPEN EMAIL APP",
+        onPress: () => {
+          this.openMail();
+        }
       },
       btnLink: {
-        title: 'I didn’t receive my email',
-        onPress: ()=>{this.props.navigation.goBack()}
+        title: "I didn’t receive my email",
+        onPress: () => {
+          this.props.navigation.goBack();
+        }
       }
     });
     // } catch (e) {
@@ -150,25 +157,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   header: {
-    height: 44,
+    height: 44
   },
   content: {
-    alignSelf: 'center',
+    alignSelf: "center",
     paddingLeft: 8,
     paddingRight: 8,
-    width: '100%',
-    maxWidth: 356,
+    width: "100%",
+    maxWidth: 356
   },
   title: {
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 24,
     fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     textAlign: "center",
-    marginTop: Layout.window.height > 667 ? (Layout.window.height / 100 * 8) - 44 : Layout.window.height / 100 * 1,
-    marginBottom: Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 5,
-  },
+    marginTop:
+      Layout.window.height > 667
+        ? (Layout.window.height / 100) * 8 - 44
+        : (Layout.window.height / 100) * 1,
+    marginBottom:
+      Layout.window.height > 667
+        ? (Layout.window.height / 100) * 8
+        : (Layout.window.height / 100) * 5
+  }
 });

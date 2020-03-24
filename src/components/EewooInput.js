@@ -5,7 +5,7 @@ import {
   TextInput,
   StyleSheet,
   Image,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import PropTypes from "prop-types";
 import colors from "../constants/Colors";
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     color: colors.graphite,
     fontSize: 14,
     fontFamily: "Quicksand-Bold",
-    textTransform: 'uppercase',
+    textTransform: "uppercase"
     // position: "absolute",
     // left: 0,
     // top: 10,
