@@ -2,9 +2,11 @@ import { combineReducers } from "redux";
 import { CLEAR_STORE } from "../auth/auth.actionTypes";
 
 import authReducer from "../auth/auth.reducer";
+import userReducer from "../user/user.reducer";
 
 const appReducer = combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  user: userReducer
 });
 
 export default (state, action) => {

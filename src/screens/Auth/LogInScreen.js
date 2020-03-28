@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   Text,
@@ -15,6 +16,8 @@ import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 import { loginUser } from "../../redux/auth/auth.actions";
+import { storeUser } from "../../redux/user/user.actions";
+import { getUserById } from "../../services/user";
 
 const titleTop = () => {
   return Layout.window.height > 667
@@ -28,139 +31,134 @@ const titleBottom = () => {
     : (Layout.window.height / 100) * 6;
 };
 
-export default class LogInScreen extends React.Component {
-  static navigationOptions = {
-    header: null
+const LogInScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({
+    email: "",
+    password: ""
+  });
+  const dispatch = useDispatch();
+
+  let imgWidth = 0;
+  let imgHeight = 0;
+
+  useEffect(() => {
+    imgWidth = Layout.window.width;
+    imgHeight = Math.round(imgWidth * (837 / 1500));
+  }, []);
+
+  const emailIsValid = email => {
+    if (!email) return false;
+
+    const emailTrimmed = email.trim().toLowerCase();
+
+    return (
+      emailTrimmed.length > 4 &&
+      emailTrimmed.includes("@") &&
+      emailTrimmed.includes(".")
+    );
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      errors: { email: "", password: "" }
-    };
-  }
-
-  componentDidMount = async () => {
-    //this.showAlert = this.props.screenProps.showAlert;
-    //this.closeAlert = this.props.screenProps.closeAlert;
-    // this.handleError = this.props.screenProps.handleError;
-    // this.setLoading = this.props.screenProps.setLoading;
-    // this.store = this.props.screenProps.appStore;
-  };
-
-  emailIsValid = () => {
-    // ensure email contains characters and at least two words
-    if (!this.state.email) return false;
-    const email = this.state.email.trim().toLowerCase();
-    return email.length > 4 && email.includes("@") && email.includes(".");
-  };
-
-  validateForm = () => {
+  const validateForm = ({ email, password }) => {
     const errors = { email: "", password: "" };
-
-    const emailValid = this.emailIsValid();
+    const emailValid = emailIsValid(email);
     if (!emailValid) errors.email = "Please enter valid email address";
 
-    if (!this.state.password || this.state.password.length < 6)
+    if (!password || password.length < 6)
       errors.password = "Please enter a minimum of 6 characters";
 
-    this.setState({ errors });
+    setErrors({ errors });
 
     if (!errors.email && !errors.password) {
-      this.login();
+      handleLogin({ email, password });
     }
   };
 
-  login = async () => {
-    const email = this.state.email.trim().toLowerCase();
-    const password = this.state.password.trim();
+  const handleLogin = async ({ email, password }) => {
+    let emailTrimmed = email.trim().toLowerCase();
+    let passwordTrimmed = password.trim();
 
     try {
-      await loginUser({ email, password });
-      this.props.navigation.navigate("Main");
+      const userId = await loginUser({
+        email: emailTrimmed,
+        password: passwordTrimmed
+      });
+      const { data } = await getUserById(userId);
+      dispatch(storeUser(data));
+      navigation.navigate("Main");
     } catch (e) {
       console.log(e);
     }
   };
 
-  signup = () => {
-    this.props.navigation.navigate("SignUp");
-  };
+  return (
+    <Formik
+      initialValues={{
+        email,
+        password,
+        errors
+      }}
+      onSubmit={({ email, password }) => {
+        setEmail(email);
+        setPassword(password);
+        validateForm({ email, password });
+      }}
+    >
+      {({ handleChange, handleSubmit }) => (
+        <View style={styles.container}>
+          <ScrollView
+            contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps="handled"
+          >
+            <Text style={styles.title}>Login</Text>
+            <EewooInput
+              label="Email"
+              placeholder="Email address"
+              onChange={handleChange("email")}
+              keyboard="email-address"
+              error={errors.email}
+              textContentType="username"
+            />
 
-  resetPassword = () => {
-    this.props.navigation.navigate("ForgotPassword");
-  };
+            <EewooInput
+              label="Password"
+              placeholder="Password"
+              onChange={handleChange("password")}
+              type="password"
+              error={errors.password}
+              textContentType="password"
+            />
 
-  render() {
-    const imgWidth = Layout.window.width;
-    const imgHeight = Math.round(imgWidth * (837 / 1500));
-    const btnDisabled = !this.state.email || !this.state.password;
-
-    return (
-      <Formik
-        initialValues={this.state}
-        onSubmit={values => {
-          this.setState(values);
-          this.validateForm();
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View style={styles.container}>
-            <ScrollView
-              contentContainerStyle={styles.content}
-              keyboardShouldPersistTaps="handled"
+            <TouchableOpacity
+              style={styles.forgot}
+              onPress={() => navigation.navigate("ForgotPassword")}
+              activeOpacity={0.9}
             >
-              <Text style={styles.title}>Login</Text>
-              <EewooInput
-                label="Email"
-                placeholder="Email address"
-                onChange={handleChange("email")}
-                keyboard="email-address"
-                error={this.state.errors.email}
-                textContentType="username"
-              />
+              <Text style={styles.forgotText}>Forgotten password</Text>
+            </TouchableOpacity>
+          </ScrollView>
 
-              <EewooInput
-                label="Password"
-                placeholder="Password"
-                onChange={handleChange("password")}
-                type="password"
-                error={this.state.errors.password}
-                textContentType="password"
-              />
-
-              <TouchableOpacity
-                style={styles.forgot}
-                onPress={this.resetPassword}
-                activeOpacity={0.9}
-              >
-                <Text style={styles.forgotText}>Forgotten password</Text>
-              </TouchableOpacity>
-            </ScrollView>
-
-            <CloudFooter color="red" width={imgWidth} height={imgHeight}>
-              <Btn onPress={handleSubmit} title="Login" secondary width={196}>
-                Login
-              </Btn>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("Signup")}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.textLink}>
-                  <Text>Don't have an account? </Text>
-                  <Text style={styles.hlink}>Sign up</Text>
-                </Text>
-              </TouchableOpacity>
-            </CloudFooter>
-            <StatusBar barStyle="dark-content" />
-          </View>
-        )}
-      </Formik>
-    );
-  }
-}
+          <CloudFooter color="red" width={imgWidth} height={imgHeight}>
+            <Btn onPress={handleSubmit} title="Login" secondary width={196}>
+              Login
+            </Btn>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Signup")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.textLink}>
+                <Text>Don't have an account? </Text>
+                <Text style={styles.hlink}>Sign up</Text>
+              </Text>
+            </TouchableOpacity>
+          </CloudFooter>
+          <StatusBar barStyle="dark-content" />
+        </View>
+      )}
+    </Formik>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -201,3 +199,5 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline"
   }
 });
+
+export default LogInScreen;

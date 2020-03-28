@@ -1,12 +1,11 @@
 import axios from "axios";
-import { getToken } from "../services/auth";
 
 const instance = axios.create({
   baseURL: "https://suppliers.eewoo.io" //AppConfig.API_ENDPOINT_URL
 });
 
-export const getInstance = () => {
-  instance.defaults.headers.common.Authorization = `Bearer ${getToken()}`;
+export const getInstance = token => {
+  instance.defaults.headers.common.Authorization = `Bearer ${token}`;
   return instance;
 };
 

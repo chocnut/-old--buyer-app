@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Btn from "../../components/Btn";
 import { logout } from "../../services/auth";
+import { useSelector } from "react-redux";
 
 const MainScreen = ({ navigation }) => {
+  const { auth, user } = useSelector(state => state);
   const handleLogout = async () => {
     await logout();
     navigation.navigate("Login");
   };
+
+  useEffect(() => {
+    console.log(auth, user);
+  }, []);
 
   return (
     <View style={styles.container}>
