@@ -1,11 +1,10 @@
 import React from "react";
-// import { observer } from "mobx-react";
+import { Formik } from "formik";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Image,
   StatusBar,
   ScrollView
 } from "react-native";
@@ -15,7 +14,7 @@ import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
-import { Formik } from "formik";
+import { loginUser } from "../../redux/auth/auth.actions";
 
 const titleTop = () => {
   return Layout.window.height > 667
@@ -29,7 +28,6 @@ const titleBottom = () => {
     : (Layout.window.height / 100) * 6;
 };
 
-// @observer
 export default class LogInScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -80,23 +78,10 @@ export default class LogInScreen extends React.Component {
     const password = this.state.password.trim();
 
     try {
-      const auth_response = await this.store.login(email, password);
-      this.store.saveAuthCredentials(auth_response);
-      this.props.navigation.navigate("App", { forceRefresh: true });
+      await loginUser({ email, password });
+      this.props.navigation.navigate("Main");
     } catch (e) {
       console.log(e);
-      // this.props.navigation.navigate("LogInError");
-      this.props.navigation.navigate("Info", {
-        title: "Network Error",
-        body: "Something wrong on our end.\nPlease try again later.",
-        icon: require("../../../assets/images/sad.png"),
-        btn: {
-          title: "Try again",
-          onPress: () => {
-            this.props.navigation.navigate("Login");
-          }
-        }
-      });
     }
   };
 

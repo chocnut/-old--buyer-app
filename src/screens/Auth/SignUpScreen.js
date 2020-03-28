@@ -92,7 +92,7 @@ export default class SignUpScreen extends React.Component {
     const password = this.state.password.trim();
 
     try {
-      const response = await signupUser({ email, password, name });
+      await signupUser({ email, password, name });
       this.props.navigation.navigate("Main");
     } catch (e) {
       console.log(e);
@@ -124,6 +124,7 @@ export default class SignUpScreen extends React.Component {
             onChange={name => this.setState({ name })}
             error={this.state.errors.name}
             textContentType="name"
+            autoCapitalize
           />
 
           <EewooInput

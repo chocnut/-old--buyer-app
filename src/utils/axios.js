@@ -1,24 +1,23 @@
 import axios from "axios";
+import { getToken } from "../services/auth";
 
 const instance = axios.create({
-  baseURL: "https://eewoo.wearefx.uk" //AppConfig.API_ENDPOINT_URL
+  baseURL: "https://suppliers.eewoo.io" //AppConfig.API_ENDPOINT_URL
 });
 
-export const getInstance = token => {
-  if (token) {
-    instance.defaults.headers.common.Authorization = `JWT ${token}`;
-  }
+export const getInstance = () => {
+  instance.defaults.headers.common.Authorization = `Bearer ${getToken()}`;
   return instance;
 };
 
 export const getNewInstance = () => {
   return axios.create({
-    baseURL: "https://eewoo.wearefx.uk" //AppConfig.API_ENDPOINT_URL
+    baseURL: "https://suppliers.eewoo.io" //AppConfig.API_ENDPOINT_URL
   });
 };
 
 export const authorize = token => {
-  instance.defaults.headers.common.Authorization = `JWT ${token}`;
+  instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 export const unauthorize = () => {
