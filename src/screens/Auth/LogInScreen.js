@@ -124,7 +124,7 @@ export default class LogInScreen extends React.Component {
 
               <EewooInput
                 label="Password"
-                placeholder="At least 6 characters"
+                placeholder="Password"
                 onChange={handleChange("password")}
                 type="password"
                 error={this.state.errors.password}

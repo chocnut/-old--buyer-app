@@ -124,7 +124,7 @@ export default class SignUpScreen extends React.Component {
             onChange={name => this.setState({ name })}
             error={this.state.errors.name}
             textContentType="name"
-            autoCapitalize
+            autoCapitalize="words"
           />
 
           <EewooInput
