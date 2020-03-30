@@ -1,11 +1,10 @@
 import React from "react";
-// import { observer } from "mobx-react";
+import { Formik } from "formik";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Image,
   StatusBar,
   ScrollView
 } from "react-native";
@@ -15,17 +14,20 @@ import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
-import { Formik } from 'formik';
+import { loginUser } from "../../redux/auth/auth.actions";
 
 const titleTop = () => {
-  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6;
-}
+  return Layout.window.height > 667
+    ? (Layout.window.height / 100) * 8
+    : (Layout.window.height / 100) * 6;
+};
 
 const titleBottom = () => {
-  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6;
-}
+  return Layout.window.height > 667
+    ? (Layout.window.height / 100) * 8
+    : (Layout.window.height / 100) * 6;
+};
 
-// @observer
 export default class LogInScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -76,21 +78,10 @@ export default class LogInScreen extends React.Component {
     const password = this.state.password.trim();
 
     try {
-      const auth_response = await this.store.login(email, password);
-      this.store.saveAuthCredentials(auth_response);
-      this.props.navigation.navigate("App", { forceRefresh: true });
+      await loginUser({ email, password });
+      this.props.navigation.navigate("Main");
     } catch (e) {
       console.log(e);
-      // this.props.navigation.navigate("LogInError");
-      this.props.navigation.navigate('Info', {
-        title: "Network Error",
-        body: "Something wrong on our end.\nPlease try again later.",
-        icon: require('../../../assets/images/sad.png'),
-        btn: {
-          title: 'Try again',
-          onPress: ()=>{this.props.navigation.navigate("Login")}
-        }
-      });
     }
   };
 
@@ -111,7 +102,7 @@ export default class LogInScreen extends React.Component {
       <Formik
         initialValues={this.state}
         onSubmit={values => {
-          this.setState(values)
+          this.setState(values);
           this.validateForm();
         }}
       >
@@ -124,8 +115,8 @@ export default class LogInScreen extends React.Component {
               <Text style={styles.title}>Login</Text>
               <EewooInput
                 label="Email"
-                placeholder='Email address'
-                onChange={handleChange('email')}
+                placeholder="Email address"
+                onChange={handleChange("email")}
                 keyboard="email-address"
                 error={this.state.errors.email}
                 textContentType="username"
@@ -133,17 +124,20 @@ export default class LogInScreen extends React.Component {
 
               <EewooInput
                 label="Password"
-                placeholder='At least 6 characters'
-                onChange={handleChange('password')}
+                placeholder="At least 6 characters"
+                onChange={handleChange("password")}
                 type="password"
                 error={this.state.errors.password}
                 textContentType="password"
               />
 
-              <TouchableOpacity style={styles.forgot} onPress={this.resetPassword} activeOpacity={0.9}>
+              <TouchableOpacity
+                style={styles.forgot}
+                onPress={this.resetPassword}
+                activeOpacity={0.9}
+              >
                 <Text style={styles.forgotText}>Forgotten password</Text>
               </TouchableOpacity>
-
             </ScrollView>
 
             <CloudFooter color="red" width={imgWidth} height={imgHeight}>
@@ -172,14 +166,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   content: {
-    alignSelf: 'center',
+    alignSelf: "center",
     paddingLeft: 8,
     paddingRight: 8,
-    width: '100%',
-    maxWidth: 356,
+    width: "100%",
+    maxWidth: 356
   },
   title: {
     fontSize: 24,
@@ -187,7 +181,7 @@ const styles = StyleSheet.create({
     color: colors.graphite,
     textAlign: "center",
     marginTop: titleTop(),
-    marginBottom: titleBottom(),
+    marginBottom: titleBottom()
   },
   textLink: {
     fontSize: 13,
@@ -204,6 +198,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: "Quicksand-Regular",
     paddingVertical: 10,
-    textDecorationLine: "underline",
+    textDecorationLine: "underline"
   }
 });

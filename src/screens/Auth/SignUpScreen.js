@@ -13,17 +13,18 @@ import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 import Constants from "expo-constants";
-// import api from "../../api";
+import { signupUser } from "../../redux/auth/auth.actions";
 
 const titleTop = () => {
-  return Layout.window.height >= 667 ? Layout.window.height / 100 * 8 :  Layout.window.height / 100 * 6;
-}
+  return Layout.window.height >= 667
+    ? (Layout.window.height / 100) * 8
+    : (Layout.window.height / 100) * 6;
+};
 
 const titleBottom = () => {
-  return Layout.window.height >= 667 ? Layout.window.height / 100 * 3 :  0;
-}
+  return Layout.window.height >= 667 ? (Layout.window.height / 100) * 3 : 0;
+};
 
-//@observer
 export default class SignUpScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -91,13 +92,8 @@ export default class SignUpScreen extends React.Component {
     const password = this.state.password.trim();
 
     try {
-      //await this.store.createUser({ name, email, password });
-      //await this.store.login(email, password);
-      // api.postToSlack("A new eewoo user signed up to use the app!", "Signup", {
-      //   name,
-      //   email
-      // });
-      //this.props.navigation.navigate("Requests");
+      await signupUser({ email, password, name });
+      this.props.navigation.navigate("Main");
     } catch (e) {
       console.log(e);
     }
@@ -113,7 +109,6 @@ export default class SignUpScreen extends React.Component {
     const btnDisabled =
       !this.state.name || !this.state.email || !this.state.password;
 
-    //return <Text>asdasd</Text>;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -129,6 +124,7 @@ export default class SignUpScreen extends React.Component {
             onChange={name => this.setState({ name })}
             error={this.state.errors.name}
             textContentType="name"
+            autoCapitalize
           />
 
           <EewooInput
@@ -183,14 +179,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
     backgroundColor: "white",
-    position: "relative",
+    position: "relative"
   },
   content: {
     paddingLeft: 8,
     paddingRight: 8,
-    alignSelf: 'center',
-    width: '100%',
-    maxWidth: 356,
+    alignSelf: "center",
+    width: "100%",
+    maxWidth: 356
   },
   title: {
     fontSize: 24,
@@ -198,7 +194,7 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     textAlign: "center",
     marginTop: titleTop(),
-    marginBottom: titleBottom(),
+    marginBottom: titleBottom()
   },
   textLink: {
     fontSize: 13,

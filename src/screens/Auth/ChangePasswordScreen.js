@@ -1,12 +1,6 @@
 import React from "react";
 // import { observer } from "mobx-react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  StatusBar,
-  ScrollView
-} from "react-native";
+import { StyleSheet, Text, View, StatusBar, ScrollView } from "react-native";
 import Constants from "expo-constants";
 import CloudFooter from "../../components/CloudFooter";
 import Layout from "../../constants/Layout";
@@ -15,12 +9,16 @@ import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 
 const titleTop = () => {
-  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 6;
-}
+  return Layout.window.height > 667
+    ? (Layout.window.height / 100) * 8
+    : (Layout.window.height / 100) * 6;
+};
 
 const titleBottom = () => {
-  return Layout.window.height > 667 ? Layout.window.height / 100 * 8 : Layout.window.height / 100 * 5;
-}
+  return Layout.window.height > 667
+    ? (Layout.window.height / 100) * 8
+    : (Layout.window.height / 100) * 5;
+};
 
 // @observer
 export default class ChangePasswordScreen extends React.Component {
@@ -35,8 +33,7 @@ export default class ChangePasswordScreen extends React.Component {
     errors: ""
   };
 
-
-  passwordIsValid = (password) => {
+  passwordIsValid = password => {
     // ensure password contains characters
     if (!password) return false;
     password = password.trim();
@@ -50,7 +47,9 @@ export default class ChangePasswordScreen extends React.Component {
     if (!passwordValid)
       errors.password = "Password should be at least 6 characters";
 
-    const confirmPasswordValid = this.passwordIsValid(this.state.confirmPassword);
+    const confirmPasswordValid = this.passwordIsValid(
+      this.state.confirmPassword
+    );
     if (!confirmPasswordValid)
       errors.confirmPassword = "Password should be at least 6 characters";
     else if (this.state.password !== this.state.confirmPassword)
@@ -59,13 +58,16 @@ export default class ChangePasswordScreen extends React.Component {
     this.setState({ errors });
 
     if (!errors.password && !errors.confirmPassword) {
-      this.props.navigation.navigate('Info', {
+      this.props.navigation.navigate("Info", {
         title: "Password changed!",
-        body: "Your password has been successfully changed.\nPlease use your new password to login.",
-        icon: require('../../../assets/images/check.png'),
+        body:
+          "Your password has been successfully changed.\nPlease use your new password to login.",
+        icon: require("../../../assets/images/check.png"),
         btn: {
-          title: 'Login to account',
-          onPress: ()=>{this.props.navigation.navigate("Login")}
+          title: "Login to account",
+          onPress: () => {
+            this.props.navigation.navigate("Login");
+          }
         }
       });
     }
@@ -75,12 +77,10 @@ export default class ChangePasswordScreen extends React.Component {
     const imgWidth = Layout.window.width;
     const imgHeight = Math.round(imgWidth * (837 / 1500));
 
-    const btnDisabled =
-      !this.state.password || !this.state.confirmPassword;
+    const btnDisabled = !this.state.password || !this.state.confirmPassword;
 
     return (
       <View style={styles.container}>
-
         <ScrollView
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
@@ -129,22 +129,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   content: {
-    alignSelf: 'center',
+    alignSelf: "center",
     paddingLeft: 8,
     paddingRight: 8,
-    width: '100%',
-    maxWidth: 356,
+    width: "100%",
+    maxWidth: 356
   },
   title: {
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 24,
     fontFamily: "Quicksand-Medium",
     color: colors.graphite,
     textAlign: "center",
     marginTop: titleTop(),
-    marginBottom: titleBottom(),
-  },
+    marginBottom: titleBottom()
+  }
 });
