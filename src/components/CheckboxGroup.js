@@ -8,15 +8,7 @@ export default class CheckboxGroup extends React.Component {
   }
 
   componentDidMount = () => {
-    let selected = []
-
-    this.props.items.map(item=>{
-      if(item.selected) {
-        selected.push(item.value)
-      }
-    })
-
-    this.setState({selected: selected})
+    this.setState({selected: this.props.selected})
   }
 
   onSelect = (value) => {

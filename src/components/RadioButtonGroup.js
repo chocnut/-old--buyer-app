@@ -8,7 +8,7 @@ export default class RadioButtonGroup extends React.Component {
   }
 
   componentDidMount = () => {
-    let selected = this.props.items.find(item=>item.selected === true)
+    let selected = this.props.items.find(item=>item.value === this.props.selected)
     if (selected) {
         this.setState({selected: selected.value})
     } else {
