@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Text, StatusBar } from "react-native";
-import Constants from "expo-constants";
 import HeaderBtn from "./HeaderBtn";
 import colors from "../constants/Colors";
+import variables from "../constants/Variables";
 import HeaderBackground from "./HeaderBackground";
 
 export default class HeaderSecondary extends React.Component {
@@ -32,10 +32,10 @@ export default class HeaderSecondary extends React.Component {
 const styles = StyleSheet.create({
   statusBar: {
     backgroundColor: colors.secondary,
-    height: Constants.statusBarHeight
+    height: variables.statusBarHeight
   },
   header: {
-    height: 64,
+    height: variables.headerHeight,
     backgroundColor: colors.secondary,
     display: "flex",
     justifyContent: "center",
