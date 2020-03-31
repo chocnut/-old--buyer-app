@@ -15,12 +15,12 @@ export default class HeaderSecondary extends React.Component {
         />
         <View style={styles.statusBar} />
         <View style={styles.header}>
-          <HeaderBtn
+          {this.props.onPress && <HeaderBtn
             onPress={this.props.onPress}
             title="Back"
             image={require("../../assets/images/arrow-left-icon.png")}
             style={styles.btnBack}
-          />
+          />}
           <Text style={styles.headerTitle}>{this.props.title}</Text>
           <HeaderBackground />
         </View>
