@@ -1,37 +1,40 @@
-import React from "react"
-import {View} from "react-native"
+import React from "react";
+import { View } from "react-native";
 import Checkbox from "./Checkbox";
 
 const CheckboxGroup = ({ items, selected, onSelect }) => {
-
-  const onPress = (value) => {
-    if(selected.indexOf(value) == -1){
-      selected.push(value)
+  const onPress = value => {
+    if (selected.indexOf(value) == -1) {
+      selected.push(value);
     } else {
-      selected = selected.filter(i => i != value)
+      selected = selected.filter(i => i != value);
     }
 
-    onSelect(selected)
-  }
+    onSelect(selected);
+  };
 
-  const isSelected = (value) => {
-    if(selected.indexOf(value) == -1){
-      return 'unchecked'
+  const isSelected = value => {
+    if (selected.indexOf(value) == -1) {
+      return "unchecked";
     }
-    return 'checked'
-  }
+    return "checked";
+  };
 
   return (
     <View>
-      {items.map((item, index)=>{
-        return <Checkbox
-          onPress={()=>{onPress(item.value)}}
-          key={index}
-          label={item.label}
-          status={isSelected(item.value)}
-        />
+      {items.map((item, index) => {
+        return (
+          <Checkbox
+            onPress={() => {
+              onPress(item.value);
+            }}
+            key={index}
+            label={item.label}
+            status={isSelected(item.value)}
+          />
+        );
       })}
     </View>
-  )
-}
+  );
+};
 export default CheckboxGroup;

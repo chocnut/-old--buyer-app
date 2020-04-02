@@ -28,8 +28,9 @@ export default class Header extends React.Component {
             onPress={this.props.onPressProfile}
             title="Profile"
             activeOpacity={0.8}
-            style={[styles.btn, styles.btnProfile]}>
-              <Image style={styles.btnIcon} source={userIcon} />
+            style={[styles.btn, styles.btnProfile]}
+          >
+            <Image style={styles.btnIcon} source={userIcon} />
           </TouchableOpacity>
 
           <Image style={styles.logo} source={logo} />
@@ -38,8 +39,12 @@ export default class Header extends React.Component {
             onPress={this.props.onPressMessages}
             title="Messages"
             activeOpacity={0.8}
-            style={[styles.btn, styles.btnMessages]}>
-              <Image style={styles.btnIcon} source={this.props.notify ? messageNotifyIcon : messageIcon}/>
+            style={[styles.btn, styles.btnMessages]}
+          >
+            <Image
+              style={styles.btnIcon}
+              source={this.props.notify ? messageNotifyIcon : messageIcon}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -61,7 +66,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 87,
-    height: 32,
+    height: 32
   },
   btn: {
     position: "absolute",
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 20,
+    zIndex: 20
   },
   btnIcon: {
     width: 32,

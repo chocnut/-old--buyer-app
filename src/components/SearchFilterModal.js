@@ -1,23 +1,17 @@
 import React from "react";
-import {Modal} from "react-native";
+import { Modal } from "react-native";
 import colors from "../constants/Colors";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 
 const closeIcon = require("../../assets/images/close_dark.png");
 
 export default class SearchFilterModal extends React.Component {
   state = {
     isVisible: false
-  }
+  };
 
   componentDidMount() {
-    this.setState({isVisible: this.props.isVisible});
+    this.setState({ isVisible: this.props.isVisible });
   }
 
   renderCloseBtn = () => {
@@ -25,13 +19,12 @@ export default class SearchFilterModal extends React.Component {
     return (
       <TouchableOpacity
         activeOpacity={0.6}
-        onPress={()=>{this.onChangeVisibility(false)}}
+        onPress={() => {
+          this.onChangeVisibility(false);
+        }}
         style={styles.closeBtn}
       >
-        <Image
-          style={styles.closeBtnIcon}
-          source={closeIcon}
-        />
+        <Image style={styles.closeBtnIcon} source={closeIcon} />
       </TouchableOpacity>
     );
   };
@@ -55,9 +48,7 @@ export default class SearchFilterModal extends React.Component {
               <Text style={styles.title}>{this.props.title}</Text>
             </View>
 
-            <View style={styles.content}>
-              {this.props.children}
-            </View>
+            <View style={styles.content}>{this.props.children}</View>
           </View>
         </View>
       </Modal>
@@ -76,7 +67,7 @@ const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     opacity: 0.5,
-    backgroundColor: colors.graphite,
+    backgroundColor: colors.graphite
   },
   body: {
     width: 310,
@@ -95,14 +86,14 @@ const styles = StyleSheet.create({
   },
   titleWrap: {
     padding: 12,
-    borderBottomColor: '#F4F4F4',
-    borderBottomWidth: 1,
+    borderBottomColor: "#F4F4F4",
+    borderBottomWidth: 1
   },
   title: {
     fontSize: 18,
     fontFamily: "Quicksand-Bold",
     color: colors.graphite,
-    textAlign: "center",
+    textAlign: "center"
   },
   content: {
     paddingHorizontal: 20,
@@ -112,7 +103,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: "Quicksand-Regular",
     color: colors.graphite,
-    textAlign: "center",
+    textAlign: "center"
   },
   closeBtn: {
     width: 48,
@@ -123,8 +114,7 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 10,
     alignItems: "center",
-    justifyContent: 'center'
-
+    justifyContent: "center"
   },
   closeBtnIcon: {
     width: 12,

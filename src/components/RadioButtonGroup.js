@@ -1,39 +1,42 @@
-import React from "react"
-import {View} from "react-native"
+import React from "react";
+import { View } from "react-native";
 import RadioButton from "./RadioButton";
 
 const RadioButtonGroup = ({ items, selected, onSelect }) => {
-
-  const onPress = (value) => {
+  const onPress = value => {
     if (value === selected) {
-        return
+      return;
     }
 
-    selected = value
+    selected = value;
 
-    onSelect(value)
-  }
+    onSelect(value);
+  };
 
-  const isSelected = (value) => {
-    if(selected !== value) {
-      return 'unchecked'
+  const isSelected = value => {
+    if (selected !== value) {
+      return "unchecked";
     }
-    return 'checked'
-  }
+    return "checked";
+  };
 
   return (
     <View>
-      {items.map((item, index)=>{
-        return <RadioButton
-          onPress={()=>{onPress(item.value)}}
-          key={index}
-          label={item.label}
-          status={isSelected(item.value)}
-        />
+      {items.map((item, index) => {
+        return (
+          <RadioButton
+            onPress={() => {
+              onPress(item.value);
+            }}
+            key={index}
+            label={item.label}
+            status={isSelected(item.value)}
+          />
+        );
       })}
     </View>
-  )
-}
+  );
+};
 export default RadioButtonGroup;
 
 // export default class RadioButtonGroup extends React.Component {
