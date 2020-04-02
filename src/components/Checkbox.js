@@ -2,15 +2,15 @@ import React from "react"
 import {View, Text, TouchableOpacity, StyleSheet} from "react-native"
 import colors from "../constants/Colors";
 
-const Checkbox = (props) => {
+const Checkbox = ({ value, label, status, onPress, activeOpacity }) => {
   return (
     <TouchableOpacity
-      onPress={()=>{props.onPress(props.value)}}
+      onPress={()=>{onPress(value)}}
       style={styles.radioHolder}
-      activeOpacity={props.activeOpacity || 0.8}>
-      <Text style={styles.radioLabel}>{props.label}</Text>
+      activeOpacity={activeOpacity || 0.8}>
+      <Text style={styles.radioLabel}>{label}</Text>
       <View style={styles.checkboxIndicatorHolder}>
-        <View style={[styles.checkboxIndicator,  props.status == 'checked'  ? styles.indicatorActive : null]}></View>
+        <View style={[styles.checkboxIndicator,  status == 'checked'  ? styles.indicatorActive : null]}></View>
       </View>
     </TouchableOpacity>
   )

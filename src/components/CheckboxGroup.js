@@ -2,50 +2,36 @@ import React from "react"
 import {View} from "react-native"
 import Checkbox from "./Checkbox";
 
-export default class CheckboxGroup extends React.Component {
-  state = {
-    selected: []
-  }
+const CheckboxGroup = ({ items, selected, onSelect }) => {
 
-  componentDidMount = () => {
-    this.setState({selected: this.props.selected})
-  }
-
-  onSelect = (value) => {
-    let selected = this.state.selected
+  const onPress = (value) => {
     if(selected.indexOf(value) == -1){
       selected.push(value)
     } else {
       selected = selected.filter(i => i != value)
     }
 
-    this.setState({
-      selected: selected
-    })
-
-    this.props.onSelect ? this.props.onSelect(selected) : false
+    onSelect(selected)
   }
 
-  isSelected = (value) => {
-    const selected = this.state.selected
+  const isSelected = (value) => {
     if(selected.indexOf(value) == -1){
       return 'unchecked'
     }
     return 'checked'
   }
 
-  render() {
-    return (
-      <View>
-        {this.props.items.map((item, index)=>{
-          return <Checkbox
-            onPress={()=>{this.onSelect(item.value)}}
-            key={index}
-            label={item.label}
-            status={this.isSelected(item.value)}
-          />
-        })}
-      </View>
-    )
-  }
+  return (
+    <View>
+      {items.map((item, index)=>{
+        return <Checkbox
+          onPress={()=>{onPress(item.value)}}
+          key={index}
+          label={item.label}
+          status={isSelected(item.value)}
+        />
+      })}
+    </View>
+  )
 }
+export default CheckboxGroup;
