@@ -2,15 +2,15 @@ import React from "react"
 import {View, Text, TouchableOpacity, StyleSheet} from "react-native"
 import colors from "../constants/Colors";
 
-const RadioButton = (props) => {
+const RadioButton = ({ value, label, status, onPress, activeOpacity }) => {
   return (
     <TouchableOpacity
-      onPress={()=>{props.onPress(props.value)}}
+      onPress={()=>{onPress(value)}}
       style={styles.radio}
-      activeOpacity={props.activeOpacity || 0.8}>
-      <Text style={styles.label}>{props.label}</Text>
+      activeOpacity={activeOpacity || 0.8}>
+      <Text style={styles.label}>{label}</Text>
       <View style={styles.radioIndicatorHolder}>
-          <View style={[styles.radioIndicator, props.status == 'checked' ? styles.indicatorActive : null]}></View>
+          <View style={[styles.radioIndicator, status == 'checked' ? styles.indicatorActive : null]}></View>
       </View>
   </TouchableOpacity>
   )
