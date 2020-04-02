@@ -17,7 +17,7 @@ import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 import { loginUser } from "../../redux/auth/auth.actions";
 import { storeUser } from "../../redux/user/user.actions";
-import { getUserById } from "../../services/user";
+import { getUser } from "../../services/user";
 
 const titleTop = () => {
   return Layout.window.height > 667
@@ -80,11 +80,11 @@ const LogInScreen = ({ navigation }) => {
     let passwordTrimmed = password.trim();
 
     try {
-      const userId = await loginUser({
+      await loginUser({
         email: emailTrimmed,
         password: passwordTrimmed
       });
-      const { data } = await getUserById(userId);
+      const { data } = await getUser();
       dispatch(storeUser(data));
       navigation.navigate("Main");
     } catch (e) {

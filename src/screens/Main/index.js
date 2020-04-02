@@ -1,43 +1,124 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import Btn from "../../components/Btn";
-import { logout } from "../../services/auth";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import colors from "../../constants/Colors";
+import Header from "../../components/Header";
+import CreateNewRequestHelper from "../../components/CreateNewRequestHelper";
+import CreateNewRequestBtn from "../../components/CreateNewRequestBtn";
 
-const MainScreen = ({ navigation }) => {
-  const { auth, user } = useSelector(state => state);
-  const handleLogout = async () => {
-    await logout();
-    navigation.navigate("Login");
+import SearchFilterBtn from "../../components/SearchFilterBtn";
+import SearchInput from "../../components/SearchInput";
+import SearchFilterModal from "../../components/SearchFilterModal";
+import CheckboxGroup from "../../components/CheckboxGroup";
+import RadioButtonGroup from "../../components/RadioButtonGroup";
+
+const Main = () => {
+  const [search, setSearch] = useState(null);
+  const [filterActive, setFilterActive] = useState(false);
+  const [searchFiltersIsVisible, setSearchFiltersIsVisible] = useState(false);
+  const [sortBy, setSortBy] = useState("activity");
+  const [requestType, setRequestType] = useState(["drafts", "open"]);
+
+  const onPressFilter = () => {
+    setSearchFiltersIsVisible(!searchFiltersIsVisible);
   };
-
-  useEffect(() => {
-    console.log(auth, user);
-  }, []);
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <Text>Main Screen</Text>
-        <Btn onPress={handleLogout} title="Login" secondary width={196}>
-          Logout
-        </Btn>
+      <Header
+        onPressProfile={() => {}}
+        onPressMessages={() => {}}
+        notify={false}
+      />
+      <View style={styles.body}>
+        <View style={styles.searchFilterContainer}>
+          <SearchInput
+            value={search}
+            onChangeText={value => setSearch(value)}
+          />
+          <SearchFilterBtn active={false} onPress={onPressFilter} />
+          <SearchFilterModal
+            title="Filters"
+            allowClose={true}
+            onChangeVisibility={isVisible =>
+              setSearchFiltersIsVisible(isVisible)
+            }
+            isVisible={searchFiltersIsVisible}
+          >
+            <Text style={[styles.modalLabel, styles.modalLabelFirst]}>
+              Sort by
+            </Text>
+            <RadioButtonGroup
+              selected={sortBy}
+              items={[
+                {
+                  label: "Activity",
+                  value: "activity"
+                },
+                {
+                  label: "Latest",
+                  value: "latest"
+                },
+                {
+                  label: "Oldest",
+                  value: "oldest"
+                }
+              ]}
+              onSelect={selected => setSortBy(selected)}
+            />
+
+            <Text style={styles.modalLabel}>Request type</Text>
+            <CheckboxGroup
+              selected={requestType}
+              items={[
+                {
+                  label: "Drafts",
+                  value: "drafts"
+                },
+                {
+                  label: "Open",
+                  value: "open"
+                }
+              ]}
+              onSelect={selected => setRequestType(selected)}
+            />
+          </SearchFilterModal>
+        </View>
+
+        <CreateNewRequestHelper />
+
+        <CreateNewRequestBtn onPress={() => {}} />
       </View>
     </View>
   );
 };
 
-export default MainScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    backgroundColor: "#fff",
-    position: "relative"
+    backgroundColor: "white"
   },
-  content: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+  body: {
+    flex: 1
+  },
+
+  searchFilterContainer: {
+    height: 46,
+    paddingHorizontal: 16,
+    alignItems: "stretch",
+    backgroundColor: "white",
+    flexDirection: "row"
+  },
+
+  modalLabel: {
+    fontSize: 16,
+    fontFamily: "Quicksand-Bold",
+    color: colors.secondary,
+    marginBottom: 12,
+    marginTop: 20
+  },
+  modalLabelFirst: {
+    marginTop: 0
   }
 });
+
+export default Main;

@@ -1,6 +1,12 @@
 import * as actionTypes from "./user.actionTypes";
 
-const initialState = {};
+const initialState = {
+  email: undefined,
+  id: undefined,
+  location: undefined,
+  name: undefined,
+  verified: undefined
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {

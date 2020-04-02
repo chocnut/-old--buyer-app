@@ -7,8 +7,7 @@ import LogInScreen from "../screens/Auth/LogInScreen";
 import ForgotPasswordScreen from "../screens/Auth/ForgotPasswordScreen";
 import ChangePasswordScreen from "../screens/Auth/ChangePasswordScreen";
 import InfoScreen from "../screens/App/InfoScreen";
-// import MainScreen from "../screens/Main";
-import MainScreen from "../screens/App/MainScreen";
+import MainScreen from "../screens/Main";
 import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 
 const Stack = createStackNavigator();
