@@ -9,6 +9,7 @@ import ChangePasswordScreen from "../screens/Auth/ChangePasswordScreen";
 import InfoScreen from "../screens/App/InfoScreen";
 import MainScreen from "../screens/Main";
 import AuthLoadingScreen from "../screens/AuthLoadingScreen";
+import ChatScreen from "../screens/App/ChatScreen";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ export default () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
         <Stack.Screen name="Login" component={LogInScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,49 +1,44 @@
-import React from "react";
-import { FlatList, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Platform } from "react-native";
+import { useSelector } from "react-redux";
+import { GiftedChat } from "react-native-gifted-chat";
+import { getBottomSpace } from "react-native-iphone-x-helper";
 
-import ChatMessage from "./ChatMessage";
-import ChatDateTimeSeparator from "./ChatDateTimeSeparator";
+// import ChatMessageInput from "./ChatMessageInput";
+import Fire from "./../services/fire";
 
-const Chat = props => {
-  const chatMessage = item => {
-    return item.type == "separator" ? (
-      <ChatDateTimeSeparator title={item.date} lastInGroup={item.lastInGroup} />
-    ) : (
-      <ChatMessage item={item} />
-    );
-  };
+const BOTTOM_OFFSET = Platform.OS === "ios" ? 58 + getBottomSpace() : 0;
 
-  const data = [];
-  props.data.map((item, index, array) => {
-    if (index > 0) {
-      let prevItem = array[index - 1];
+const Chat = () => {
+  const [messages, setMessages] = useState([]);
+  const [user, setUser] = useState(undefined);
+  const selectorUser = useSelector(state => state.user);
 
-      if (prevItem.userName != item.userName) {
-        prevItem.lastInGroup = true;
-      }
+  useEffect(() => {
+    Fire.shared.off();
+    Fire.shared.on(message => {
+      setMessages(prevMessages => GiftedChat.append(prevMessages, message));
+    });
 
-      if (index == array.length - 1) {
-        item.lastInGroup = true;
-      }
-
-      if (prevItem.date != item.date) {
-        data.push({
-          type: "separator",
-          date: item.date,
-          lastInGroup: prevItem.lastInGroup
-        });
-      }
-    }
-    data.push(item);
-  });
+    setUser({
+      name: selectorUser.name,
+      email: selectorUser.email,
+      avatar: "",
+      id: selectorUser.id,
+      _id: Fire.shared.uid
+    });
+  }, []);
 
   return (
-    <FlatList
-      data={data}
-      renderItem={({ item }) => chatMessage(item)}
-      keyExtractor={(item, index) => index.toString()}
-      style={[styles.flatList, props.style]}
-    ></FlatList>
+    <View style={{ flex: 1 }}>
+      <GiftedChat
+        messages={messages}
+        bottomOffset={BOTTOM_OFFSET}
+        onSend={Fire.shared.send}
+        user={user}
+        minInputToolbarHeight={55}
+      />
+    </View>
   );
 };
 

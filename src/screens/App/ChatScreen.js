@@ -112,8 +112,6 @@ export default class ChatScreen extends React.Component {
         <ChatRequestBtn data={requestMockData} />
 
         <Chat data={mockData} />
-
-        <ChatMessageInput />
       </KeyboardAvoidingView>
     );
   }

@@ -14,7 +14,7 @@ import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
 
-const Main = () => {
+const Main = ({ navigation }) => {
   const [search, setSearch] = useState(null);
   const [filterActive, setFilterActive] = useState(false);
   const [searchFiltersIsVisible, setSearchFiltersIsVisible] = useState(false);
@@ -39,7 +39,7 @@ const Main = () => {
     <View style={styles.container}>
       <Header
         onPressProfile={() => {}}
-        onPressMessages={() => {}}
+        onPressMessages={() => navigation.push("Chat")}
         notify={false}
       />
       <View style={styles.body}>
