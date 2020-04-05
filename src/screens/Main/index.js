@@ -38,7 +38,7 @@ const Main = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header
-        onPressProfile={() => {}}
+        onPressProfile={() => navigation.push("Profile")}
         onPressMessages={() => navigation.push("Chat")}
         notify={false}
       />
