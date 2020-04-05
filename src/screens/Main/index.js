@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+
 import colors from "../../constants/Colors";
 import Header from "../../components/Header";
 import CreateNewRequestHelper from "../../components/CreateNewRequestHelper";
@@ -10,6 +12,7 @@ import SearchInput from "../../components/SearchInput";
 import SearchFilterModal from "../../components/SearchFilterModal";
 import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
+import { getUserRequests } from "../../redux/request/request.actions";
 
 const Main = () => {
   const [search, setSearch] = useState(null);
@@ -17,6 +20,16 @@ const Main = () => {
   const [searchFiltersIsVisible, setSearchFiltersIsVisible] = useState(false);
   const [sortBy, setSortBy] = useState("activity");
   const [requestType, setRequestType] = useState(["drafts", "open"]);
+  const {
+    user: { id },
+    requests
+  } = useSelector(state => state);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserRequests(id));
+  }, []);
 
   const onPressFilter = () => {
     setSearchFiltersIsVisible(!searchFiltersIsVisible);

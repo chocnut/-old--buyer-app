@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 // import AsyncStorage from "@react-native-community/async-storage";
 import { AsyncStorage } from "react-native";
@@ -14,7 +15,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 function configureStore() {
-  const middleware = [];
+  const middleware = [thunk];
 
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
