@@ -13,7 +13,7 @@ import ChatScreen from "../screens/App/ChatScreen";
 import ProfileScreen from "../screens/Profile";
 import NewRequest from "../screens/Request/New";
 import { useSelector, useDispatch } from "react-redux";
-import { Button } from "react-native";
+import { TouchableOpacity, StyleSheet, Image } from "react-native";
 import { setNextStep } from "../redux/request/wizard/wizard.actions";
 
 const MainStack = createStackNavigator();
@@ -41,6 +41,8 @@ function MainStackScreen() {
     </MainStack.Navigator>
   );
 }
+const backIcon = require("../../assets/images/chevron-left.png");
+const closeIcon = require("../../assets/images/close-grey.png");
 
 export default () => {
   const { currentStep } = useSelector(state => state.wizard);
@@ -61,7 +63,7 @@ export default () => {
             options={({ navigation }) => ({
               headerTitle: "New Request",
               headerLeft: () => (
-                <Button
+                <TouchableOpacity
                   onPress={() => {
                     if (currentStep <= 1) {
                       navigation.goBack();
@@ -71,18 +73,22 @@ export default () => {
                     }
                   }}
                   title="Back"
-                  color="#000"
-                />
+                  style={styles.btn}
+                >
+                  <Image source={backIcon} />
+                </TouchableOpacity>
               ),
               headerRight: () => (
-                <Button
+                <TouchableOpacity
                   onPress={() => {
                     dispatch(setNextStep(0));
                     navigation.goBack();
                   }}
                   title="Close"
-                  color="#000"
-                />
+                  style={styles.closeBtn}
+                >
+                  <Image source={closeIcon} />
+                </TouchableOpacity>
               )
             })}
           />
@@ -91,3 +97,14 @@ export default () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  btn: {
+    width: "100%",
+    left: 15
+  },
+  closeBtn: {
+    width: "100%",
+    right: 10
+  }
+});
