@@ -61,7 +61,21 @@ export default () => {
             name="NewRequest"
             component={NewRequest}
             options={({ navigation }) => ({
+              headerStyle: {
+                borderBottomColor: "#F03758",
+                borderLeftColor: "transparent",
+                borderRightColor: "transparent",
+                borderTopColor: "transparent",
+                borderWidth: "1"
+              },
               headerTitle: "New Request",
+              headerTitleStyle: {
+                color: "#555064",
+                fontFamily: "Quicksand-Regular",
+                fontWeight: "500",
+                fontSize: 16,
+                lineHeight: 20
+              },
               headerLeft: () => (
                 <TouchableOpacity
                   onPress={() => {
