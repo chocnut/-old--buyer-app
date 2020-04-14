@@ -99,7 +99,11 @@ const Main = ({ navigation }) => {
 
         <CreateNewRequestHelper />
 
-        <CreateNewRequestBtn onPress={() => {}} />
+        <CreateNewRequestBtn
+          onPress={() => {
+            navigation.navigate("NewRequest");
+          }}
+        />
       </View>
     </View>
   );

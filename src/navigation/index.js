@@ -11,24 +11,83 @@ import MainScreen from "../screens/Main";
 import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import ChatScreen from "../screens/App/ChatScreen";
 import ProfileScreen from "../screens/Profile";
+import NewRequest from "../screens/Request/New";
+import { useSelector, useDispatch } from "react-redux";
+import { Button } from "react-native";
+import { setNextStep } from "../redux/request/wizard/wizard.actions";
 
-const Stack = createStackNavigator();
+const MainStack = createStackNavigator();
+const RequestModalStack = createStackNavigator();
+
+function MainStackScreen() {
+  return (
+    <MainStack.Navigator headerMode={null}>
+      <MainStack.Screen name="AuthLoading" component={AuthLoadingScreen} />
+      <MainStack.Screen name="Welcome" component={WelcomeScreen} />
+      <MainStack.Screen name="Main" component={MainScreen} />
+      <MainStack.Screen name="Signup" component={SignUpScreen} />
+      <MainStack.Screen name="Info" component={InfoScreen} />
+      <MainStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+      />
+      <MainStack.Screen
+        name="ChangePassword"
+        component={ChangePasswordScreen}
+      />
+      <MainStack.Screen name="Login" component={LogInScreen} />
+      <MainStack.Screen name="Chat" component={ChatScreen} />
+      <MainStack.Screen name="Profile" component={ProfileScreen} />
+    </MainStack.Navigator>
+  );
+}
 
 export default () => {
+  const { currentStep } = useSelector(state => state.wizard);
+  const dispatch = useDispatch();
+  console.log(currentStep);
   return (
-    <NavigationContainer>
-      <Stack.Navigator headerMode={null}>
-        <Stack.Screen name="AuthLoading" component={AuthLoadingScreen} />
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Main" component={MainScreen} />
-        <Stack.Screen name="Signup" component={SignUpScreen} />
-        <Stack.Screen name="Info" component={InfoScreen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-        <Stack.Screen name="Login" component={LogInScreen} />
-        <Stack.Screen name="Chat" component={ChatScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <RequestModalStack.Navigator mode="modal">
+          <RequestModalStack.Screen
+            name="MainStack"
+            component={MainStackScreen}
+            options={{ headerShown: false }}
+          />
+          <RequestModalStack.Screen
+            name="NewRequest"
+            component={NewRequest}
+            options={({ navigation }) => ({
+              headerTitle: "New Request",
+              headerLeft: () => (
+                <Button
+                  onPress={() => {
+                    if (currentStep <= 1) {
+                      navigation.goBack();
+                      dispatch(setNextStep(0));
+                    } else {
+                      dispatch(setNextStep(1));
+                    }
+                  }}
+                  title="Back"
+                  color="#000"
+                />
+              ),
+              headerRight: () => (
+                <Button
+                  onPress={() => {
+                    dispatch(setNextStep(0));
+                    navigation.goBack();
+                  }}
+                  title="Close"
+                  color="#000"
+                />
+              )
+            })}
+          />
+        </RequestModalStack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
