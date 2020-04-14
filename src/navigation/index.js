@@ -66,7 +66,7 @@ export default () => {
                 borderLeftColor: "transparent",
                 borderRightColor: "transparent",
                 borderTopColor: "transparent",
-                borderWidth: "1"
+                borderWidth: 1
               },
               headerTitle: "New Request",
               headerTitleStyle: {
