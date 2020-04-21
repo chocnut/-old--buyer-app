@@ -1,30 +1,15 @@
 import React from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
 import { useForm, FormContext } from "react-hook-form";
-
-import Layout from "../../../constants/Layout";
-
 import { useDispatch, useSelector } from "react-redux";
 import { setNextStep } from "../../../redux/request/wizard/wizard.actions";
 
 import Btn from "../../../components/Btn";
-
 import Step1 from "./Step1";
-import PhotoUpload from "./PhotoUpload";
+import Step2 from "./Step2";
+import Step3 from "./Step3";
 
-const titleTop = () => {
-  return Layout.window.height > 667
-    ? (Layout.window.height / 100) * 8
-    : (Layout.window.height / 100) * 6;
-};
-
-const titleBottom = () => {
-  return Layout.window.height > 667
-    ? (Layout.window.height / 100) * 8
-    : (Layout.window.height / 100) * 6;
-};
-
-const NewRequest = ({ navigation }) => {
+const NewRequest = () => {
   const methods = useForm();
   const dispatch = useDispatch();
 
@@ -39,7 +24,8 @@ const NewRequest = ({ navigation }) => {
       <View style={styles.content}>
         <FormContext {...methods}>
           {currentStep === 0 && <Step1 />}
-          {currentStep === 1 && <PhotoUpload />}
+          {currentStep === 1 && <Step2 />}
+          {currentStep === 2 && <Step3 />}
           <View style={styles.btnContainer}>
             <Btn
               onPress={methods.handleSubmit(onSubmit)}

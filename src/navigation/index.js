@@ -44,6 +44,17 @@ function MainStackScreen() {
 const backIcon = require("../../assets/images/chevron-left.png");
 const closeIcon = require("../../assets/images/close-grey.png");
 
+const getHeaderTitle = currentStep => {
+  switch (currentStep) {
+    case 1:
+      return "Add Media";
+    case 2:
+      return "Targets";
+    default:
+      return "New Request";
+  }
+};
+
 export default () => {
   const { currentStep, prevStep } = useSelector(state => state.wizard);
   const dispatch = useDispatch();
@@ -68,7 +79,7 @@ export default () => {
                 borderTopColor: "transparent",
                 borderWidth: 1
               },
-              headerTitle: "New Request",
+              headerTitle: getHeaderTitle(currentStep),
               headerTitleStyle: {
                 color: "#555064",
                 fontFamily: "Quicksand-Regular",
