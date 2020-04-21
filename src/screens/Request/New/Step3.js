@@ -6,8 +6,8 @@ export default function Step1() {
   const { register, setValue } = useFormContext();
 
   useEffect(() => {
-    register("metrics", { required: true, min: 8 });
-    register("description", { required: true, min: 8 });
+    register("targetPrice", { required: true, min: 1 });
+    register("quantity", { required: true, min: 1 });
   }, [register]);
 
   return (
@@ -15,7 +15,7 @@ export default function Step1() {
       <EewooInput
         label="Quantity"
         placeholder="Quantity"
-        onChange={text => setValue("Quantity", text)}
+        onChange={text => setValue("quantity", text)}
         error={null}
       />
       <EewooInput

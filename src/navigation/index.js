@@ -12,6 +12,9 @@ import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import ChatScreen from "../screens/App/ChatScreen";
 import ProfileScreen from "../screens/Profile";
 import NewRequest from "../screens/Request/New";
+import RequestDetailsScreen from "../screens/Request/New/Details";
+import RequestDoneScreen from "../screens/Request/New/RequestDone";
+
 import { useSelector, useDispatch } from "react-redux";
 import { TouchableOpacity, StyleSheet, Image } from "react-native";
 import { setNextStep } from "../redux/request/wizard/wizard.actions";
@@ -38,6 +41,11 @@ function MainStackScreen() {
       <MainStack.Screen name="Login" component={LogInScreen} />
       <MainStack.Screen name="Chat" component={ChatScreen} />
       <MainStack.Screen name="Profile" component={ProfileScreen} />
+      <MainStack.Screen
+        name="RequestDetails"
+        component={RequestDetailsScreen}
+      />
+      <MainStack.Screen name="RequestDone" component={RequestDoneScreen} />
     </MainStack.Navigator>
   );
 }
@@ -91,7 +99,7 @@ export default () => {
                 <TouchableOpacity
                   onPress={() => {
                     if (currentStep === 0) {
-                      navigation.goBack();
+                      navigation.navigate("Main");
                       dispatch(setNextStep(0));
                     } else {
                       dispatch(setNextStep(prevStep));

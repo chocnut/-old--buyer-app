@@ -22,6 +22,11 @@ export default class Btn extends React.Component {
       text_styles.push(styles.textSecondary);
     }
 
+    if (this.props.secondaryWithBorder) {
+      applied_styles.push(styles.btnSecondaryWithBorder);
+      text_styles.push(styles.textSecondary);
+    }
+
     if (this.props.disabled) {
       text_styles.push(styles.disabled);
     }
@@ -54,6 +59,13 @@ const styles = StyleSheet.create({
   },
   btnSecondary: {
     backgroundColor: "white"
+  },
+  btnSecondaryWithBorder: {
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#F4F4F4",
+    borderRadius: 5
   },
   text: {
     color: "white",

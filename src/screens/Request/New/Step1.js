@@ -16,6 +16,7 @@ export default function Step1() {
     register("productName", { required: true, min: 8 });
     register("description", { required: true, min: 8 });
     register("country", { required: true, min: 8 });
+    register("countryCode");
   }, [register]);
 
   return (
@@ -44,10 +45,13 @@ export default function Step1() {
       <View style={styles.countryPicker}>
         <CountryPicker
           withFlag={false}
-          withFilter={false}
+          withFilter={true}
           visible={showCountryPicker}
           onClose={() => setShowCountryPicker(false)}
-          onSelect={({ name }) => setValue("country", name)}
+          onSelect={({ name, cca2 }) => {
+            setValue("country", name);
+            setValue("countryCode", cca2);
+          }}
         />
       </View>
     </>

@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Image,
-  View,
-  TouchableOpacity,
-  StyleSheet
-} from "react-native";
+import { Image, View, TouchableOpacity, StyleSheet } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Dimensions } from "react-native";
 
+import { saveFormData } from "../../../redux/request/wizard/wizard.actions";
+
 const width = Dimensions.get("window").width; //full width
 
 export default function() {
-  const [images, setImages] = useState([]);
+  const { form } = useSelector(state => state.wizard);
+  const [images, setImages] = useState(form.images || []);
+  const [images64, setImages64] = useState(form.images64 || []);
+  const dispatch = useDispatch();
 
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -35,12 +35,20 @@ export default function() {
       await getPermissionAsync();
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
+        base64: true,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1
       });
       if (!result.cancelled) {
         setImages(prevState => [result.uri, ...prevState]);
+        setImages64(prevState => [result.base64, ...prevState]);
+        dispatch(
+          saveFormData({
+            images: [result.uri, ...images],
+            images64: [result.base64, ...images64]
+          })
+        );
       }
 
       console.log(result);

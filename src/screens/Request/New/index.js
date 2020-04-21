@@ -2,21 +2,33 @@ import React from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
 import { useForm, FormContext } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { setNextStep } from "../../../redux/request/wizard/wizard.actions";
+import {
+  setNextStep,
+  saveFormData
+} from "../../../redux/request/wizard/wizard.actions";
 
 import Btn from "../../../components/Btn";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 
-const NewRequest = () => {
+const NewRequest = ({ navigation }) => {
   const methods = useForm();
   const dispatch = useDispatch();
 
   const { currentStep } = useSelector(state => state.wizard);
 
   const onSubmit = data => {
-    dispatch(setNextStep(currentStep + 1));
+    console.log(currentStep);
+    console.log(data);
+
+    dispatch(saveFormData(data));
+
+    if (currentStep === 2) {
+      navigation.navigate("RequestDetails");
+    } else {
+      dispatch(setNextStep(currentStep + 1));
+    }
   };
 
   return (
