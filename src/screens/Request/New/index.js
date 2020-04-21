@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, StatusBar } from "react-native";
-import CountryPicker from "react-native-country-picker-modal";
+import React from "react";
+import { View, StyleSheet, StatusBar } from "react-native";
+import { useForm, FormContext } from "react-hook-form";
 
 import Layout from "../../../constants/Layout";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
 import { setNextStep } from "../../../redux/request/wizard/wizard.actions";
-import EewooInput from "../../../components/EewooInput";
+
 import Btn from "../../../components/Btn";
+
+import Step1 from "./Step1";
+import PhotoUpload from "./PhotoUpload";
 
 const titleTop = () => {
   return Layout.window.height > 667
@@ -22,62 +25,31 @@ const titleBottom = () => {
 };
 
 const NewRequest = ({ navigation }) => {
-  const [showCountryPicker, setShowCountryPicker] = useState(false);
-  const { register, handleSubmit, setValue, getValues, errors } = useForm();
+  const methods = useForm();
   const dispatch = useDispatch();
-  const { country } = getValues();
 
-  console.log(errors);
-  useEffect(() => {
-    register("productName", { required: true, min: 8 });
-    register("description", { required: true, min: 8 });
-    register("country", { required: true, min: 8 });
-  }, [register]);
+  const { currentStep } = useSelector(state => state.wizard);
 
   const onSubmit = data => {
-    console.log(data);
-    dispatch(setNextStep(2));
+    dispatch(setNextStep(currentStep + 1));
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <EewooInput
-          label="Product Name"
-          placeholder="Enter your request name"
-          onChange={text => setValue("productName", text)}
-          error={null}
-        />
-        <EewooInput
-          label="Description"
-          placeholder="Describe all necessary features you need"
-          onChange={text => setValue("description", text)}
-          error={null}
-        />
-        <Text style={styles.title}>Delivery Location</Text>
-        <EewooInput
-          label="Choose your country"
-          placeholder="Choose your country"
-          onChange={() => false}
-          onFocus={() => setShowCountryPicker(true)}
-          error={null}
-          value={country}
-        />
-        <View style={styles.countryPicker}>
-          <CountryPicker
-            withFlag={false}
-            withFilter={false}
-            visible={showCountryPicker}
-            onClose={() => setShowCountryPicker(false)}
-            onSelect={({ name }) => setValue("country", name)}
-          />
-        </View>
-        <View style={styles.btnContainer}>
-          <Btn onPress={handleSubmit(onSubmit)} title="Continue" width={192}>
-            Continue
-          </Btn>
-        </View>
-
+        <FormContext {...methods}>
+          {currentStep === 0 && <Step1 />}
+          {currentStep === 1 && <PhotoUpload />}
+          <View style={styles.btnContainer}>
+            <Btn
+              onPress={methods.handleSubmit(onSubmit)}
+              title="Continue"
+              width={192}
+            >
+              Continue
+            </Btn>
+          </View>
+        </FormContext>
         <StatusBar barStyle="dark-content" />
       </View>
     </View>

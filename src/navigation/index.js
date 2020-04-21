@@ -45,9 +45,9 @@ const backIcon = require("../../assets/images/chevron-left.png");
 const closeIcon = require("../../assets/images/close-grey.png");
 
 export default () => {
-  const { currentStep } = useSelector(state => state.wizard);
+  const { currentStep, prevStep } = useSelector(state => state.wizard);
   const dispatch = useDispatch();
-  console.log(currentStep);
+
   return (
     <>
       <NavigationContainer>
@@ -79,11 +79,11 @@ export default () => {
               headerLeft: () => (
                 <TouchableOpacity
                   onPress={() => {
-                    if (currentStep <= 1) {
+                    if (currentStep === 0) {
                       navigation.goBack();
                       dispatch(setNextStep(0));
                     } else {
-                      dispatch(setNextStep(1));
+                      dispatch(setNextStep(prevStep));
                     }
                   }}
                   title="Back"
