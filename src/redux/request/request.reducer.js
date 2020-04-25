@@ -1,13 +1,15 @@
 import { STORE_USER_REQUESTS } from "./request.actionTypes";
 
-const initialState = [];
+const initialState = {
+  requests: []
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case STORE_USER_REQUESTS: {
       return {
         ...state,
-        ...action.payload
+        requests: [...state.requests, ...action.payload]
       };
     }
     default:

@@ -9,10 +9,27 @@ export const fetchUserRequests = async userId => {
   try {
     const token = await getToken();
     const response = await axios.getInstance(token).get(requestsUrl(userId));
-    return Promise.resolve(response);
+    return Promise.resolve(response.data.data);
   } catch (e) {
     if (!e.response) {
       throw { message: "Something went wrong" };
+    }
+  }
+};
+
+export const fetchMedias = async url => {
+  try {
+    const token = await getToken();
+    const response = await axios.getInstance(token).get(url);
+    const { data } = response.data;
+    if (data.length > 0) {
+      return Promise.resolve(data[0].attributes.file_uri);
+    }
+    return Promise.resolve();
+  } catch (e) {
+    console.log(e);
+    if (!e.response) {
+      throw { message: "Media Something went wrong" };
     }
   }
 };

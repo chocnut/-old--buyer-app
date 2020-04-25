@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  FlatList,
+  Image
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../../constants/Colors";
@@ -13,6 +20,47 @@ import SearchFilterModal from "../../components/SearchFilterModal";
 import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
+import { fetchMedias } from "../../services/request";
+
+function RequestCard({ title, media }) {
+  const [imgSrc, setImgSrc] = useState(undefined);
+
+  const fetchImages = async () => {
+    const response = await fetchMedias(media);
+    setImgSrc(response);
+  };
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  return (
+    <View style={styles.card}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Image
+          style={{
+            width: 164,
+            height: 130
+          }}
+          key={Math.random(1000)}
+          source={{
+            uri: imgSrc
+          }}
+          resizeMode="cover"
+        />
+      </View>
+      <View
+        style={{
+          marginHorizontal: 8,
+          marginVertical: 8
+        }}
+      >
+        <Text style={styles.title}>{`${title.substring(0, 13)}...`}</Text>
+        <Text style={styles.message}>No new messages</Text>
+      </View>
+    </View>
+  );
+}
 
 const Main = ({ navigation }) => {
   const [search, setSearch] = useState(null);
@@ -97,8 +145,28 @@ const Main = ({ navigation }) => {
           </SearchFilterModal>
         </View>
 
-        <CreateNewRequestHelper />
-
+        {Object.keys(requests.requests).length === 0 && (
+          <CreateNewRequestHelper />
+        )}
+        {Object.keys(requests.requests).length > 0 && (
+          <SafeAreaView
+            style={{
+              marginHorizontal: 16
+            }}
+          >
+            <FlatList
+              data={requests.requests}
+              numColumns={2}
+              renderItem={({ item }) => (
+                <RequestCard
+                  title={item.attributes.title}
+                  media={item.relationships.media.links.related}
+                />
+              )}
+              keyExtractor={item => item.attributes.public_id}
+            />
+          </SafeAreaView>
+        )}
         <CreateNewRequestBtn
           onPress={() => {
             navigation.navigate("NewRequest");
@@ -135,6 +203,35 @@ const styles = StyleSheet.create({
   },
   modalLabelFirst: {
     marginTop: 0
+  },
+  item: {
+    backgroundColor: "#f9c2ff",
+    padding: 20
+  },
+  message: {
+    fontFamily: "Quicksand-Regular",
+    fontSize: 13,
+    color: "#9996A2"
+  },
+  title: {
+    fontFamily: "Quicksand-Bold",
+    fontSize: 14
+  },
+  card: {
+    width: 164,
+    height: 182,
+    backgroundColor: "#FFFFFF",
+    shadowColor: "rgba(85, 80, 100, 0.2)",
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 5.5,
+    borderWidth: 1,
+    borderColor: "#F4F4F4",
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    marginHorizontal: 15,
+    marginTop: 15
   }
 });
 
