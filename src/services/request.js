@@ -17,13 +17,17 @@ export const fetchUserRequests = async userId => {
   }
 };
 
-export const fetchMedias = async url => {
+export const fetchMedias = async (url, all = false) => {
   try {
     const token = await getToken();
     const response = await axios.getInstance(token).get(url);
     const { data } = response.data;
     if (data.length > 0) {
-      return Promise.resolve(data[0].attributes.file_uri);
+      if (!all) {
+        return Promise.resolve(data[0].attributes.file_uri);
+      } else {
+        return Promise.resolve(data);
+      }
     }
     return Promise.resolve();
   } catch (e) {

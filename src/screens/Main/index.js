@@ -5,7 +5,8 @@ import {
   Text,
   SafeAreaView,
   FlatList,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -22,7 +23,7 @@ import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
 import { fetchMedias } from "../../services/request";
 
-function RequestCard({ title, media }) {
+function RequestCard({ item, title, media, navigation }) {
   const [imgSrc, setImgSrc] = useState(undefined);
 
   const fetchImages = async () => {
@@ -37,17 +38,22 @@ function RequestCard({ title, media }) {
   return (
     <View style={styles.card}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Image
-          style={{
-            width: 164,
-            height: 130
-          }}
-          key={Math.random(1000)}
-          source={{
-            uri: imgSrc
-          }}
-          resizeMode="cover"
-        />
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => navigation.navigate("RequestShow", { item })}
+        >
+          <Image
+            style={{
+              width: 164,
+              height: 130
+            }}
+            key={Math.random(1000)}
+            source={{
+              uri: imgSrc
+            }}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
       </View>
       <View
         style={{
@@ -159,6 +165,8 @@ const Main = ({ navigation }) => {
               numColumns={2}
               renderItem={({ item }) => (
                 <RequestCard
+                  navigation={navigation}
+                  item={item}
                   title={item.attributes.title}
                   media={item.relationships.media.links.related}
                 />

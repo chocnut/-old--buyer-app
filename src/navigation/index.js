@@ -14,6 +14,7 @@ import ProfileScreen from "../screens/Profile";
 import NewRequest from "../screens/Request/New";
 import RequestDetailsScreen from "../screens/Request/New/Details";
 import RequestDoneScreen from "../screens/Request/New/RequestDone";
+import RequestShowScreen from "../screens/Request/Show";
 
 import { useSelector, useDispatch } from "react-redux";
 import { TouchableOpacity, StyleSheet, Image } from "react-native";
@@ -40,6 +41,7 @@ function MainStackScreen() {
       />
       <MainStack.Screen name="Login" component={LogInScreen} />
       <MainStack.Screen name="Chat" component={ChatScreen} />
+      <MainStack.Screen name="RequestShow" component={RequestShowScreen} />
       <MainStack.Screen name="Profile" component={ProfileScreen} />
       <MainStack.Screen
         name="RequestDetails"
