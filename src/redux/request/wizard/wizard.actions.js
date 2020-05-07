@@ -5,6 +5,8 @@ import {
   CREATE_REQUEST_FAIL,
   CLEAR_FORM
 } from "./wizard.actionTypes";
+import { STORE_USER_REQUESTS } from "../request.actionTypes";
+
 import { createRequest, uploadRequestPhotos } from "../../../services/request";
 
 export const setNextStep = step => dispatch =>
@@ -38,7 +40,7 @@ export const submitRequest = ({
   try {
     const result = await createRequest(payload);
     const { data } = result;
-    console.log("data", data);
+
     const { id } = data.data;
 
     images64.forEach(async image => {
@@ -50,8 +52,10 @@ export const submitRequest = ({
 
     dispatch({ type: CREATE_REQUEST_SUCCESS });
     dispatch({ type: CLEAR_FORM });
+    dispatch({ type: STORE_USER_REQUESTS, payload: [data.data] });
   } catch (e) {
-    dispatch({ type: CREATE_REQUEST_SUCCESS });
+    console.log(e);
+    dispatch({ type: CREATE_REQUEST_FAIL });
     dispatch({ type: CLEAR_FORM });
   }
 };

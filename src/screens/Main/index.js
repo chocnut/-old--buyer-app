@@ -74,6 +74,8 @@ const Main = ({ navigation }) => {
   const [searchFiltersIsVisible, setSearchFiltersIsVisible] = useState(false);
   const [sortBy, setSortBy] = useState("activity");
   const [requestType, setRequestType] = useState(["drafts", "open"]);
+  const [isFetching, setIsFetching] = useState(false);
+
   const {
     user: { id },
     requests
@@ -85,8 +87,17 @@ const Main = ({ navigation }) => {
     dispatch(getUserRequests(id));
   }, []);
 
+  useEffect(() => {
+    console.log("refreshing", requests.isRefreshing);
+    setIsFetching(requests.isRefreshing);
+  }, [requests.isRefreshing]);
+
   const onPressFilter = () => {
     setSearchFiltersIsVisible(!searchFiltersIsVisible);
+  };
+
+  const onRefresh = () => {
+    dispatch(getUserRequests(id));
   };
 
   return (
@@ -171,6 +182,8 @@ const Main = ({ navigation }) => {
                   media={item.relationships.media.links.related}
                 />
               )}
+              onRefresh={onRefresh}
+              refreshing={isFetching}
               keyExtractor={item => item.attributes.public_id}
             />
           </SafeAreaView>

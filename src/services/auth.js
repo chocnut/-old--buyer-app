@@ -58,7 +58,9 @@ export const signUp = async ({ email, password, name }) => {
           attributes: {
             name,
             email,
-            password
+            password,
+            bio: "Sample Bio",
+            location: "GB"
           }
         }
       },
