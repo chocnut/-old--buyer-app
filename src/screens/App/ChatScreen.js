@@ -48,7 +48,7 @@ export default class ChatScreen extends React.Component {
           }}
         />
 
-        <Chat />
+        <Chat requestPublicId={this.props.route.params.requestPublicId} />
       </KeyboardAvoidingView>
     );
   }

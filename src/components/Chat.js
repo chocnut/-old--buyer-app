@@ -9,12 +9,13 @@ import Fire from "./../services/fire";
 
 const BOTTOM_OFFSET = Platform.OS === "ios" ? 58 + getBottomSpace() : 0;
 
-const Chat = () => {
+const Chat = ({ requestPublicId }) => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(undefined);
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
+    Fire.shared.setPublicId(requestPublicId);
     Fire.shared.off();
     Fire.shared.on(message => {
       setMessages(prevMessages => GiftedChat.append(prevMessages, message));

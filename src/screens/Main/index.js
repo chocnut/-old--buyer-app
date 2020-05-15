@@ -23,7 +23,14 @@ import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
 import { fetchMedias } from "../../services/request";
 
-function RequestCard({ item, title, media, navigation, createdAt }) {
+function RequestCard({
+  item,
+  title,
+  media,
+  navigation,
+  createdAt,
+  requestPublicId
+}) {
   const [imgSrc, setImgSrc] = useState(undefined);
 
   const fetchImages = async () => {
@@ -41,7 +48,12 @@ function RequestCard({ item, title, media, navigation, createdAt }) {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() =>
-            navigation.navigate("RequestShow", { item, imgSrc, createdAt })
+            navigation.navigate("RequestShow", {
+              item,
+              imgSrc,
+              createdAt,
+              requestPublicId
+            })
           }
         >
           <Image
@@ -182,6 +194,7 @@ const Main = ({ navigation }) => {
                   item={item}
                   title={item.attributes.title}
                   createdAt={item.attributes.created_at}
+                  requestPublicId={item.attributes.public_id}
                   media={item.relationships.media.links.related}
                 />
               )}

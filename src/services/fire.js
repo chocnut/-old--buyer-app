@@ -35,9 +35,7 @@ class Fire {
   };
 
   get ref() {
-    return firebase
-      .database()
-      .ref("messages/343b63c1-35dd-41c3-8c62-1f2a3902d074");
+    return firebase.database().ref(`messages/${this.publicId}`);
   }
 
   on = (callback, limit = 20) =>
@@ -60,6 +58,10 @@ class Fire {
 
   off() {
     this.ref.off();
+  }
+
+  setPublicId(id) {
+    this.publicId = id;
   }
 
   get uid() {

@@ -20,8 +20,10 @@ const initialLayout = { width: Dimensions.get("window").width };
 export default function Show({ route, navigation }) {
   const [index, setIndex] = useState(0);
   const [lastMessage, setLastMessage] = useState(undefined);
+  const { item, imgSrc, createdAt, requestPublicId } = route.params;
 
   useEffect(() => {
+    Fire.shared.setPublicId(requestPublicId);
     Fire.shared.off();
     Fire.shared.on(message => {
       setLastMessage(message.text);
@@ -34,8 +36,6 @@ export default function Show({ route, navigation }) {
     { key: "request", title: "Request" }
   ]);
 
-  const { item, imgSrc, createdAt } = route.params;
-
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "messages":
@@ -46,6 +46,7 @@ export default function Show({ route, navigation }) {
             lastMessage={lastMessage}
             createdAt={createdAt}
             imgSrc={imgSrc}
+            requestPublicId={requestPublicId}
           />
         );
       case "request":

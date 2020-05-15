@@ -9,12 +9,25 @@ import {
   TouchableOpacity
 } from "react-native";
 
-function Item({ name, request, lastMessage, navigation, imgSrc, createdAt }) {
+function Item({
+  requestPublicId,
+  name,
+  request,
+  lastMessage,
+  navigation,
+  imgSrc,
+  createdAt
+}) {
   return (
     <TouchableOpacity
       activeOpacity={1}
       onPress={() =>
-        navigation.navigate("Chat", { request, imgSrc, createdAt })
+        navigation.navigate("Chat", {
+          request,
+          imgSrc,
+          createdAt,
+          requestPublicId
+        })
       }
       style={styles.itemContainer}
     >
@@ -60,7 +73,14 @@ function Item({ name, request, lastMessage, navigation, imgSrc, createdAt }) {
   );
 }
 
-function MessageList({ item, navigation, lastMessage, imgSrc, createdAt }) {
+function MessageList({
+  item,
+  navigation,
+  lastMessage,
+  imgSrc,
+  createdAt,
+  requestPublicId
+}) {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -78,6 +98,7 @@ function MessageList({ item, navigation, lastMessage, imgSrc, createdAt }) {
             navigation={navigation}
             imgSrc={imgSrc}
             createdAt={createdAt}
+            requestPublicId={requestPublicId}
           />
         )}
         keyExtractor={(item, index) => `${item.id}-${index}`}
