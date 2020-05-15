@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -13,10 +13,20 @@ import MessageList from "./MessageList";
 import RequestDetails from "./RequestDetails";
 import Quotes from "./Quotes";
 
+import Fire from "../../../services/fire";
+
 const initialLayout = { width: Dimensions.get("window").width };
 
 export default function Show({ route, navigation }) {
   const [index, setIndex] = useState(0);
+  const [lastMessage, setLastMessage] = useState(undefined);
+
+  useEffect(() => {
+    Fire.shared.off();
+    Fire.shared.on(message => {
+      setLastMessage(message.text);
+    }, 1);
+  }, []);
 
   const [routes] = useState([
     { key: "messages", title: "Messages" },
@@ -24,12 +34,20 @@ export default function Show({ route, navigation }) {
     { key: "request", title: "Request" }
   ]);
 
-  const { item } = route.params;
+  const { item, imgSrc, createdAt } = route.params;
 
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "messages":
-        return <MessageList item={item} navigation={navigation} />;
+        return (
+          <MessageList
+            item={item}
+            navigation={navigation}
+            lastMessage={lastMessage}
+            createdAt={createdAt}
+            imgSrc={imgSrc}
+          />
+        );
       case "request":
         return <RequestDetails {...item} />;
       case "quotes":

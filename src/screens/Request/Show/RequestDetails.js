@@ -60,7 +60,8 @@ function RequestDetails({ attributes, relationships }) {
       <View style={styles.mediaContainer}>
         <Text style={styles.label}>Media</Text>
         <View style={styles.imageContainer}>
-          {images.length > 0 &&
+          {images &&
+            images.length > 0 &&
             images.map((image, i) => (
               <Image
                 key={i}

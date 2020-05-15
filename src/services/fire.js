@@ -35,12 +35,14 @@ class Fire {
   };
 
   get ref() {
-    return firebase.database().ref("messages");
+    return firebase
+      .database()
+      .ref("messages/1676bd8c-572b-4204-9563-bed1aa3eae56");
   }
 
-  on = callback =>
+  on = (callback, limit = 20) =>
     this.ref
-      .limitToLast(20)
+      .limitToLast(limit)
       .on("child_added", snapshot => callback(this.parse(snapshot)));
 
   parse = snapshot => {

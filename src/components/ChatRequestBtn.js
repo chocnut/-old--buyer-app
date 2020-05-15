@@ -10,10 +10,7 @@ export default class ChatRequestBtn extends React.Component {
           onPress={this.props.onPress}
           activeOpacity={0.6}
         >
-          <Image
-            source={require("../../assets/images/icon.png")}
-            style={styles.img}
-          />
+          <Image source={{ uri: this.props.data.img }} style={styles.img} />
           <View style={styles.body}>
             <Text style={styles.title} numberOfLines={1}>
               {this.props.data.title}

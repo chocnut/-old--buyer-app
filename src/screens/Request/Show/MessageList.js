@@ -9,11 +9,13 @@ import {
   TouchableOpacity
 } from "react-native";
 
-function Item({ name, request, lastMessage, navigation }) {
+function Item({ name, request, lastMessage, navigation, imgSrc, createdAt }) {
   return (
     <TouchableOpacity
       activeOpacity={1}
-      onPress={() => navigation.navigate("Chat")}
+      onPress={() =>
+        navigation.navigate("Chat", { request, imgSrc, createdAt })
+      }
       style={styles.itemContainer}
     >
       <Image
@@ -58,37 +60,26 @@ function Item({ name, request, lastMessage, navigation }) {
   );
 }
 
-function MessageList({ item, navigation }) {
+function MessageList({ item, navigation, lastMessage, imgSrc, createdAt }) {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={[
           {
             id: Math.random(),
-            name: "Mark L",
+            name: "Erwin Seribo",
             request: item.attributes.title,
-            lastMessage: "👌 Seems like we are going... "
-          },
-          {
-            id: Math.random(),
-            name: "John Doe!",
-            request: item.attributes.title,
-            lastMessage: "🤷‍♂️ Seems like we are going... "
-          },
-          {
-            id: Math.random(),
-            name: "John Doe!",
-            request: item.attributes.title,
-            lastMessage: "🤷‍♂️ Seems like we are going... "
-          },
-          {
-            id: Math.random(),
-            name: "John Doe!",
-            request: item.attributes.title,
-            lastMessage: "🤷‍♂️ Seems like we are going... "
+            lastMessage
           }
         ]}
-        renderItem={({ item }) => <Item {...item} navigation={navigation} />}
+        renderItem={({ item }) => (
+          <Item
+            {...item}
+            navigation={navigation}
+            imgSrc={imgSrc}
+            createdAt={createdAt}
+          />
+        )}
         keyExtractor={(item, index) => `${item.id}-${index}`}
       />
     </SafeAreaView>
