@@ -41,7 +41,12 @@ export default class ChatScreen extends React.Component {
           title="Inbox"
         />
 
-        <ChatRequestBtn data={requestData(this.props.route.params)} />
+        <ChatRequestBtn
+          data={requestData(this.props.route.params)}
+          onPress={() => {
+            this.props.navigation.goBack();
+          }}
+        />
 
         <Chat />
       </KeyboardAvoidingView>

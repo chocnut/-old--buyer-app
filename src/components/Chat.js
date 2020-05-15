@@ -12,7 +12,7 @@ const BOTTOM_OFFSET = Platform.OS === "ios" ? 58 + getBottomSpace() : 0;
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(undefined);
-  const selectorUser = useSelector(state => state);
+  const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
     Fire.shared.off();

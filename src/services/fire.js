@@ -37,7 +37,7 @@ class Fire {
   get ref() {
     return firebase
       .database()
-      .ref("messages/1676bd8c-572b-4204-9563-bed1aa3eae56");
+      .ref("messages/343b63c1-35dd-41c3-8c62-1f2a3902d074");
   }
 
   on = (callback, limit = 20) =>

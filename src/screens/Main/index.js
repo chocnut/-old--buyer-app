@@ -64,7 +64,7 @@ function RequestCard({ item, title, media, navigation, createdAt }) {
         }}
       >
         <Text style={styles.title}>{`${title.substring(0, 13)}...`}</Text>
-        <Text style={styles.message}>No new messages</Text>
+        <Text style={styles.newMessageCount}>1 new messages</Text>
       </View>
     </View>
   );
@@ -236,6 +236,11 @@ const styles = StyleSheet.create({
     fontFamily: "Quicksand-Regular",
     fontSize: 13,
     color: "#9996A2"
+  },
+  newMessageCount: {
+    fontFamily: "Quicksand-Regular",
+    fontSize: 13,
+    color: "#F03758"
   },
   title: {
     fontFamily: "Quicksand-Bold",
