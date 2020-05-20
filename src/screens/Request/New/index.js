@@ -12,6 +12,24 @@ import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
 
+const loaderStyle = percent => {
+  let step = 5;
+
+  if (percent === 1) {
+    step = 30;
+  } else if (percent === 2) {
+    step = 70;
+  }
+
+  return {
+    height: 3,
+    width: `${step}%`,
+    backgroundColor: "#F03758",
+    borderColor: "#F03758",
+    transition: "width 0.2s ease-in"
+  };
+};
+
 const NewRequest = ({ navigation }) => {
   const methods = useForm();
   const dispatch = useDispatch();
@@ -33,6 +51,7 @@ const NewRequest = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={loaderStyle(currentStep)} />
       <View style={styles.content}>
         <FormContext {...methods}>
           {currentStep === 0 && <Step1 />}

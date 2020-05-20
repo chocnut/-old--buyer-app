@@ -82,13 +82,6 @@ export default () => {
             name="NewRequest"
             component={NewRequest}
             options={({ navigation }) => ({
-              headerStyle: {
-                borderBottomColor: "#F03758",
-                borderLeftColor: "transparent",
-                borderRightColor: "transparent",
-                borderTopColor: "transparent",
-                borderWidth: 1
-              },
               headerTitle: getHeaderTitle(currentStep),
               headerTitleStyle: {
                 color: "#555064",
