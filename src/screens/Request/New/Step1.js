@@ -29,6 +29,7 @@ export default function Step1() {
       />
       <EewooInput
         label="Description"
+        multiline
         placeholder="Describe all necessary features you need"
         onChange={text => setValue("description", text)}
         error={null}
