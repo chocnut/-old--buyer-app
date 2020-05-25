@@ -6,8 +6,12 @@ import {
   SafeAreaView,
   FlatList,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator,
+  Dimensions
 } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import colors from "../../constants/Colors";
@@ -21,7 +25,8 @@ import SearchFilterModal from "../../components/SearchFilterModal";
 import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
-import { fetchMedias } from "../../services/request";
+
+const win = Dimensions.get("window");
 
 function RequestCard({
   item,
@@ -31,16 +36,7 @@ function RequestCard({
   createdAt,
   requestPublicId
 }) {
-  const [imgSrc, setImgSrc] = useState(undefined);
-
-  const fetchImages = async () => {
-    const response = await fetchMedias(media);
-    setImgSrc(response);
-  };
-
-  useEffect(() => {
-    fetchImages();
-  }, []);
+  const [imageLoading, setImageLoading] = useState(true);
 
   return (
     <View style={styles.card}>
@@ -56,17 +52,25 @@ function RequestCard({
             })
           }
         >
-          <Image
-            style={{
-              width: 164,
-              height: 130
-            }}
-            key={Math.random(1000)}
-            source={{
-              uri: imgSrc
-            }}
-            resizeMode="cover"
-          />
+          <View>
+            <Image
+              onLoad={() => setImageLoading(false)}
+              style={{
+                width: 176,
+                height: 130,
+                borderTopLeftRadius: 4,
+                borderTopRightRadius: 4
+              }}
+              key={Math.random(1000)}
+              source={{
+                uri: media
+              }}
+              resizeMode="cover"
+            ></Image>
+            <ActivityIndicator
+              style={{ display: !imageLoading ? "none" : "flex" }}
+            />
+          </View>
         </TouchableOpacity>
       </View>
       <View
@@ -75,8 +79,8 @@ function RequestCard({
           marginVertical: 8
         }}
       >
-        <Text style={styles.title}>{`${title.substring(0, 13)}...`}</Text>
-        <Text style={styles.newMessageCount}>1 new messages</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.newMessageCount}>No new messages</Text>
       </View>
     </View>
   );
@@ -89,6 +93,7 @@ const Main = ({ navigation }) => {
   const [sortBy, setSortBy] = useState("activity");
   const [requestType, setRequestType] = useState(["drafts", "open"]);
   const [isFetching, setIsFetching] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(undefined);
 
   const {
     user: { id },
@@ -98,8 +103,15 @@ const Main = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setShowSpinner(true);
     dispatch(getUserRequests(id));
   }, []);
+
+  useEffect(() => {
+    if (showSpinner && Object.keys(requests.requests).length > 0) {
+      setShowSpinner(false);
+    }
+  }, [requests, showSpinner]);
 
   useEffect(() => {
     console.log("refreshing", requests.isRefreshing);
@@ -120,6 +132,11 @@ const Main = ({ navigation }) => {
         onPressProfile={() => navigation.push("Profile")}
         onPressMessages={() => navigation.push("Chat")}
         notify={false}
+      />
+      <Spinner
+        visible={showSpinner}
+        textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
       />
       <View style={styles.body}>
         <View style={styles.searchFilterContainer}>
@@ -180,14 +197,11 @@ const Main = ({ navigation }) => {
           <CreateNewRequestHelper />
         )}
         {Object.keys(requests.requests).length > 0 && (
-          <SafeAreaView
-            style={{
-              marginHorizontal: 16
-            }}
-          >
+          <SafeAreaView style={{ flex: 1 }}>
             <FlatList
               data={requests.requests}
               numColumns={2}
+              style={{ flex: 1 }}
               renderItem={({ item }) => (
                 <RequestCard
                   navigation={navigation}
@@ -195,7 +209,7 @@ const Main = ({ navigation }) => {
                   title={item.attributes.title}
                   createdAt={item.attributes.created_at}
                   requestPublicId={item.attributes.public_id}
-                  media={item.relationships.media.links.related}
+                  media={item.attributes.featured_image_url}
                 />
               )}
               onRefresh={onRefresh}
@@ -250,22 +264,24 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#9996A2"
   },
-  newMessageCount: {
+  noNewMessageCount: {
     fontFamily: "Quicksand-Regular",
     fontSize: 13,
     color: "#F03758"
+  },
+  newMessageCount: {
+    fontFamily: "Quicksand-Regular",
+    fontSize: 13,
+    color: "#9996A2"
   },
   title: {
     fontFamily: "Quicksand-Bold",
     fontSize: 14
   },
   card: {
-    width: 164,
-    height: 182,
+    flex: 1,
     backgroundColor: "#FFFFFF",
-    shadowColor: "rgba(85, 80, 100, 0.2)",
     shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 5.5,
     borderWidth: 1,
     borderColor: "#F4F4F4",
     borderBottomLeftRadius: 4,
@@ -273,7 +289,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     marginHorizontal: 15,
-    marginTop: 15
+    marginTop: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2
+  },
+  spinnerTextStyle: {
+    color: "#FFF"
   }
 });
 

@@ -18,7 +18,9 @@ export default (state = initialState, action) => {
     case STORE_USER_REQUESTS: {
       return {
         ...state,
-        requests: sortSelector([...state.requests, ...action.payload])
+        requests: state.isRefreshing
+          ? sortSelector([...action.payload])
+          : sortSelector([...state.requests, ...action.payload])
       };
     }
     case TOGGLE_REFRESH: {
