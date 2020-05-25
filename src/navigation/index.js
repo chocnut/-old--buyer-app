@@ -85,10 +85,11 @@ export default () => {
               headerTitle: getHeaderTitle(currentStep),
               headerTitleStyle: {
                 color: "#555064",
-                fontFamily: "Quicksand-Regular",
+                fontFamily: "Quicksand-Medium",
                 fontWeight: "500",
                 fontSize: 16,
-                lineHeight: 20
+                lineHeight: 20,
+                bottom: 9
               },
               headerLeft: () => (
                 <TouchableOpacity
@@ -129,10 +130,12 @@ export default () => {
 const styles = StyleSheet.create({
   btn: {
     width: "100%",
-    left: 15
+    left: 28,
+    bottom: 5
   },
   closeBtn: {
     width: "100%",
-    right: 10
+    right: 28,
+    bottom: 5
   }
 });

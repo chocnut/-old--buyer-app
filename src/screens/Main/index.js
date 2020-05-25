@@ -46,7 +46,7 @@ function RequestCard({
           onPress={() =>
             navigation.navigate("RequestShow", {
               item,
-              imgSrc,
+              imgSrc: media,
               createdAt,
               requestPublicId
             })

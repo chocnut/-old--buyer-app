@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CountryPicker from "react-native-country-picker-modal";
 import { useFormContext } from "react-hook-form";
 import { View, Text, StyleSheet } from "react-native";
-
+import Constants from "expo-constants";
 import EewooInput from "../../../components/EewooInput";
 
 export default function Step1() {
@@ -34,9 +34,8 @@ export default function Step1() {
         onChange={text => setValue("description", text)}
         error={null}
       />
-      <Text>Delivery Location</Text>
       <EewooInput
-        label="Choose your country"
+        label="Delivery Location"
         placeholder="Choose your country"
         onChange={() => false}
         onFocus={() => setShowCountryPicker(true)}
@@ -47,6 +46,7 @@ export default function Step1() {
         <CountryPicker
           withFlag={false}
           withFilter={true}
+          withLa
           visible={showCountryPicker}
           onClose={() => setShowCountryPicker(false)}
           onSelect={({ name, cca2 }) => {

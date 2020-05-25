@@ -13,12 +13,12 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 
 const loaderStyle = percent => {
-  let step = 5;
+  let step = 33.3;
 
   if (percent === 1) {
-    step = 30;
+    step += 33.3;
   } else if (percent === 2) {
-    step = 70;
+    step += 33.3;
   }
 
   return {
