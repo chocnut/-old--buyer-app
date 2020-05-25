@@ -5,9 +5,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  KeyboardAvoidingView,
   StatusBar,
-  ScrollView
+  ScrollView,
+  Platform
 } from "react-native";
 import Constants from "expo-constants";
 import CloudFooter from "../../components/CloudFooter";
@@ -38,15 +39,12 @@ const LogInScreen = ({ navigation }) => {
     email: "",
     password: ""
   });
+  const [serverError, setServerError] = useState("");
+
   const dispatch = useDispatch();
 
-  let imgWidth = 0;
-  let imgHeight = 0;
-
-  useEffect(() => {
-    imgWidth = Layout.window.width;
-    imgHeight = Math.round(imgWidth * (837 / 1500));
-  }, []);
+  const imgWidth = Layout.window.width;
+  const imgHeight = Math.round(imgWidth * (837 / 1500));
 
   const emailIsValid = email => {
     if (!email) return false;
@@ -68,7 +66,7 @@ const LogInScreen = ({ navigation }) => {
     if (!password || password.length < 6)
       errors.password = "Please enter a minimum of 6 characters";
 
-    setErrors({ errors });
+    setErrors(errors);
 
     if (!errors.email && !errors.password) {
       handleLogin({ email, password });
@@ -80,15 +78,19 @@ const LogInScreen = ({ navigation }) => {
     let passwordTrimmed = password.trim();
 
     try {
-      await loginUser({
+      const loginResponse = await loginUser({
         email: emailTrimmed,
         password: passwordTrimmed
       });
-      const { data } = await getUser();
-      dispatch(storeUser(data));
-      navigation.navigate("Main");
+
+      if (loginResponse) {
+        const { data } = await getUser();
+        dispatch(storeUser(data));
+        navigation.navigate("Main");
+      }
     } catch (e) {
       console.log(e);
+      setServerError("The user credentials were incorrect.");
     }
   };
 
@@ -106,12 +108,16 @@ const LogInScreen = ({ navigation }) => {
       }}
     >
       {({ handleChange, handleSubmit }) => (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
           <ScrollView
             contentContainerStyle={styles.content}
             keyboardShouldPersistTaps="handled"
           >
             <Text style={styles.title}>Login</Text>
+            <Text style={styles.serverError}>{serverError}</Text>
             <EewooInput
               label="Email"
               placeholder="Email address"
@@ -119,6 +125,7 @@ const LogInScreen = ({ navigation }) => {
               keyboard="email-address"
               error={errors.email}
               textContentType="username"
+              returnKeyType="next"
             />
 
             <EewooInput
@@ -128,6 +135,8 @@ const LogInScreen = ({ navigation }) => {
               type="password"
               error={errors.password}
               textContentType="password"
+              returnKeyType="done"
+              onSubmitEditing={handleSubmit}
             />
 
             <TouchableOpacity
@@ -154,7 +163,7 @@ const LogInScreen = ({ navigation }) => {
             </TouchableOpacity>
           </CloudFooter>
           <StatusBar barStyle="dark-content" />
-        </View>
+        </KeyboardAvoidingView>
       )}
     </Formik>
   );
@@ -197,6 +206,11 @@ const styles = StyleSheet.create({
     fontFamily: "Quicksand-Regular",
     paddingVertical: 10,
     textDecorationLine: "underline"
+  },
+  serverError: {
+    fontSize: 12,
+    color: colors.red,
+    fontFamily: "Quicksand-Bold"
   }
 });
 

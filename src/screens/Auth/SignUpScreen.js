@@ -3,9 +3,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  KeyboardAvoidingView,
   StatusBar,
-  ScrollView
+  ScrollView,
+  Platform
 } from "react-native";
 import CloudFooter from "../../components/CloudFooter";
 import Layout from "../../constants/Layout";
@@ -55,7 +56,14 @@ export default class SignUpScreen extends React.Component {
     // ensure email contains characters and at least two words
     if (!this.state.email) return false;
     const email = this.state.email.trim().toLowerCase();
-    return email.length > 4 && email.includes("@") && email.includes(".");
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return (
+      email.length > 4 &&
+      email.includes("@") &&
+      email.includes(".") &&
+      re.test(email)
+    );
   };
 
   passwordIsValid = () => {
@@ -110,7 +118,10 @@ export default class SignUpScreen extends React.Component {
       !this.state.name || !this.state.email || !this.state.password;
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+      >
         <ScrollView
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
@@ -169,7 +180,7 @@ export default class SignUpScreen extends React.Component {
         </CloudFooter>
 
         <StatusBar barStyle="dark-content" />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

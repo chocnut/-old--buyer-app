@@ -14,8 +14,8 @@ const appReducer = combineReducers({
 });
 
 export default (state, action) => {
-  //   if (action.type === CLEAR_STORE.REQUEST) {
-  //     state = undefined;
-  //   }
+  if (action.type === CLEAR_STORE.REQUEST) {
+    state = undefined;
+  }
   return appReducer(state, action);
 };

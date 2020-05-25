@@ -8,8 +8,10 @@ export const signupUser = async ({ email, password, name }) => {
 
 export const loginUser = async ({ email, password }) => {
   const result = await login({ email, password });
-  const { access_token: token } = result.data;
-  const { aud } = jwtDecode(token);
-
-  return aud;
+  if (result) {
+    const { access_token: token } = result.data;
+    const { aud } = jwtDecode(token);
+    return aud;
+  }
+  return result;
 };
