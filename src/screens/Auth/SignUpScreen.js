@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform
 } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import CloudFooter from "../../components/CloudFooter";
 import Layout from "../../constants/Layout";
 import colors from "../../constants/Colors";
@@ -37,7 +38,8 @@ export default class SignUpScreen extends React.Component {
       name: "",
       email: "",
       password: "",
-      errors: { name: "", email: "", password: "" }
+      errors: { name: "", email: "", password: "" },
+      showSpinner: false
     };
   }
 
@@ -74,6 +76,7 @@ export default class SignUpScreen extends React.Component {
   };
 
   validateForm = () => {
+    this.setState({ showSpinner: true });
     const errors = { name: "", email: "", password: "" };
 
     const nameValid = this.nameIsValid();
@@ -100,10 +103,21 @@ export default class SignUpScreen extends React.Component {
     const password = this.state.password.trim();
 
     try {
-      await signupUser({ email, password, name });
-      this.props.navigation.navigate("Main");
+      const response = await signupUser({ email, password, name });
+      if (response) {
+        this.props.navigation.navigate("Main");
+        this.setState({ showSpinner: false });
+      }
+      this.setState({
+        showSpinner: false,
+        serverError: "Invalid request. Please try again."
+      });
     } catch (e) {
       console.log(e);
+      this.setState({
+        showSpinner: false,
+        serverError: "Invalid request. Please try again."
+      });
     }
   };
 
@@ -118,69 +132,76 @@ export default class SignUpScreen extends React.Component {
       !this.state.name || !this.state.email || !this.state.password;
 
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-      >
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps="handled"
+      <>
+        <Spinner
+          visible={this.state.showSpinner}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
-          <Text style={styles.title}>Get started!</Text>
-
-          <EewooInput
-            label="Name"
-            placeholder="Full name"
-            value={this.state.name}
-            onChange={name => this.setState({ name })}
-            error={this.state.errors.name}
-            textContentType="name"
-            autoCapitalize="words"
-          />
-
-          <EewooInput
-            label="Email"
-            placeholder="Email address"
-            value={this.state.email}
-            onChange={email => this.setState({ email })}
-            keyboard="email-address"
-            error={this.state.errors.email}
-            textContentType="username"
-          />
-
-          <EewooInput
-            label="Password"
-            placeholder="At least 6 characters"
-            value={this.state.password}
-            onChange={password => this.setState({ password })}
-            type="password"
-            error={this.state.errors.password}
-            textContentType="password"
-          />
-        </ScrollView>
-
-        <CloudFooter color="red" width={imgWidth} height={imgHeight}>
-          <Btn
-            onPress={this.validateForm}
-            title="Create account"
-            secondary
-            disabled={btnDisabled}
-            width={196}
+          <ScrollView
+            contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps="handled"
           >
-            Create account
-          </Btn>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Login")}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.textLink}>
-              Already have an account? <Text style={styles.hlink}>Login</Text>
-            </Text>
-          </TouchableOpacity>
-        </CloudFooter>
+            <Text style={styles.title}>Get started!</Text>
+            <Text style={styles.serverError}>{this.state.serverError}</Text>
+            <EewooInput
+              label="Name"
+              placeholder="Full name"
+              value={this.state.name}
+              onChange={name => this.setState({ name })}
+              error={this.state.errors.name}
+              textContentType="name"
+              autoCapitalize="words"
+            />
 
-        <StatusBar barStyle="dark-content" />
-      </KeyboardAvoidingView>
+            <EewooInput
+              label="Email"
+              placeholder="Email address"
+              value={this.state.email}
+              onChange={email => this.setState({ email })}
+              keyboard="email-address"
+              error={this.state.errors.email}
+              textContentType="username"
+            />
+
+            <EewooInput
+              label="Password"
+              placeholder="At least 6 characters"
+              value={this.state.password}
+              onChange={password => this.setState({ password })}
+              type="password"
+              error={this.state.errors.password}
+              textContentType="password"
+            />
+          </ScrollView>
+
+          <CloudFooter color="red" width={imgWidth} height={imgHeight}>
+            <Btn
+              onPress={this.validateForm}
+              title="Create account"
+              secondary
+              disabled={btnDisabled}
+              width={196}
+            >
+              Create account
+            </Btn>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Login")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.textLink}>
+                Already have an account? <Text style={styles.hlink}>Login</Text>
+              </Text>
+            </TouchableOpacity>
+          </CloudFooter>
+
+          <StatusBar barStyle="dark-content" />
+        </KeyboardAvoidingView>
+      </>
     );
   }
 }
@@ -226,5 +247,13 @@ const styles = StyleSheet.create({
     color: colors.red,
     fontSize: 13,
     marginBottom: 8
+  },
+  spinnerTextStyle: {
+    color: "#FFF"
+  },
+  serverError: {
+    fontSize: 12,
+    color: colors.red,
+    fontFamily: "Quicksand-Bold"
   }
 });

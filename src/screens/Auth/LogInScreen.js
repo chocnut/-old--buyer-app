@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
+import Spinner from "react-native-loading-spinner-overlay";
 import { useDispatch } from "react-redux";
 import {
   StyleSheet,
@@ -40,6 +41,7 @@ const LogInScreen = ({ navigation }) => {
     password: ""
   });
   const [serverError, setServerError] = useState("");
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -74,6 +76,7 @@ const LogInScreen = ({ navigation }) => {
   };
 
   const handleLogin = async ({ email, password }) => {
+    setShowSpinner(true);
     let emailTrimmed = email.trim().toLowerCase();
     let passwordTrimmed = password.trim();
 
@@ -86,86 +89,95 @@ const LogInScreen = ({ navigation }) => {
       if (loginResponse) {
         const { data } = await getUser();
         dispatch(storeUser(data));
+        setShowSpinner(false);
         navigation.navigate("Main");
       }
     } catch (e) {
+      setShowSpinner(false);
       console.log(e);
       setServerError("The user credentials were incorrect.");
     }
   };
 
   return (
-    <Formik
-      initialValues={{
-        email,
-        password,
-        errors
-      }}
-      onSubmit={({ email, password }) => {
-        setEmail(email);
-        setPassword(password);
-        validateForm({ email, password });
-      }}
-    >
-      {({ handleChange, handleSubmit }) => (
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-        >
-          <ScrollView
-            contentContainerStyle={styles.content}
-            keyboardShouldPersistTaps="handled"
+    <>
+      <Spinner
+        visible={showSpinner}
+        textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
+      <Formik
+        initialValues={{
+          email,
+          password,
+          errors
+        }}
+        onSubmit={({ email, password }) => {
+          setEmail(email);
+          setPassword(password);
+          validateForm({ email, password });
+        }}
+      >
+        {({ handleChange, handleSubmit }) => (
+          <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
-            <Text style={styles.title}>Login</Text>
-            <Text style={styles.serverError}>{serverError}</Text>
-            <EewooInput
-              label="Email"
-              placeholder="Email address"
-              onChange={handleChange("email")}
-              keyboard="email-address"
-              error={errors.email}
-              textContentType="username"
-              returnKeyType="next"
-            />
-
-            <EewooInput
-              label="Password"
-              placeholder="Password"
-              onChange={handleChange("password")}
-              type="password"
-              error={errors.password}
-              textContentType="password"
-              returnKeyType="done"
-              onSubmitEditing={handleSubmit}
-            />
-
-            <TouchableOpacity
-              style={styles.forgot}
-              onPress={() => navigation.navigate("ForgotPassword")}
-              activeOpacity={0.9}
+            <ScrollView
+              contentContainerStyle={styles.content}
+              keyboardShouldPersistTaps="handled"
             >
-              <Text style={styles.forgotText}>Forgotten password</Text>
-            </TouchableOpacity>
-          </ScrollView>
+              <Text style={styles.title}>Login</Text>
+              <Text style={styles.serverError}>{serverError}</Text>
+              <EewooInput
+                label="Email"
+                placeholder="Email address"
+                onChange={handleChange("email")}
+                keyboard="email-address"
+                error={errors.email}
+                textContentType="username"
+                returnKeyType="next"
+              />
 
-          <CloudFooter color="red" width={imgWidth} height={imgHeight}>
-            <Btn onPress={handleSubmit} title="Login" secondary width={196}>
-              Login
-            </Btn>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Signup")}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.textLink}>
-                <Text>Don't have an account? </Text>
-                <Text style={styles.hlink}>Sign up</Text>
-              </Text>
-            </TouchableOpacity>
-          </CloudFooter>
-          <StatusBar barStyle="dark-content" />
-        </KeyboardAvoidingView>
-      )}
-    </Formik>
+              <EewooInput
+                label="Password"
+                placeholder="Password"
+                onChange={handleChange("password")}
+                type="password"
+                error={errors.password}
+                textContentType="password"
+                returnKeyType="done"
+                onSubmitEditing={handleSubmit}
+              />
+
+              <TouchableOpacity
+                style={styles.forgot}
+                onPress={() => navigation.navigate("ForgotPassword")}
+                activeOpacity={0.9}
+              >
+                <Text style={styles.forgotText}>Forgotten password</Text>
+              </TouchableOpacity>
+            </ScrollView>
+
+            <CloudFooter color="red" width={imgWidth} height={imgHeight}>
+              <Btn onPress={handleSubmit} title="Login" secondary width={196}>
+                Login
+              </Btn>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Signup")}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.textLink}>
+                  <Text>Don't have an account? </Text>
+                  <Text style={styles.hlink}>Sign up</Text>
+                </Text>
+              </TouchableOpacity>
+            </CloudFooter>
+            <StatusBar barStyle="dark-content" />
+          </KeyboardAvoidingView>
+        )}
+      </Formik>
+    </>
   );
 };
 
@@ -211,6 +223,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.red,
     fontFamily: "Quicksand-Bold"
+  },
+  spinnerTextStyle: {
+    color: "#FFF"
   }
 });
 

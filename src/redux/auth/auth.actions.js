@@ -2,8 +2,12 @@ import { signUp, login } from "../../services/auth";
 import jwtDecode from "jwt-decode";
 
 export const signupUser = async ({ email, password, name }) => {
-  const result = await signUp({ email, password, name });
-  return result;
+  try {
+    const result = await signUp({ email, password, name });
+    return result;
+  } catch (e) {
+    return Promise.reject(result);
+  }
 };
 
 export const loginUser = async ({ email, password }) => {
