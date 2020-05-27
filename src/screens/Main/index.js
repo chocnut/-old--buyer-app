@@ -26,7 +26,7 @@ import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
 
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const itemWidth = (width - 15) / 2;
 
 function RequestCard({
@@ -41,7 +41,7 @@ function RequestCard({
 
   return (
     <View style={styles.card}>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() =>
@@ -198,7 +198,9 @@ const Main = ({ navigation }) => {
           <CreateNewRequestHelper />
         )}
         {Object.keys(requests.requests).length > 0 && (
-          <SafeAreaView style={{ flex: 1, justifyContent: "space-around" }}>
+          <SafeAreaView
+            style={{ flex: 1, marginHorizontal: 16, marginTop: 20 }}
+          >
             <FlatList
               data={requests.requests}
               numColumns={2}
@@ -280,7 +282,6 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   card: {
-    flex: 1,
     backgroundColor: "#FFFFFF",
     shadowOffset: { width: 0, height: 0 },
     borderWidth: 1,
@@ -289,8 +290,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
-    marginHorizontal: 15,
-    marginTop: 15,
+    marginRight: 15,
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 1.41,

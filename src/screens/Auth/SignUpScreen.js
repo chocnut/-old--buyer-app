@@ -151,10 +151,6 @@ export default class SignUpScreen extends React.Component {
           }
         });
       }
-      this.setState({
-        showSpinner: false,
-        serverError: "Invalid request. Please try again."
-      });
     } catch (e) {
       console.log(e);
       this.setState({
