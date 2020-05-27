@@ -185,9 +185,7 @@ const Main = ({ navigation }) => {
           <CreateNewRequestHelper />
         )}
         {Object.keys(requests.requests).length > 0 && (
-          <SafeAreaView
-            style={{ flex: 1, marginHorizontal: 16, marginTop: 20 }}
-          >
+          <SafeAreaView style={{ flex: 1, marginLeft: 20 }}>
             <FlatList
               data={requests.requests}
               numColumns={2}

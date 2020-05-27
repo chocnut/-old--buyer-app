@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   tabLabel: {
-    fontFamily: "Quicksand-Regular",
+    fontFamily: "Quicksand-Medium",
     fontSize: 16,
     fontWeight: "500",
     textTransform: "capitalize"
