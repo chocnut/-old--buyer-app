@@ -94,7 +94,6 @@ const Main = ({ navigation }) => {
   const [sortBy, setSortBy] = useState("activity");
   const [requestType, setRequestType] = useState(["drafts", "open"]);
   const [isFetching, setIsFetching] = useState(false);
-  const [showSpinner, setShowSpinner] = useState(undefined);
 
   const {
     user: { id },
@@ -104,14 +103,8 @@ const Main = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setShowSpinner(true);
     dispatch(getUserRequests(id));
   }, []);
-
-  useEffect(() => {
-    console.log("refreshing", requests.isRefreshing);
-    setIsFetching(requests.isRefreshing);
-  }, [requests.isRefreshing]);
 
   const onPressFilter = () => {
     setSearchFiltersIsVisible(!searchFiltersIsVisible);
@@ -129,7 +122,7 @@ const Main = ({ navigation }) => {
         notify={false}
       />
       <Spinner
-        visible={showSpinner}
+        visible={requests.isRefreshing}
         textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />

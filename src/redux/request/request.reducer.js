@@ -18,10 +18,10 @@ export default (state = initialState, action) => {
     case STORE_USER_REQUESTS: {
       return {
         ...state,
-        isRefreshing: false,
         requests: state.isRefreshing
           ? sortSelector([...action.payload])
-          : sortSelector([...state.requests, ...action.payload])
+          : sortSelector([...state.requests, ...action.payload]),
+        isRefreshing: false
       };
     }
     case TOGGLE_REFRESH: {
