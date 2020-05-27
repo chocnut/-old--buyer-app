@@ -109,12 +109,6 @@ const Main = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (showSpinner && requests.requests) {
-      setShowSpinner(false);
-    }
-  }, [requests, showSpinner]);
-
-  useEffect(() => {
     console.log("refreshing", requests.isRefreshing);
     setIsFetching(requests.isRefreshing);
   }, [requests.isRefreshing]);

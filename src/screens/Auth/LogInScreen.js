@@ -90,7 +90,7 @@ const LogInScreen = ({ navigation }) => {
         const { data } = await getUser();
         dispatch(storeUser(data));
         setShowSpinner(false);
-        navigation.navigate("Main");
+        navigation.push("Main");
       }
     } catch (e) {
       setShowSpinner(false);

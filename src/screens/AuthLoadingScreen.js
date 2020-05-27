@@ -8,7 +8,7 @@ const AuthLoadingScreen = ({ navigation }) => {
     try {
       const token = await getToken();
       if (token) {
-        navigation.navigate("Main");
+        navigation.push("Main");
       } else {
         navigation.navigate("Welcome");
       }

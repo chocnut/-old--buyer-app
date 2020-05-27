@@ -95,7 +95,7 @@ export default () => {
                 <TouchableOpacity
                   onPress={() => {
                     if (currentStep === 0) {
-                      navigation.navigate("Main");
+                      navigatio.push("Main");
                       dispatch(setNextStep(0));
                     } else {
                       dispatch(setNextStep(prevStep));

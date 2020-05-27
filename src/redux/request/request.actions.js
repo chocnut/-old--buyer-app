@@ -10,7 +10,4 @@ export const getUserRequests = userId => async dispatch => {
     type: STORE_USER_REQUESTS,
     payload: response
   });
-  dispatch({
-    type: TOGGLE_REFRESH
-  });
 };
