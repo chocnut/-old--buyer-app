@@ -17,12 +17,14 @@ export default function Step1() {
         placeholder="Quantity"
         onChange={text => setValue("quantity", text)}
         error={null}
+        keyboard="numeric"
       />
       <EewooInput
         label="Target Price"
         placeholder="Target Price"
         onChange={text => setValue("targetPrice", text)}
         error={null}
+        keyboard="numeric"
       />
     </>
   );

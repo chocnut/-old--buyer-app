@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   StatusBar,
   ScrollView,
-  Platform
+  Platform,
+  Linking
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import CloudFooter from "../../components/CloudFooter";
@@ -96,6 +97,15 @@ export default class SignUpScreen extends React.Component {
     }
   };
 
+  openMail = () => {
+    if (Platform.OS === "android") {
+      alert("Coming soon");
+      return;
+    }
+    Linking.openURL("message:0");
+    return;
+  };
+
   signUp = async () => {
     const trimmedName = this.state.name.replace(/  /g, " ").trim();
     const name = trimmedName;
@@ -105,8 +115,41 @@ export default class SignUpScreen extends React.Component {
     try {
       const response = await signupUser({ email, password, name });
       if (response) {
-        this.props.navigation.navigate("Main");
         this.setState({ showSpinner: false });
+        this.props.navigation.navigate("Info", {
+          title: "Check your email!",
+          body:
+            "You should have received a magic link...\n" +
+            "Just click on it to verify your email and\n" +
+            "register your account",
+          icon: require("../../../assets/images/email.png"),
+          btn: {
+            title: "OPEN EMAIL APP",
+            onPress: () => {
+              this.openMail();
+            }
+          },
+          btnLink: {
+            title: "I didn’t receive my email",
+            onPress: () => {
+              this.props.navigation.navigate("Info", {
+                title: "Oh no - we’re sorry you’re having problems with that!",
+                body:
+                  "Have you checked your spam folder? \n" +
+                  "If it’s not there, please wait for at least 10 minutes & try again. If that doesn’t work,\n" +
+                  "try again with the new email address.",
+                icon: require("../../../assets/images/sad.png"),
+                btn: {
+                  title: "TRY ANOTHER EMAIL",
+                  onPress: () => {
+                    this.props.navigation.push("Signup");
+                  }
+                },
+                btnLink: null
+              });
+            }
+          }
+        });
       }
       this.setState({
         showSpinner: false,

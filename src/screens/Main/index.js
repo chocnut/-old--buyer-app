@@ -26,7 +26,8 @@ import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
 
-const win = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
+const itemWidth = (width - 15) / 2;
 
 function RequestCard({
   item,
@@ -108,7 +109,7 @@ const Main = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (showSpinner && Object.keys(requests.requests).length > 0) {
+    if (showSpinner && requests.requests) {
       setShowSpinner(false);
     }
   }, [requests, showSpinner]);
@@ -197,7 +198,7 @@ const Main = ({ navigation }) => {
           <CreateNewRequestHelper />
         )}
         {Object.keys(requests.requests).length > 0 && (
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, justifyContent: "space-around" }}>
             <FlatList
               data={requests.requests}
               numColumns={2}
