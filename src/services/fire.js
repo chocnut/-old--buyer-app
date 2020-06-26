@@ -35,7 +35,11 @@ class Fire {
   };
 
   get ref() {
-    return firebase.database().ref(`messages/${this.publicId}`);
+    //return firebase.database().ref(`messages/${this.publicId}`);
+    console.log(this.userId);
+    return firebase
+      .database()
+      .ref(`threads/${this.userId}/${this.publicId}/messages`);
   }
 
   on = (callback, limit = 20) =>
@@ -62,6 +66,10 @@ class Fire {
 
   setPublicId(id) {
     this.publicId = id;
+  }
+
+  setUserId(id) {
+    this.userId = id;
   }
 
   get uid() {

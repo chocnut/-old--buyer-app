@@ -27,8 +27,23 @@ export default function Details({ navigation }) {
     }
   }, [status]);
 
+  const handleDraft = () => {
+    dispatch(
+      submitRequest({
+        ...form,
+        state: "draft"
+      })
+    );
+    navigation.push("Main");
+  };
+
   const handleSubmit = () => {
-    dispatch(submitRequest(form));
+    dispatch(
+      submitRequest({
+        ...form,
+        state: "sent"
+      })
+    );
   };
 
   return (
@@ -92,7 +107,7 @@ export default function Details({ navigation }) {
         <View style={styles.btnContainer}>
           <Btn
             secondaryWithBorder
-            onPress={() => navigation.push("Main")}
+            onPress={handleDraft}
             title="Save To Drafts"
             width={170}
           >

@@ -16,6 +16,7 @@ const Chat = ({ requestPublicId }) => {
 
   useEffect(() => {
     Fire.shared.setPublicId(requestPublicId);
+    Fire.shared.setUserId(selectorUser.id);
     Fire.shared.off();
     Fire.shared.on(message => {
       setMessages(prevMessages => GiftedChat.append(prevMessages, message));

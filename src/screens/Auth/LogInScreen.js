@@ -119,10 +119,7 @@ const LogInScreen = ({ navigation }) => {
         }}
       >
         {({ handleChange, handleSubmit }) => (
-          <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-          >
+          <>
             <ScrollView
               contentContainerStyle={styles.content}
               keyboardShouldPersistTaps="handled"
@@ -174,7 +171,7 @@ const LogInScreen = ({ navigation }) => {
               </TouchableOpacity>
             </CloudFooter>
             <StatusBar barStyle="dark-content" />
-          </KeyboardAvoidingView>
+          </>
         )}
       </Formik>
     </>
