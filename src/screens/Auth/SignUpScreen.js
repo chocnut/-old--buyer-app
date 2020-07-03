@@ -177,69 +177,64 @@ export default class SignUpScreen extends React.Component {
           textContent={"Loading..."}
           textStyle={styles.spinnerTextStyle}
         />
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        <ScrollView
+          contentContainerStyle={styles.content}
+          keyboardShouldPersistTaps="handled"
         >
-          <ScrollView
-            contentContainerStyle={styles.content}
-            keyboardShouldPersistTaps="handled"
+          <Text style={styles.title}>Get started!</Text>
+          <Text style={styles.serverError}>{this.state.serverError}</Text>
+          <EewooInput
+            label="Name"
+            placeholder="Full name"
+            value={this.state.name}
+            onChange={name => this.setState({ name })}
+            error={this.state.errors.name}
+            textContentType="name"
+            autoCapitalize="words"
+          />
+
+          <EewooInput
+            label="Email"
+            placeholder="Email address"
+            value={this.state.email}
+            onChange={email => this.setState({ email })}
+            keyboard="email-address"
+            error={this.state.errors.email}
+            textContentType="username"
+          />
+
+          <EewooInput
+            label="Password"
+            placeholder="At least 6 characters"
+            value={this.state.password}
+            onChange={password => this.setState({ password })}
+            type="password"
+            error={this.state.errors.password}
+            textContentType="password"
+          />
+        </ScrollView>
+
+        <CloudFooter color="red" width={imgWidth} height={imgHeight}>
+          <Btn
+            onPress={this.validateForm}
+            title="Create account"
+            secondary
+            disabled={btnDisabled}
+            width={196}
           >
-            <Text style={styles.title}>Get started!</Text>
-            <Text style={styles.serverError}>{this.state.serverError}</Text>
-            <EewooInput
-              label="Name"
-              placeholder="Full name"
-              value={this.state.name}
-              onChange={name => this.setState({ name })}
-              error={this.state.errors.name}
-              textContentType="name"
-              autoCapitalize="words"
-            />
+            Create account
+          </Btn>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Login")}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.textLink}>
+              Already have an account? <Text style={styles.hlink}>Login</Text>
+            </Text>
+          </TouchableOpacity>
+        </CloudFooter>
 
-            <EewooInput
-              label="Email"
-              placeholder="Email address"
-              value={this.state.email}
-              onChange={email => this.setState({ email })}
-              keyboard="email-address"
-              error={this.state.errors.email}
-              textContentType="username"
-            />
-
-            <EewooInput
-              label="Password"
-              placeholder="At least 6 characters"
-              value={this.state.password}
-              onChange={password => this.setState({ password })}
-              type="password"
-              error={this.state.errors.password}
-              textContentType="password"
-            />
-          </ScrollView>
-
-          <CloudFooter color="red" width={imgWidth} height={imgHeight}>
-            <Btn
-              onPress={this.validateForm}
-              title="Create account"
-              secondary
-              disabled={btnDisabled}
-              width={196}
-            >
-              Create account
-            </Btn>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Login")}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.textLink}>
-                Already have an account? <Text style={styles.hlink}>Login</Text>
-              </Text>
-            </TouchableOpacity>
-          </CloudFooter>
-
-          <StatusBar barStyle="dark-content" />
-        </KeyboardAvoidingView>
+        <StatusBar barStyle="dark-content" />
       </>
     );
   }
