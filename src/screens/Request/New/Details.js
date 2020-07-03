@@ -41,7 +41,7 @@ export default function Details({ navigation }) {
     dispatch(
       submitRequest({
         ...form,
-        state: "sent"
+        state: "pending"
       })
     );
   };
