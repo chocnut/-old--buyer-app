@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 
+import { useSelector } from "react-redux";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import HeaderSecondary from "../../../components/HeaderSecondary";
 import MessageList from "./MessageList";
@@ -21,12 +22,19 @@ export default function Show({ route, navigation }) {
   const [index, setIndex] = useState(0);
   const [lastMessage, setLastMessage] = useState(undefined);
   const { item, imgSrc, createdAt, requestPublicId } = route.params;
+  const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
-    Fire.shared.setPublicId(requestPublicId);
+    //455cabc9-b655-41b0-91e3-b76867e45560
+    Fire.shared.setPublicId("455cabc9-b655-41b0-91e3-b76867e45560");
+    Fire.shared.setUserId(selectorUser.id);
     Fire.shared.off();
     Fire.shared.on(message => {
-      setLastMessage(message.text);
+      if (message.attachment) {
+        setLastMessage("A file attachment");
+      } else {
+        setLastMessage(message.text);
+      }
     }, 1);
   }, []);
 

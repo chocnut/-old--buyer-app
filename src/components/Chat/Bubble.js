@@ -1,12 +1,12 @@
 import React from "react";
 import {
   Text,
-  Clipboard,
   StyleSheet,
   TouchableOpacity,
   View,
-  ViewPropTypes,
-  Platform
+  Platform,
+  Linking,
+  Button
 } from "react-native";
 
 import {
@@ -15,6 +15,14 @@ import {
   Time,
   utils
 } from "react-native-gifted-chat";
+
+import { Video, Audio } from "expo-av";
+import PDFReader from "rn-pdf-reader-js";
+
+import { Dimensions } from "react-native";
+
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 const { isSameUser, isSameDay } = utils;
 
@@ -73,6 +81,76 @@ const Bubble = props => {
       );
     }
     return null;
+  };
+
+  const renderMessageVideo = () => {
+    const { currentMessage } = props;
+
+    if (!currentMessage.video) return null;
+
+    return (
+      // <Video
+      //   resizeMode="contain"
+      //   useNativeControls
+      //   shouldPlay={false}
+      //   source={{ uri: currentMessage.video }}
+      //   style={styles.video}
+      // />
+      <Video
+        source={{
+          uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+        }}
+        useNativeControls
+        rate={1.0}
+        volume={1.0}
+        isMuted={false}
+        resizeMode="cover"
+        shouldPlay={false}
+        isLooping
+        style={{ width: 100, height: 100 }}
+      />
+    );
+  };
+
+  const renderPDF = src => {
+    return (
+      <View style={styles.pdf}>
+        <PDFReader
+          source={{
+            uri: src
+          }}
+        />
+      </View>
+    );
+  };
+
+  const renderFile = () => {
+    const { currentMessage } = props;
+
+    if (!currentMessage.file) return null;
+
+    // return (
+    //   <View style={styles.pdf}>
+    //     <PDFReader
+    //       style={styles.pdfReader}
+    //       source={{
+    //         uri: currentMessage.file
+    //       }}
+    //     />
+    //   </View>
+    // );
+
+    return (
+      <View style={styles.file}>
+        <Button
+          title="pdf"
+          onPress={() => {
+            // Linking.openURL(currentMessage.file);
+            renderPDF(currentMessage.file);
+          }}
+        />
+      </View>
+    );
   };
 
   const renderMessageImage = () => {
@@ -205,7 +283,9 @@ const Bubble = props => {
           <View>
             {renderCustomView()}
             {messageHeader}
+            {renderMessageVideo()}
             {renderMessageImage()}
+            {renderFile()}
             {renderMessageText()}
           </View>
         </View>
@@ -236,8 +316,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: "#FFFFFF",
     borderColor: "#F4F4F4",
-    width: 281,
-    height: 130
+    width: 281
+    // height: 130
   },
   username: {
     fontWeight: "bold"
@@ -274,7 +354,21 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginLeft: 0,
     marginRight: 0
+  },
+  video: {
+    flex: 1,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height
+  },
+  pdf: {
+    flex: 1,
+    justifyContent: "center",
+    flex: 1
   }
+  // pdfReader: {
+  //   width: Dimensions.get("window").width,
+  //   height: Dimensions.get("window").height
+  // }
 });
 
 export default Bubble;

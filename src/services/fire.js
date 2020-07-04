@@ -36,7 +36,6 @@ class Fire {
 
   get ref() {
     //return firebase.database().ref(`messages/${this.publicId}`);
-    console.log(this.userId);
     return firebase
       .database()
       .ref(`threads/${this.userId}/${this.publicId}/messages`);
@@ -48,14 +47,15 @@ class Fire {
       .on("child_added", snapshot => callback(this.parse(snapshot)));
 
   parse = snapshot => {
-    const { timestamp: numberStamp, text, user } = snapshot.val();
+    const { timestamp: numberStamp, text, user, attachment } = snapshot.val();
     const { key: _id } = snapshot;
     const createdAt = new Date(numberStamp);
     const message = {
       _id,
       text,
       createdAt,
-      user
+      user,
+      attachment
     };
     return message;
   };
