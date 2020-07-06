@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Platform } from "react-native";
+import { StyleSheet, View, Platform, Button } from "react-native";
 import { useSelector } from "react-redux";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { GiftedChat } from "react-native-gifted-chat";
+import * as DocumentPicker from "expo-document-picker";
 
 import Fire from "./../../services/fire";
 import Message from "./Message";
@@ -113,6 +114,27 @@ const Chat = ({ item }) => {
     return <Message {...props} />;
   };
 
+  const handleUploadFile = async () => {
+    let result = await DocumentPicker.getDocumentAsync({
+      type: "*/*",
+      copyToCacheDirectory: true
+    });
+
+    if (result.type == "success") {
+      let { name, size, uri } = result;
+      let nameParts = name.split(".");
+      let fileType = nameParts[nameParts.length - 1];
+      var fileToUpload = {
+        name: name,
+        size: size,
+        uri: uri,
+        type: "application/" + fileType
+      };
+      console.log(fileToUpload, "...............file");
+      // this.setState({ file: fileToUpload });
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
@@ -122,6 +144,16 @@ const Chat = ({ item }) => {
         onSend={handleSend}
         user={user}
         renderMessage={renderMessage}
+        renderActions={() => {
+          return (
+            <Button
+              title="Upload"
+              onPress={() => {
+                handleUploadFile();
+              }}
+            />
+          );
+        }}
       />
     </View>
   );

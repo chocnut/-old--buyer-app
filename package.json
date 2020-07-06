@@ -26,6 +26,7 @@
     "date-fns": "^2.12.0",
     "expo": "~36.0.0",
     "expo-av": "~8.0.0",
+    "expo-document-picker": "~8.0.0",
     "expo-image-picker": "~8.0.1",
     "expo-secure-store": "~8.0.0",
     "expo-web-browser": "~8.0.0",

@@ -5,9 +5,7 @@ import {
   TouchableOpacity,
   View,
   Platform,
-  Linking,
-  Button,
-  WebView
+  Button
 } from "react-native";
 
 import * as WebBrowser from "expo-web-browser";
