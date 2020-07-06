@@ -6,8 +6,11 @@ import {
   View,
   Platform,
   Linking,
-  Button
+  Button,
+  WebView
 } from "react-native";
+
+import * as WebBrowser from "expo-web-browser";
 
 import {
   MessageText,
@@ -17,16 +20,16 @@ import {
 } from "react-native-gifted-chat";
 
 import { Video, Audio } from "expo-av";
-import PDFReader from "rn-pdf-reader-js";
-
 import { Dimensions } from "react-native";
-
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
 
 const { isSameUser, isSameDay } = utils;
 
 const Bubble = props => {
+  const handleOpenFile = async src => {
+    let result = await WebBrowser.openBrowserAsync(src);
+    setResult(result);
+  };
+
   const isSameThread =
     isSameUser(props.currentMessage, props.previousMessage) &&
     isSameDay(props.currentMessage, props.previousMessage);
@@ -83,22 +86,80 @@ const Bubble = props => {
     return null;
   };
 
+  const renderAudio = () => {
+    const { currentMessage } = props;
+
+    if (!currentMessage.audio) return null;
+
+    const soundObject = new Audio.Sound();
+
+    const loadAudio = async () => {
+      try {
+        await soundObject.loadAsync({
+          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+            currentMessage.audio
+          )}`
+        });
+      } catch (e) {
+        console.log("ERROR Loading Audio", e);
+      }
+    };
+
+    const play = async () => {
+      console.log("Playing Messages!");
+      const status = await soundObject.playAsync();
+      console.log(status);
+    };
+
+    const stop = () => {
+      console.log("Messages stopped!");
+      soundObject.pauseAsync();
+    };
+
+    if (currentMessage.audio) {
+      loadAudio();
+    }
+
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "blue",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            onPress={() => {
+              play();
+            }}
+          >
+            <Text>Play</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              stop();
+            }}
+          >
+            <Text>Stop</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
   const renderMessageVideo = () => {
     const { currentMessage } = props;
 
     if (!currentMessage.video) return null;
 
     return (
-      // <Video
-      //   resizeMode="contain"
-      //   useNativeControls
-      //   shouldPlay={false}
-      //   source={{ uri: currentMessage.video }}
-      //   style={styles.video}
-      // />
       <Video
         source={{
-          uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+            currentMessage.video
+          )}`
         }}
         useNativeControls
         rate={1.0}
@@ -112,41 +173,17 @@ const Bubble = props => {
     );
   };
 
-  const renderPDF = src => {
-    return (
-      <View style={styles.pdf}>
-        <PDFReader
-          source={{
-            uri: src
-          }}
-        />
-      </View>
-    );
-  };
-
   const renderFile = () => {
     const { currentMessage } = props;
 
     if (!currentMessage.file) return null;
-
-    // return (
-    //   <View style={styles.pdf}>
-    //     <PDFReader
-    //       style={styles.pdfReader}
-    //       source={{
-    //         uri: currentMessage.file
-    //       }}
-    //     />
-    //   </View>
-    // );
 
     return (
       <View style={styles.file}>
         <Button
           title="pdf"
           onPress={() => {
-            // Linking.openURL(currentMessage.file);
-            renderPDF(currentMessage.file);
+            handleOpenFile(currentMessage.file);
           }}
         />
       </View>
@@ -283,6 +320,7 @@ const Bubble = props => {
           <View>
             {renderCustomView()}
             {messageHeader}
+            {renderAudio()}
             {renderMessageVideo()}
             {renderMessageImage()}
             {renderFile()}
@@ -360,15 +398,12 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height
   },
-  pdf: {
-    flex: 1,
-    justifyContent: "center",
+  buttons: {
+    position: "absolute",
+    bottom: 20,
+    flexDirection: "row",
     flex: 1
   }
-  // pdfReader: {
-  //   width: Dimensions.get("window").width,
-  //   height: Dimensions.get("window").height
-  // }
 });
 
 export default Bubble;

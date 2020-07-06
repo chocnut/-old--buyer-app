@@ -22,6 +22,7 @@ const Chat = ({ item }) => {
     Fire.shared.on(message => {
       setMessages(prevMessages => {
         if (message.attachment) {
+          console.log("mmmm", message.attachment);
           message = {
             _id: message._id,
             createdAt: message.createdAt,
@@ -29,16 +30,28 @@ const Chat = ({ item }) => {
               message.text.length > 0 && { test: message.text }),
             user: message.user,
             ...(message.attachment.file_type.includes("video") && {
-              video: message.attachment.media_path
+              video:
+                message.attachment.file_name.substr(
+                  0,
+                  message.attachment.file_name.lastIndexOf(".")
+                ) + ".mp4"
+            }),
+            ...(message.attachment.file_type.includes("audio") && {
+              audio:
+                message.attachment.file_name.substr(
+                  0,
+                  message.attachment.file_name.lastIndexOf(".")
+                ) + ".mp3"
             }),
             ...(message.attachment.file_type.includes("image") && {
-              // image: message.attachment.media_path
-              //image: "https://facebook.github.io/react/img/logo_og.png"
-              image:
-                "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+              image: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+                message.attachment.file_name
+              )}`
             }),
             ...(message.attachment.file_type.includes("application") && {
-              file: message.attachment.media_path,
+              file: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+                message.attachment.file_name
+              )}`,
               fileType: message.attachment.file_type
             })
           };
