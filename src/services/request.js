@@ -1,5 +1,6 @@
 import * as axios from "../utils/axios";
 import { getToken } from "../services/auth";
+import { Platform } from "react-native";
 
 const requestsUrl = userId => `/api/users/${userId}/requests`;
 const createRequestUrl = "/api/requests";
@@ -89,4 +90,57 @@ export const uploadRequestPhotos = async ({ file, requestId }) => {
       throw { message: "Something went wrong" };
     }
   }
+};
+
+export const messageFileUpload = async ({ uri, name, type }, threadId) => {
+  const uploadApiUrl = `https://suppliers.eewoo.io/api/thread/${threadId}/uploadAttachment`;
+  const token = await getToken();
+
+  const formData = new FormData();
+  formData.append("attachment", {
+    uri,
+    name,
+    type
+  });
+
+  try {
+    const response = await fetch(uploadApiUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
+      },
+      body: formData
+    });
+    return response.json();
+  } catch (e) {
+    console.log(e);
+    return Promise.reject(e);
+  }
+
+  // const attachment = {
+  //   ...fileToUpload
+  // };
+
+  // try {
+  //   const token = await getToken();
+  //   const response = await axios.getInstance(token).post(
+  //     uploadApiUrl,
+  //     { body: formData },
+  //     {
+  //       headers: {
+  //         Accept: "multipart/form-data",
+  //         "Content-Type": "multipart/form-data"
+  //       }
+  //     }
+  //   );
+
+  //   console.log("UploadAttachment", response);
+  //   return Promise.resolve(response);
+  // } catch (e) {
+  //   console.log(e);
+  //   if (!e.response) {
+  //     throw { message: "Something went wrong" };
+  //   }
+  // }
 };

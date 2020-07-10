@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Platform, Button } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Platform,
+  TouchableOpacity,
+  Image
+} from "react-native";
 import { useSelector } from "react-redux";
 import { getBottomSpace } from "react-native-iphone-x-helper";
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat, Send } from "react-native-gifted-chat";
 import * as DocumentPicker from "expo-document-picker";
+
+import { messageFileUpload } from "../../services/request";
 
 import Fire from "./../../services/fire";
 import Message from "./Message";
@@ -13,6 +21,7 @@ const BOTTOM_OFFSET = Platform.OS === "ios" ? 300 + getBottomSpace() : 0;
 const Chat = ({ item }) => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(undefined);
+  const [fileToUpload, setFileToUpload] = useState(undefined);
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
@@ -62,40 +71,6 @@ const Chat = ({ item }) => {
       });
     });
 
-    // setMessages(
-    //   {
-    //     _id: 1,
-    //     text: "Will find out!",
-    //     createdAt: new Date(),
-    //     user: {
-    //       _id: 2,
-    //       name: "React Native",
-    //       avatar: "https://placeimg.com/140/140/any"
-    //     }
-    //   },
-    //   {
-    //     _id: 3,
-    //     text: "Will find out!",
-    //     createdAt: new Date(),
-    //     user: {
-    //       _id: 2,
-    //       name: "React Native",
-    //       avatar: "https://placeimg.com/140/140/any"
-    //     }
-    //   },
-    //   {
-    //     _id: 3,
-    //     text:
-    //       "👍 Sure! We can easily brand your products so that they will become unique",
-    //     createdAt: new Date(),
-    //     user: {
-    //       _id: 2,
-    //       name: "React Native",
-    //       avatar: "https://placeimg.com/140/140/any"
-    //     }
-    //   }
-    // ]);
-
     setUser({
       name: selectorUser.name,
       email: selectorUser.email,
@@ -106,8 +81,17 @@ const Chat = ({ item }) => {
     });
   }, []);
 
-  const handleSend = val => {
-    setMessages(prevMessages => GiftedChat.append(prevMessages, val));
+  const handleSend = async data => {
+    if (fileToUpload) {
+      const response = await messageFileUpload(fileToUpload, 10);
+      console.log("fileUploadResponse", response);
+      if (response && response.attachment) {
+        data[0]["attachment"] = response.attachment;
+        Fire.shared.send(data);
+      }
+    } else {
+      Fire.shared.send(data);
+    }
   };
 
   const renderMessage = props => {
@@ -121,37 +105,46 @@ const Chat = ({ item }) => {
     });
 
     if (result.type == "success") {
-      let { name, size, uri } = result;
+      let { name, uri } = result;
       let nameParts = name.split(".");
       let fileType = nameParts[nameParts.length - 1];
       var fileToUpload = {
-        name: name,
-        size: size,
-        uri: uri,
-        type: "application/" + fileType
+        name,
+        uri,
+        type: `application/${fileType}`
       };
-      console.log(fileToUpload, "...............file");
-      // this.setState({ file: fileToUpload });
+      setFileToUpload(fileToUpload);
     }
+    return false;
   };
 
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
+        onSend={handleSend}
         bottomOffset={BOTTOM_OFFSET}
         messages={messages}
-        //onSend={Fire.shared.send}
-        onSend={handleSend}
         user={user}
         renderMessage={renderMessage}
-        renderActions={() => {
+        renderSend={props => {
           return (
-            <Button
-              title="Upload"
-              onPress={() => {
-                handleUploadFile();
-              }}
-            />
+            <Send {...props} containerStyle={styles.sendBtnContainer}>
+              <Image source={require("../../../assets/images/send.png")} />
+            </Send>
+          );
+        }}
+        renderActions={props => {
+          return (
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={styles.fileUpload}
+                onPress={handleUploadFile}
+              >
+                <Image
+                  source={require("../../../assets/images/add-file.png")}
+                />
+              </TouchableOpacity>
+            </View>
           );
         }}
       />
@@ -162,6 +155,19 @@ const Chat = ({ item }) => {
 const styles = StyleSheet.create({
   flatList: {
     marginVertical: 10
+  },
+  btnContainer: {
+    // flex: 1
+    // alignItems: "center"
+  },
+  sendBtnContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    marginRight: 15
+  },
+  fileUpload: {
+    padding: 10
   }
 });
 

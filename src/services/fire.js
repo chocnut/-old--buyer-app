@@ -82,12 +82,14 @@ class Fire {
 
   send = messages => {
     for (let i = 0; i < messages.length; i++) {
-      const { text, user } = messages[i];
+      const { text, user, attachment } = messages[i];
       const message = {
         text,
         user,
+        attachment,
         timestamp: this.timestamp
       };
+      console.log("messsageeeeee", message);
       this.append(message);
     }
   };
