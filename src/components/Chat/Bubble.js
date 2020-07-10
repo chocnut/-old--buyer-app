@@ -62,7 +62,7 @@ const Bubble = props => {
   };
 
   const renderAudio = () => {
-    const { currentMessage } = props;
+    const { currentMessage, threadId } = props;
 
     if (!currentMessage.audio) return null;
 
@@ -71,7 +71,7 @@ const Bubble = props => {
     const loadAudio = async () => {
       try {
         await soundObject.loadAsync({
-          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
             currentMessage.audio
           )}`
         });
@@ -125,14 +125,14 @@ const Bubble = props => {
   };
 
   const renderMessageVideo = () => {
-    const { currentMessage } = props;
+    const { currentMessage, threadId } = props;
 
     if (!currentMessage.video) return null;
 
     return (
       <Video
         source={{
-          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
             currentMessage.video
           )}`
         }}

@@ -92,7 +92,7 @@ const Chat = ({ item, requestPublicId, threadId = 16 }) => {
   };
 
   const renderMessage = props => {
-    return <Message {...props} />;
+    return <Message threadId={threadId} {...props} />;
   };
 
   const handleUploadFile = async () => {
