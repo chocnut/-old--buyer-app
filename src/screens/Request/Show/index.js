@@ -8,7 +8,8 @@ import {
 import Constants from "expo-constants";
 
 import { useSelector } from "react-redux";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { TabView, TabBar } from "react-native-tab-view";
+import { fetchRequestThread } from "../../../services/request";
 import HeaderSecondary from "../../../components/HeaderSecondary";
 import MessageList from "./MessageList";
 import RequestDetails from "./RequestDetails";
@@ -21,22 +22,41 @@ const initialLayout = { width: Dimensions.get("window").width };
 export default function Show({ route, navigation }) {
   const [index, setIndex] = useState(0);
   const [lastMessage, setLastMessage] = useState(undefined);
+  const [lastUserMessage, setLastUserMessage] = useState(undefined);
   const { item, imgSrc, createdAt, requestPublicId } = route.params;
   const selectorUser = useSelector(state => state.user);
 
+  //Temporary
+  const [threadPublicId, setThreadPublicId] = useState(undefined);
+  const [threadId, setThreadId] = useState(undefined);
+
+  const getThreads = async () => {
+    const threads = await fetchRequestThread(item.id);
+    if (threads) {
+      const thread = threads[0];
+      setThreadId(thread.id);
+      setThreadPublicId(thread.public_id);
+    }
+  };
   useEffect(() => {
-    //455cabc9-b655-41b0-91e3-b76867e45560
-    Fire.shared.setPublicId("455cabc9-b655-41b0-91e3-b76867e45560");
-    Fire.shared.setUserId(selectorUser.id);
-    Fire.shared.off();
-    Fire.shared.on(message => {
-      if (message.attachment) {
-        setLastMessage("A file attachment");
-      } else {
-        setLastMessage(message.text);
-      }
-    }, 1);
+    getThreads();
   }, []);
+
+  useEffect(() => {
+    if (threadPublicId) {
+      Fire.shared.setPublicId(threadPublicId);
+      Fire.shared.setUserId(selectorUser.id);
+      Fire.shared.off();
+      Fire.shared.on(message => {
+        setLastUserMessage(message.user.name);
+        if (message.attachment) {
+          setLastMessage("A file attachment");
+        } else {
+          setLastMessage(message.text);
+        }
+      }, 1);
+    }
+  }, [threadPublicId, threadId]);
 
   const [routes] = useState([
     { key: "messages", title: "Messages" },
@@ -52,9 +72,11 @@ export default function Show({ route, navigation }) {
             item={item}
             navigation={navigation}
             lastMessage={lastMessage}
+            lastUserMessage={lastUserMessage}
             createdAt={createdAt}
             imgSrc={imgSrc}
-            requestPublicId={requestPublicId}
+            requestPublicId={threadPublicId}
+            threadId={threadId}
           />
         );
       case "request":

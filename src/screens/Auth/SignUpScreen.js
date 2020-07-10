@@ -184,7 +184,7 @@ export default class SignUpScreen extends React.Component {
           <Text style={styles.title}>Get started!</Text>
           <Text style={styles.serverError}>{this.state.serverError}</Text>
           <EewooInput
-            label="Name"
+            label="Full Name"
             placeholder="Full name"
             value={this.state.name}
             onChange={name => this.setState({ name })}

@@ -18,20 +18,19 @@ import Message from "./Message";
 
 // let BOTTOM_OFFSET = Platform.OS === "ios" ? 300 + getBottomSpace() : 0;
 
-const Chat = ({ item }) => {
+const Chat = ({ item, requestPublicId, threadId = 16 }) => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(undefined);
   const [fileToUpload, setFileToUpload] = useState(undefined);
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
-    Fire.shared.setPublicId("455cabc9-b655-41b0-91e3-b76867e45560");
+    Fire.shared.setPublicId(requestPublicId);
     Fire.shared.setUserId(selectorUser.id);
     Fire.shared.off();
     Fire.shared.on(message => {
       setMessages(prevMessages => {
         if (message.attachment) {
-          console.log("mmmm", message.attachment);
           message = {
             _id: message._id,
             createdAt: message.createdAt,
@@ -53,12 +52,12 @@ const Chat = ({ item }) => {
                 ) + ".mp3"
             }),
             ...(message.attachment.file_type.includes("image") && {
-              image: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+              image: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
                 message.attachment.file_name
               )}`
             }),
             ...(message.attachment.file_type.includes("application") && {
-              file: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/10/${encodeURI(
+              file: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
                 message.attachment.file_name
               )}`,
               fileType: message.attachment.file_type
@@ -78,11 +77,11 @@ const Chat = ({ item }) => {
       _id: Fire.shared.uid,
       isCurrentUser: true
     });
-  }, []);
+  }, [threadId]);
 
   const handleSend = async data => {
     if (fileToUpload) {
-      const response = await messageFileUpload(fileToUpload, 10);
+      const response = await messageFileUpload(fileToUpload, threadId);
       if (response && response.attachment) {
         data[0]["attachment"] = response.attachment;
         Fire.shared.send(data);
@@ -120,7 +119,7 @@ const Chat = ({ item }) => {
     <View style={{ flex: 1 }}>
       <GiftedChat
         placeholder={"Message"}
-        keyboardShouldPersistTaps={true}
+        keyboardShouldPersistTaps="always"
         onSend={handleSend}
         bottomOffset={getBottomSpace() + 300}
         messages={messages}

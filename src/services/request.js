@@ -117,30 +117,19 @@ export const messageFileUpload = async ({ uri, name, type }, threadId) => {
     console.log(e);
     return Promise.reject(e);
   }
+};
 
-  // const attachment = {
-  //   ...fileToUpload
-  // };
-
-  // try {
-  //   const token = await getToken();
-  //   const response = await axios.getInstance(token).post(
-  //     uploadApiUrl,
-  //     { body: formData },
-  //     {
-  //       headers: {
-  //         Accept: "multipart/form-data",
-  //         "Content-Type": "multipart/form-data"
-  //       }
-  //     }
-  //   );
-
-  //   console.log("UploadAttachment", response);
-  //   return Promise.resolve(response);
-  // } catch (e) {
-  //   console.log(e);
-  //   if (!e.response) {
-  //     throw { message: "Something went wrong" };
-  //   }
-  // }
+export const fetchRequestThread = async requestId => {
+  try {
+    const token = await getToken();
+    const url = `/api/requests/${requestId}/threads`;
+    const response = await axios.getInstance(token).get(url);
+    const { threads } = response.data;
+    return threads;
+  } catch (e) {
+    console.log(e);
+    if (!e.response) {
+      throw { message: "Something went wrong" };
+    }
+  }
 };

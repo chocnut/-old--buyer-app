@@ -11,6 +11,7 @@ import {
 
 function Item({
   requestPublicId,
+  threadId,
   name,
   request,
   lastMessage,
@@ -18,6 +19,7 @@ function Item({
   imgSrc,
   createdAt
 }) {
+  console.log("itemTID", threadId);
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -26,7 +28,8 @@ function Item({
           request,
           imgSrc,
           createdAt,
-          requestPublicId
+          requestPublicId,
+          threadId
         })
       }
       style={styles.itemContainer}
@@ -65,7 +68,7 @@ function Item({
             color: "#555064"
           }}
         >
-          {name}: {lastMessage}
+          {lastMessage}
         </Text>
       </View>
       <View></View>
@@ -79,7 +82,9 @@ function MessageList({
   lastMessage,
   imgSrc,
   createdAt,
-  requestPublicId
+  requestPublicId,
+  threadId,
+  lastUserMessage
 }) {
   return (
     <SafeAreaView style={styles.container}>
@@ -87,7 +92,7 @@ function MessageList({
         data={[
           {
             id: Math.random(),
-            name: "Erwin Seribo",
+            name: lastUserMessage,
             request: item.attributes.title,
             lastMessage
           }
@@ -99,6 +104,7 @@ function MessageList({
             imgSrc={imgSrc}
             createdAt={createdAt}
             requestPublicId={requestPublicId}
+            threadId={threadId}
           />
         )}
         keyExtractor={(item, index) => `${item.id}-${index}`}
