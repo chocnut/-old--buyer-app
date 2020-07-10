@@ -16,7 +16,7 @@ import { messageFileUpload } from "../../services/request";
 import Fire from "./../../services/fire";
 import Message from "./Message";
 
-const BOTTOM_OFFSET = Platform.OS === "ios" ? 300 + getBottomSpace() : 0;
+// let BOTTOM_OFFSET = Platform.OS === "ios" ? 300 + getBottomSpace() : 0;
 
 const Chat = ({ item }) => {
   const [messages, setMessages] = useState([]);
@@ -120,8 +120,9 @@ const Chat = ({ item }) => {
     <View style={{ flex: 1 }}>
       <GiftedChat
         placeholder={"Message"}
+        keyboardShouldPersistTaps={true}
         onSend={handleSend}
-        bottomOffset={BOTTOM_OFFSET}
+        bottomOffset={getBottomSpace() + 300}
         messages={messages}
         user={user}
         renderMessage={renderMessage}

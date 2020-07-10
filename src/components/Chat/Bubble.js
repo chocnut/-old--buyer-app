@@ -161,7 +161,7 @@ const Bubble = props => {
 
     return (
       <View style={styles.file}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleOpenFile(currentMessage.file)}>
           <Image source={require("../../../assets/images/pdf-file.png")} />
         </TouchableOpacity>
         <MessageText
@@ -315,7 +315,13 @@ const Bubble = props => {
               {renderMessageVideo()}
               {renderMessageImage()}
               {renderFile()}
-              {renderMessageText()}
+              <View
+                style={{
+                  padding: 10
+                }}
+              >
+                {renderMessageText()}
+              </View>
             </View>
             <View
               style={{
