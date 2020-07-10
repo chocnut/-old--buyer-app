@@ -32,8 +32,8 @@ export default function Show({ route, navigation }) {
 
   const getThreads = async () => {
     const threads = await fetchRequestThread(item.id);
-    if (threads) {
-      const thread = threads[0];
+    if (threads.length > 0) {
+      const thread = threads[threads.length - 1];
       setThreadId(thread.id);
       setThreadPublicId(thread.public_id);
     }
@@ -67,6 +67,7 @@ export default function Show({ route, navigation }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "messages":
+        if (!threadId) return null;
         return (
           <MessageList
             item={item}

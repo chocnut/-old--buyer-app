@@ -19,7 +19,8 @@ function Item({
   imgSrc,
   createdAt
 }) {
-  console.log("itemTID", threadId);
+  if (!threadId) return null;
+
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -86,6 +87,7 @@ function MessageList({
   threadId,
   lastUserMessage
 }) {
+  if (!threadId) return null;
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

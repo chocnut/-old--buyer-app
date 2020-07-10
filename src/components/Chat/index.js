@@ -18,7 +18,7 @@ import Message from "./Message";
 
 // let BOTTOM_OFFSET = Platform.OS === "ios" ? 300 + getBottomSpace() : 0;
 
-const Chat = ({ item, requestPublicId, threadId = 16 }) => {
+const Chat = ({ threadId, requestPublicId }) => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(undefined);
   const [fileToUpload, setFileToUpload] = useState(undefined);
