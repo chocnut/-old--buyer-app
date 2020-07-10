@@ -86,10 +86,9 @@ class Fire {
       const message = {
         text,
         user,
-        attachment,
+        ...(attachment && { attachment }),
         timestamp: this.timestamp
       };
-      console.log("messsageeeeee", message);
       this.append(message);
     }
   };

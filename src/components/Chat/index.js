@@ -25,7 +25,6 @@ const Chat = ({ item }) => {
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
-    // Fire.shared.setPublicId(item.id);
     Fire.shared.setPublicId("455cabc9-b655-41b0-91e3-b76867e45560");
     Fire.shared.setUserId(selectorUser.id);
     Fire.shared.off();
@@ -37,7 +36,7 @@ const Chat = ({ item }) => {
             _id: message._id,
             createdAt: message.createdAt,
             ...(message.text &&
-              message.text.length > 0 && { test: message.text }),
+              message.text.length > 0 && { text: message.text }),
             user: message.user,
             ...(message.attachment.file_type.includes("video") && {
               video:
@@ -84,7 +83,6 @@ const Chat = ({ item }) => {
   const handleSend = async data => {
     if (fileToUpload) {
       const response = await messageFileUpload(fileToUpload, 10);
-      console.log("fileUploadResponse", response);
       if (response && response.attachment) {
         data[0]["attachment"] = response.attachment;
         Fire.shared.send(data);
@@ -121,6 +119,7 @@ const Chat = ({ item }) => {
   return (
     <View style={{ flex: 1 }}>
       <GiftedChat
+        placeholder={"Message"}
         onSend={handleSend}
         bottomOffset={BOTTOM_OFFSET}
         messages={messages}

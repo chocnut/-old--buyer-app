@@ -3,6 +3,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
   View,
   Platform,
   Button
@@ -32,32 +33,8 @@ const Bubble = props => {
     isSameUser(props.currentMessage, props.previousMessage) &&
     isSameDay(props.currentMessage, props.previousMessage);
 
-  const onLongPress = () => {
-    if (props.onLongPress) {
-      //   props.onLongPress(context, props.currentMessage)
-    } else {
-      if (props.currentMessage.text) {
-        const options = ["Copy Text", "Cancel"];
-        const cancelButtonIndex = options.length - 1;
-        //     context.actionSheet().showActionSheetWithOptions(
-        //       {
-        //         options,
-        //         cancelButtonIndex,
-        //       },
-        //       buttonIndex => {
-        //         switch (buttonIndex) {
-        //           case 0:
-        //             Clipboard.setString(this.props.currentMessage.text)
-        //             break
-        //         }
-        //       },
-        //     )
-      }
-    }
-  };
-
   const renderMessageText = () => {
-    if (props.currentMessage.text) {
+    if (!props.currentMessage.file && props.currentMessage.text) {
       const {
         containerStyle,
         wrapperStyle,
@@ -175,13 +152,27 @@ const Bubble = props => {
     const { currentMessage } = props;
 
     if (!currentMessage.file) return null;
+    const {
+      containerStyle,
+      wrapperStyle,
+      messageTextStyle,
+      ...messageTextProps
+    } = props;
 
     return (
       <View style={styles.file}>
-        <Button
-          title="pdf"
-          onPress={() => {
-            handleOpenFile(currentMessage.file);
+        <TouchableOpacity>
+          <Image source={require("../../../assets/images/pdf-file.png")} />
+        </TouchableOpacity>
+        <MessageText
+          {...messageTextProps}
+          textStyle={{
+            left: [
+              styles.standardFont,
+              styles.slackMessageText,
+              messageTextProps.textStyle,
+              messageTextStyle
+            ]
           }}
         />
       </View>
@@ -288,18 +279,13 @@ const Bubble = props => {
   const messageHeader = isSameThread ? null : (
     <View style={styles.headerView}>
       {renderUsername()}
-      {renderTime()}
       {renderTicks()}
     </View>
   );
 
   return (
     <View style={[styles.container, props.containerStyle]}>
-      <TouchableOpacity
-        onLongPress={onLongPress}
-        accessibilityTraits="text"
-        {...props.touchableProps}
-      >
+      <TouchableOpacity accessibilityTraits="text" {...props.touchableProps}>
         <View
           style={[
             styles.wrapper,
@@ -318,11 +304,27 @@ const Bubble = props => {
           <View>
             {renderCustomView()}
             {messageHeader}
-            {renderAudio()}
-            {renderMessageVideo()}
-            {renderMessageImage()}
-            {renderFile()}
-            {renderMessageText()}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center"
+              }}
+            >
+              {renderAudio()}
+              {renderMessageVideo()}
+              {renderMessageImage()}
+              {renderFile()}
+              {renderMessageText()}
+            </View>
+            <View
+              style={{
+                flex: 1,
+                paddingVertical: 5
+              }}
+            >
+              {renderTime()}
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -343,17 +345,13 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   wrapper: {
-    // marginRight: 60,
-    // minHeight: 20,
-    // justifyContent: "flex-end",
     paddingHorizontal: 16,
     paddingTop: 16,
     borderRadius: 15,
     borderWidth: 1,
     backgroundColor: "#FFFFFF",
     borderColor: "#F4F4F4",
-    width: 281
-    // height: 130
+    width: 315
   },
   username: {
     fontWeight: "bold"
@@ -401,6 +399,11 @@ const styles = StyleSheet.create({
     bottom: 20,
     flexDirection: "row",
     flex: 1
+  },
+  file: {
+    flex: 1,
+    flexDirection: "row",
+    marginBottom: 10
   }
 });
 
