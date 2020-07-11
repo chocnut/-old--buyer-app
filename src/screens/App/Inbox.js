@@ -226,9 +226,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary
   },
   itemCountText: {
-    fontFamily: "Quicksand-Regular",
-    fontWeight: "500",
-    fontSize: 12,
+    fontFamily: "Quicksand-Medium",
+    fontSize: 13,
     color: "#FFFFFF"
   }
 });

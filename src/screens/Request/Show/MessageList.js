@@ -207,8 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary
   },
   itemCountText: {
-    fontFamily: "Quicksand-Regular",
-    fontWeight: "500",
+    fontFamily: "Quicksand-Medium",
     fontSize: 12,
     color: "#FFFFFF"
   }

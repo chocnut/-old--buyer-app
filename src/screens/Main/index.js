@@ -26,6 +26,8 @@ import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import { getUserRequests } from "../../redux/request/request.actions";
 
+import Fire from "../../services/fire";
+
 const { width } = Dimensions.get("window");
 const itemWidth = (width - 15) / 2;
 
@@ -35,9 +37,33 @@ function RequestCard({
   media,
   navigation,
   createdAt,
-  requestPublicId
+  requestPublicId,
+  userId
 }) {
   const [imageLoading, setImageLoading] = useState(true);
+  const [threads, setThreads] = useState([]);
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
+
+  useEffect(() => {
+    Fire.shared.setRequestId(item.id);
+    Fire.shared.off();
+    Fire.shared.onThread(thread => {
+      setThreads(prevThread => [...prevThread, thread]);
+    });
+  }, []);
+
+  useEffect(() => {
+    for (const thread of threads) {
+      setUnreadMessageCount(0);
+      Fire.shared.setPublicId(thread.threadUid);
+      Fire.shared.off();
+      Fire.shared.onAll(message => {
+        if (message && !message.seen.includes(userId)) {
+          setUnreadMessageCount(prev => prev + 1);
+        }
+      });
+    }
+  }, [threads]);
 
   return (
     <View style={styles.card}>
@@ -82,7 +108,14 @@ function RequestCard({
       >
         <Text style={styles.title}>{title}</Text>
         {/* WIP thread new messages count */}
-        {/* <Text style={styles.newMessageCount}>No new messages</Text> */}
+        {unreadMessageCount === 0 && (
+          <Text style={styles.newMessageCount}>No new messages</Text>
+        )}
+        {unreadMessageCount > 0 && (
+          <Text style={styles.newUnreadMessage}>
+            {unreadMessageCount} new message{unreadMessageCount > 1 && "s"}
+          </Text>
+        )}
       </View>
     </View>
   );
@@ -199,6 +232,7 @@ const Main = ({ navigation }) => {
                   createdAt={item.attributes.created_at}
                   requestPublicId={item.attributes.public_id}
                   media={item.attributes.featured_image_url}
+                  userId={id}
                 />
               )}
               onRefresh={onRefresh}
@@ -285,6 +319,11 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: "#FFF"
+  },
+  newUnreadMessage: {
+    fontFamily: "Quicksand-Medium",
+    fontSize: 13,
+    color: "#F03758"
   }
 });
 
