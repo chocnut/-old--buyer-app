@@ -24,7 +24,10 @@ import SearchInput from "../../components/SearchInput";
 import SearchFilterModal from "../../components/SearchFilterModal";
 import CheckboxGroup from "../../components/CheckboxGroup";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
-import { getUserRequests } from "../../redux/request/request.actions";
+import {
+  getUserRequests,
+  toggleInboxNewMessage
+} from "../../redux/request/request.actions";
 
 import Fire from "../../services/fire";
 
@@ -38,31 +41,55 @@ function RequestCard({
   navigation,
   createdAt,
   requestPublicId,
-  userId
+  userId,
+  handleNotify
 }) {
   const [imageLoading, setImageLoading] = useState(true);
   const [threads, setThreads] = useState([]);
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
+  const getThreads = () => {
     Fire.shared.setRequestId(item.id);
     Fire.shared.off();
     Fire.shared.onThread(thread => {
       setThreads(prevThread => [...prevThread, thread]);
     });
-  }, []);
+  };
 
-  useEffect(() => {
+  const getUnreadMessage = () => {
     for (const thread of threads) {
       setUnreadMessageCount(0);
       Fire.shared.setPublicId(thread.threadUid);
       Fire.shared.off();
       Fire.shared.onAll(message => {
         if (message && !message.seen.includes(userId)) {
+          if (!item.isNewUnreadMessage) {
+            handleNotify(true);
+            dispatch(toggleInboxNewMessage());
+          }
           setUnreadMessageCount(prev => prev + 1);
         }
       });
     }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("focuss");
+      handleNotify(false);
+      getThreads();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    getThreads();
+  }, []);
+
+  useEffect(() => {
+    getUnreadMessage();
   }, [threads]);
 
   return (
@@ -128,6 +155,7 @@ const Main = ({ navigation }) => {
   const [sortBy, setSortBy] = useState("activity");
   const [requestType, setRequestType] = useState(["drafts", "open"]);
   const [isFetching, setIsFetching] = useState(false);
+  const [isNotify, setIsNotify] = useState(false);
 
   const {
     user: { id },
@@ -153,7 +181,7 @@ const Main = ({ navigation }) => {
       <Header
         onPressProfile={() => navigation.push("Profile")}
         onPressMessages={() => navigation.push("Inbox")}
-        notify={false}
+        notify={isNotify}
       />
       <Spinner
         visible={requests.isRefreshing}
@@ -233,6 +261,7 @@ const Main = ({ navigation }) => {
                   requestPublicId={item.attributes.public_id}
                   media={item.attributes.featured_image_url}
                   userId={id}
+                  handleNotify={status => setIsNotify(status)}
                 />
               )}
               onRefresh={onRefresh}

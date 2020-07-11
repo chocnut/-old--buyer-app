@@ -49,7 +49,9 @@ class Fire {
   }
 
   onAll = callback =>
-    this.ref.on("child_added", snapshot => callback(this.parse(snapshot)));
+    this.ref
+      .orderByKey()
+      .on("child_added", snapshot => callback(this.parse(snapshot)));
 
   on = (callback, limit = 20) =>
     this.ref
@@ -102,7 +104,8 @@ class Fire {
       createdAt,
       user,
       attachment,
-      seen
+      seen,
+      timestamp: numberStamp
     };
     return message;
   };

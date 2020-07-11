@@ -140,21 +140,21 @@ function Inbox({ navigation }) {
     getThreads();
   }, []);
 
-  if (!threads.length) {
-    return (
-      <View style={styles.container}>
-        <HeaderSecondary
-          onPress={() => {
-            navigation.goBack();
-          }}
-          title={"Inbox"}
-        ></HeaderSecondary>
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <ActivityIndicator size="large" color={colors.graphite} />
-        </View>
-      </View>
-    );
-  }
+  // if (!threads.length) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <HeaderSecondary
+  //         onPress={() => {
+  //           navigation.goBack();
+  //         }}
+  //         title={"Inbox"}
+  //       ></HeaderSecondary>
+  //       <View style={{ flex: 1, justifyContent: "center" }}>
+  //         <ActivityIndicator size="large" color={colors.graphite} />
+  //       </View>
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>

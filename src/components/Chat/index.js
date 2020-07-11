@@ -19,7 +19,6 @@ import colors from "../../constants/Colors";
 const Chat = ({ threadId, threadUid }) => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(undefined);
-  const [fileToUpload, setFileToUpload] = useState(undefined);
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
@@ -80,7 +79,9 @@ const Chat = ({ threadId, threadUid }) => {
   }, [threadId, threadUid]);
 
   const handleSeen = message => {
+    console.log(message);
     const payload = {
+      timestamp: message.timestamp,
       seen: [...message.seen, selectorUser.id]
     };
     Fire.shared.setMessageId(message._id);

@@ -1,8 +1,13 @@
-import { STORE_USER_REQUESTS, TOGGLE_REFRESH } from "./request.actionTypes";
+import {
+  STORE_USER_REQUESTS,
+  TOGGLE_REFRESH,
+  TOGGLE_INBOX_NEW_MESSAGE
+} from "./request.actionTypes";
 
 const initialState = {
   requests: [],
-  isRefreshing: false
+  isRefreshing: false,
+  isNewUnreadMessage: false
 };
 
 const sortSelector = data => {
@@ -26,6 +31,9 @@ export default (state = initialState, action) => {
     }
     case TOGGLE_REFRESH: {
       return { ...state, isRefreshing: !state.isRefreshing };
+    }
+    case TOGGLE_INBOX_NEW_MESSAGE: {
+      return { ...state, isNewUnreadMessage: !state.isNewUnreadMessage };
     }
     default:
       return state;

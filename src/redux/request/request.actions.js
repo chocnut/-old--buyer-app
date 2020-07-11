@@ -1,5 +1,11 @@
-import { STORE_USER_REQUESTS, TOGGLE_REFRESH } from "./request.actionTypes";
+import {
+  STORE_USER_REQUESTS,
+  TOGGLE_REFRESH,
+  TOGGLE_INBOX_NEW_MESSAGE
+} from "./request.actionTypes";
 import { fetchUserRequests } from "../../services/request";
+
+export const toggleInboxNewMessage = () => ({ type: TOGGLE_INBOX_NEW_MESSAGE });
 
 export const getUserRequests = userId => async dispatch => {
   dispatch({
