@@ -28,6 +28,7 @@ export default class ChatScreen extends React.Component {
         />
 
         <ChatRequestBtn
+          fromInbox={this.props.route.params.fromInbox}
           data={requestData(this.props.route.params)}
           onPress={() => {
             this.props.route.params.onGoBack();

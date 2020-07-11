@@ -17,10 +17,12 @@ export default class ChatRequestBtn extends React.Component {
             </Text>
             <Text style={styles.date}>{this.props.data.date}</Text>
           </View>
-          <Image
-            source={require("../../assets/images/chevrone-right-icon.png")}
-            style={styles.icon}
-          />
+          {!this.props.fromInbox && (
+            <Image
+              source={require("../../assets/images/chevrone-right-icon.png")}
+              style={styles.icon}
+            />
+          )}
         </TouchableOpacity>
       </View>
     );

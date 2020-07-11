@@ -65,6 +65,13 @@ class Fire {
       .on("child_added", snapshot => callback(this.parseThread(snapshot)));
   };
 
+  onThreadByBuyerId = (callback, buyerId) => {
+    this.threadRef
+      .orderByChild("buyer_id")
+      .equalTo(parseInt(buyerId))
+      .on("child_added", snapshot => callback(this.parseThread(snapshot)));
+  };
+
   parseThread = snapshot => {
     const {
       id: threadId,

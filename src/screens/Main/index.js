@@ -118,7 +118,7 @@ const Main = ({ navigation }) => {
     <View style={styles.container}>
       <Header
         onPressProfile={() => navigation.push("Profile")}
-        onPressMessages={() => navigation.push("Chat")}
+        onPressMessages={() => navigation.push("Inbox")}
         notify={false}
       />
       <Spinner
