@@ -38,8 +38,12 @@ export default function Show({ route, navigation }) {
       setThreadPublicId(thread.public_id);
     }
   };
+
   useEffect(() => {
     getThreads();
+    // Fire.shared.onThread(thread => {
+    //   console.log("thread event", thread);
+    // });
   }, []);
 
   useEffect(() => {

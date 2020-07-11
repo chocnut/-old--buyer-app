@@ -1,12 +1,5 @@
-import React, { Children } from "react";
-import HeaderBtn from "../../components/HeaderBtn";
-import {
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-  KeyboardAvoidingView
-} from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import colors from "../../constants/Colors";
 import Constants from "expo-constants";
 
@@ -24,16 +17,8 @@ const requestData = ({ imgSrc, request, createdAt }) => ({
 
 export default class ChatScreen extends React.Component {
   render() {
-    const keyboardAvoidingViewBehavior = Constants.platform.ios
-      ? "padding"
-      : "height";
-
     return (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={keyboardAvoidingViewBehavior}
-        enabled
-      >
+      <View style={styles.container}>
         <HeaderSecondary
           onPress={() => {
             this.props.navigation.goBack();
@@ -52,7 +37,7 @@ export default class ChatScreen extends React.Component {
           requestPublicId={this.props.route.params.requestPublicId}
           threadId={this.props.route.params.threadId}
         />
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

@@ -36,15 +36,35 @@ class Fire {
 
   get ref() {
     //return firebase.database().ref(`messages/${this.publicId}`);
-    return firebase
-      .database()
-      .ref(`threads/${this.userId}/${this.publicId}/messages`);
+    return (
+      firebase
+        .database()
+        // .ref(`threads/${this.userId}/${this.publicId}/messages`);
+        .ref(`threads/${this.publicId}/messages`)
+    );
+  }
+
+  get threadRef() {
+    return (
+      firebase
+        .database()
+        // .ref(`threads/${this.userId}/${this.publicId}/messages`);
+        .ref(`threads`)
+    );
   }
 
   on = (callback, limit = 20) =>
     this.ref
       .limitToLast(limit)
       .on("child_added", snapshot => callback(this.parse(snapshot)));
+
+  onThread = callback => {
+    // const request = this.threadRef.child("request");
+    this.threadRef
+      .orderByChild("request")
+      .equalTo(69)
+      .on("child_added", snapshot => callback(snapshot));
+  };
 
   parse = snapshot => {
     const { timestamp: numberStamp, text, user, attachment } = snapshot.val();

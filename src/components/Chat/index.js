@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Platform,
-  TouchableOpacity,
-  Image
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import { useSelector } from "react-redux";
-import { getBottomSpace } from "react-native-iphone-x-helper";
-import { GiftedChat, Send } from "react-native-gifted-chat";
+import { GiftedChat, Send, InputToolbar } from "react-native-gifted-chat";
 import * as DocumentPicker from "expo-document-picker";
 
 import { messageFileUpload } from "../../services/request";
 
 import Fire from "./../../services/fire";
 import Message from "./Message";
-
-// let BOTTOM_OFFSET = Platform.OS === "ios" ? 300 + getBottomSpace() : 0;
 
 const Chat = ({ threadId, requestPublicId }) => {
   const [messages, setMessages] = useState([]);
@@ -25,8 +16,9 @@ const Chat = ({ threadId, requestPublicId }) => {
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
+    console.log("public id", requestPublicId);
     Fire.shared.setPublicId(requestPublicId);
-    Fire.shared.setUserId(selectorUser.id);
+    // Fire.shared.setUserId(selectorUser.id);
     Fire.shared.off();
     Fire.shared.on(message => {
       setMessages(prevMessages => {
@@ -64,7 +56,6 @@ const Chat = ({ threadId, requestPublicId }) => {
             })
           };
         }
-        console.log(message);
         return GiftedChat.append(prevMessages, message);
       });
     });
@@ -116,12 +107,10 @@ const Chat = ({ threadId, requestPublicId }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <GiftedChat
         placeholder={"Message"}
-        keyboardShouldPersistTaps="always"
         onSend={handleSend}
-        bottomOffset={getBottomSpace() + 300}
         messages={messages}
         user={user}
         renderMessage={renderMessage}
@@ -147,7 +136,7 @@ const Chat = ({ threadId, requestPublicId }) => {
           );
         }}
       />
-    </View>
+    </>
   );
 };
 
