@@ -34,6 +34,10 @@ export default function Show({ route, navigation }) {
     getThreads();
   };
 
+  const handleBackRequest = () => {
+    setIndex(2);
+  };
+
   const [routes] = useState([
     { key: "messages", title: "Messages" },
     { key: "quotes", title: "Quotes" },
@@ -55,6 +59,7 @@ export default function Show({ route, navigation }) {
             imgSrc={imgSrc}
             onRefresh={handleMessageRefresh}
             isRefresh={isRefresh}
+            handleBackRequest={handleBackRequest}
           />
         );
       case "request":

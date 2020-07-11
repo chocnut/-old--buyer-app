@@ -14,16 +14,27 @@ import colors from "../../../constants/Colors";
 
 import Fire from "../../../services/fire";
 
-function Item({ threadId, threadUid, request, navigation, imgSrc, createdAt }) {
+function Item({
+  threadId,
+  threadUid,
+  request,
+  navigation,
+  imgSrc,
+  createdAt,
+  handleBackRequest
+}) {
   const [newMessage, setNewMessage] = useState(undefined);
 
-  useEffect(() => {
+  const getThreads = () => {
     Fire.shared.setPublicId(threadUid);
     Fire.shared.off();
     Fire.shared.on(message => {
-      console.log("lastMessage", message);
       setNewMessage(message);
     }, 1);
+  };
+
+  useEffect(() => {
+    getThreads();
   }, []);
 
   if (!newMessage) return null;
@@ -50,7 +61,9 @@ function Item({ threadId, threadUid, request, navigation, imgSrc, createdAt }) {
           imgSrc,
           createdAt,
           threadUid,
-          threadId
+          threadId,
+          onGoBack: () => getThreads(),
+          onGoBackRequest: () => handleBackRequest()
         })
       }
       style={styles.itemContainer}
@@ -117,7 +130,8 @@ function MessageList({
   lastUserMessagePic,
   onRefresh,
   isRefresh,
-  threads
+  threads,
+  handleBackRequest
 }) {
   const [isFetching, setIsFetching] = useState(isRefresh);
 
@@ -143,6 +157,7 @@ function MessageList({
           <Item
             {...item}
             navigation={navigation}
+            handleBackRequest={handleBackRequest}
             imgSrc={imgSrc}
             createdAt={createdAt}
           />

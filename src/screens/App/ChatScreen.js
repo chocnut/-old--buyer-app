@@ -21,6 +21,7 @@ export default class ChatScreen extends React.Component {
       <View style={styles.container}>
         <HeaderSecondary
           onPress={() => {
+            this.props.route.params.onGoBack();
             this.props.navigation.goBack();
           }}
           title="Inbox"
@@ -29,6 +30,8 @@ export default class ChatScreen extends React.Component {
         <ChatRequestBtn
           data={requestData(this.props.route.params)}
           onPress={() => {
+            this.props.route.params.onGoBack();
+            this.props.route.params.onGoBackRequest();
             this.props.navigation.goBack();
           }}
         />
