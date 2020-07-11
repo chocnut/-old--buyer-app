@@ -81,7 +81,8 @@ function RequestCard({
         }}
       >
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.newMessageCount}>No new messages</Text>
+        {/* WIP thread new messages count */}
+        {/* <Text style={styles.newMessageCount}>No new messages</Text> */}
       </View>
     </View>
   );
