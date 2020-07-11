@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,8 +6,11 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
+
+import colors from "../../../constants/Colors";
 
 function Item({
   requestPublicId,
@@ -15,10 +18,20 @@ function Item({
   name,
   request,
   lastMessage,
+  lastUserMessagePic,
   navigation,
   imgSrc,
   createdAt
 }) {
+  // Temporary fix
+  let imagePath = "";
+  if (lastUserMessagePic) {
+    const fileName = lastUserMessagePic.split("/");
+    imagePath = `https://suppliers.eewoo.io/storage/media/App/User/${
+      fileName[fileName.length - 1]
+    }`;
+  }
+
   if (!threadId) return null;
 
   return (
@@ -44,7 +57,7 @@ function Item({
           marginRight: 12,
           marginVertical: 18
         }}
-        source={require("../../../../assets/images/avatar/avatar.png")}
+        source={{ uri: imagePath }}
       />
       <View
         style={{
@@ -85,9 +98,27 @@ function MessageList({
   createdAt,
   requestPublicId,
   threadId,
-  lastUserMessage
+  lastUserMessage,
+  lastUserMessagePic,
+  onRefresh,
+  isRefresh
 }) {
-  if (!threadId) return null;
+  const [isFetching, setIsFetching] = useState(isRefresh);
+
+  const handleRefresh = () => {
+    setIsFetching(true);
+    onRefresh();
+    setIsFetching(false);
+  };
+
+  if (!lastMessage) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" color={colors.graphite} />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -96,7 +127,8 @@ function MessageList({
             id: Math.random(),
             name: lastUserMessage,
             request: item.attributes.title,
-            lastMessage
+            lastMessage,
+            lastUserMessagePic
           }
         ]}
         renderItem={({ item }) => (
@@ -110,6 +142,8 @@ function MessageList({
           />
         )}
         keyExtractor={(item, index) => `${item.id}-${index}`}
+        onRefresh={handleRefresh}
+        refreshing={isFetching}
       />
     </SafeAreaView>
   );

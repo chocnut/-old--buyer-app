@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator
+} from "react-native";
 import { useSelector } from "react-redux";
-import { GiftedChat, Send, InputToolbar } from "react-native-gifted-chat";
+import { GiftedChat, Send } from "react-native-gifted-chat";
 import * as DocumentPicker from "expo-document-picker";
 
 import { messageFileUpload } from "../../services/request";
 
 import Fire from "./../../services/fire";
 import Message from "./Message";
+import colors from "../../constants/Colors";
 
 const Chat = ({ threadId, requestPublicId }) => {
   const [messages, setMessages] = useState([]);
@@ -16,7 +23,6 @@ const Chat = ({ threadId, requestPublicId }) => {
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
-    console.log("public id", requestPublicId);
     Fire.shared.setPublicId(requestPublicId);
     // Fire.shared.setUserId(selectorUser.id);
     Fire.shared.off();
@@ -105,6 +111,14 @@ const Chat = ({ threadId, requestPublicId }) => {
     }
     return false;
   };
+
+  if (!messages.length) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" color={colors.graphite} />
+      </View>
+    );
+  }
 
   return (
     <>

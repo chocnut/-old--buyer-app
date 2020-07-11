@@ -34,6 +34,13 @@ const Message = props => {
     return <Bubble {...bubbleProps} />;
   };
 
+  const handleProfilePicPath = path => {
+    const fileName = path.split("/");
+    return `https://suppliers.eewoo.io/storage/media/App/User/${
+      fileName[fileName.length - 1]
+    }`;
+  };
+
   const renderAvatar = () => {
     let extraStyle;
     if (
@@ -44,7 +51,17 @@ const Message = props => {
       extraStyle = { height: 0 };
     }
 
-    const avatarProps = getInnerComponentProps();
+    let avatarProps = getInnerComponentProps();
+    avatarProps = {
+      ...avatarProps,
+      currentMessage: {
+        ...avatarProps.currentMessage,
+        user: {
+          ...avatarProps.currentMessage.user,
+          avatar: handleProfilePicPath(avatarProps.currentMessage.user.avatar)
+        }
+      }
+    };
     return (
       <Avatar
         {...avatarProps}

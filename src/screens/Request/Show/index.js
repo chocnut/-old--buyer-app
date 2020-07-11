@@ -23,6 +23,8 @@ export default function Show({ route, navigation }) {
   const [index, setIndex] = useState(0);
   const [lastMessage, setLastMessage] = useState(undefined);
   const [lastUserMessage, setLastUserMessage] = useState(undefined);
+  const [lastUserMessagePic, setLastUserMessagePic] = useState(undefined);
+  const [isRefresh, setIsRefresh] = useState(false);
   const { item, imgSrc, createdAt, requestPublicId } = route.params;
   const selectorUser = useSelector(state => state.user);
 
@@ -36,6 +38,7 @@ export default function Show({ route, navigation }) {
       const thread = threads[threads.length - 1];
       setThreadId(thread.id);
       setThreadPublicId(thread.public_id);
+      setIsRefresh(false);
     }
   };
 
@@ -52,6 +55,7 @@ export default function Show({ route, navigation }) {
       Fire.shared.setUserId(selectorUser.id);
       Fire.shared.off();
       Fire.shared.on(message => {
+        setLastUserMessagePic(message.user.avatar);
         setLastUserMessage(message.user.name);
         if (message.attachment) {
           setLastMessage("A file attachment");
@@ -61,6 +65,11 @@ export default function Show({ route, navigation }) {
       }, 1);
     }
   }, [threadPublicId, threadId]);
+
+  const handleMessageRefresh = () => {
+    setIsRefresh(true);
+    getThreads();
+  };
 
   const [routes] = useState([
     { key: "messages", title: "Messages" },
@@ -78,10 +87,13 @@ export default function Show({ route, navigation }) {
             navigation={navigation}
             lastMessage={lastMessage}
             lastUserMessage={lastUserMessage}
+            lastUserMessagePic={lastUserMessagePic}
             createdAt={createdAt}
             imgSrc={imgSrc}
             requestPublicId={threadPublicId}
             threadId={threadId}
+            onRefresh={handleMessageRefresh}
+            isRefresh={isRefresh}
           />
         );
       case "request":
