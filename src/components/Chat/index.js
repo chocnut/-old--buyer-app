@@ -25,7 +25,10 @@ const Chat = ({ threadId, threadUid }) => {
   useEffect(() => {
     Fire.shared.setPublicId(threadUid);
     Fire.shared.off();
-    Fire.shared.on(message => {
+    Fire.shared.onAll(message => {
+      if (!message.seen[selectorUser.id]) {
+        handleSeen(message);
+      }
       setMessages(prevMessages => {
         if (message.attachment) {
           message = {
@@ -76,7 +79,17 @@ const Chat = ({ threadId, threadUid }) => {
     });
   }, [threadId, threadUid]);
 
+  const handleSeen = message => {
+    const payload = {
+      seen: [...message.seen, selectorUser.id]
+    };
+    Fire.shared.setMessageId(message._id);
+    Fire.shared.setPublicId(threadUid);
+    Fire.shared.update(payload);
+  };
+
   const handleSend = async data => {
+    data[0]["seen"] = [selectorUser.id];
     Fire.shared.send(data);
   };
 
@@ -104,7 +117,8 @@ const Chat = ({ threadId, threadUid }) => {
         const payload = {
           text: "",
           user,
-          attachment: response.attachment
+          attachment: response.attachment,
+          seen: [selectorUser.id]
         };
         Fire.shared.send([payload]);
       }

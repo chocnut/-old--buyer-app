@@ -35,23 +35,21 @@ class Fire {
   };
 
   get ref() {
-    //return firebase.database().ref(`messages/${this.publicId}`);
-    return (
-      firebase
-        .database()
-        // .ref(`threads/${this.userId}/${this.publicId}/messages`);
-        .ref(`threads/${this.publicId}/messages`)
-    );
+    return firebase.database().ref(`threads/${this.publicId}/messages`);
   }
 
   get threadRef() {
-    return (
-      firebase
-        .database()
-        // .ref(`threads/${this.userId}/${this.publicId}/messages`);
-        .ref(`threads`)
-    );
+    return firebase.database().ref(`threads`);
   }
+
+  get messageRef() {
+    return firebase
+      .database()
+      .ref(`threads/${this.publicId}/messages/${this.messageId}`);
+  }
+
+  onAll = callback =>
+    this.ref.on("child_added", snapshot => callback(this.parse(snapshot)));
 
   on = (callback, limit = 20) =>
     this.ref
@@ -89,7 +87,13 @@ class Fire {
   };
 
   parse = snapshot => {
-    const { timestamp: numberStamp, text, user, attachment } = snapshot.val();
+    const {
+      timestamp: numberStamp,
+      text,
+      user,
+      attachment,
+      seen
+    } = snapshot.val();
     const { key: _id } = snapshot;
     const createdAt = new Date(numberStamp);
     const message = {
@@ -97,7 +101,8 @@ class Fire {
       text,
       createdAt,
       user,
-      attachment
+      attachment,
+      seen
     };
     return message;
   };
@@ -114,6 +119,10 @@ class Fire {
     this.userId = id;
   }
 
+  setMessageId(id) {
+    this.messageId = id;
+  }
+
   setRequestId(id) {
     this.requestId = id;
   }
@@ -128,15 +137,20 @@ class Fire {
 
   send = messages => {
     for (let i = 0; i < messages.length; i++) {
-      const { text, user, attachment } = messages[i];
+      const { text, user, attachment, seen } = messages[i];
       const message = {
         text,
         user,
         ...(attachment && { attachment }),
-        timestamp: this.timestamp
+        timestamp: this.timestamp,
+        seen
       };
       this.append(message);
     }
+  };
+
+  update = message => {
+    this.messageRef.update(message);
   };
 
   append = message => this.ref.push(message);
