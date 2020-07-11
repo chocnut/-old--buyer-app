@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,37 +12,44 @@ import {
 
 import colors from "../../../constants/Colors";
 
-function Item({
-  requestPublicId,
-  threadId,
-  name,
-  request,
-  lastMessage,
-  lastUserMessagePic,
-  navigation,
-  imgSrc,
-  createdAt
-}) {
-  // Temporary fix
+import Fire from "../../../services/fire";
+
+function Item({ threadId, threadUid, request, navigation, imgSrc, createdAt }) {
+  const [newMessage, setNewMessage] = useState(undefined);
+
+  useEffect(() => {
+    Fire.shared.setPublicId(threadUid);
+    Fire.shared.off();
+    Fire.shared.on(message => {
+      console.log("lastMessage", message);
+      setNewMessage(message);
+    }, 1);
+  }, []);
+
+  if (!newMessage) return null;
+
+  const { title } = request;
+
   let imagePath = "";
-  if (lastUserMessagePic) {
-    const fileName = lastUserMessagePic.split("/");
+  const { text, attachment } = newMessage;
+  const { name, avatar } = newMessage.user;
+
+  if (avatar !== "") {
+    const fileName = avatar.split("/");
     imagePath = `https://suppliers.eewoo.io/storage/media/App/User/${
       fileName[fileName.length - 1]
     }`;
   }
-
-  if (!threadId) return null;
 
   return (
     <TouchableOpacity
       activeOpacity={1}
       onPress={() =>
         navigation.navigate("Chat", {
-          request,
+          requestTitle: title,
           imgSrc,
           createdAt,
-          requestPublicId,
+          threadUid,
           threadId
         })
       }
@@ -61,6 +68,7 @@ function Item({
       />
       <View
         style={{
+          flex: 1,
           height: 40,
           marginHorizontal: 12,
           marginVertical: 20
@@ -75,15 +83,22 @@ function Item({
           >
             for
           </Text>{" "}
-          {request}
+          {title}
         </Text>
-        <Text
+        <View
           style={{
-            color: "#555064"
+            flexDirection: "row"
           }}
         >
-          {lastMessage}
-        </Text>
+          <Text
+            style={{
+              flexShrink: 1,
+              color: "#555064"
+            }}
+          >
+            {text || attachment.file_name}
+          </Text>
+        </View>
       </View>
       <View></View>
     </TouchableOpacity>
@@ -101,7 +116,8 @@ function MessageList({
   lastUserMessage,
   lastUserMessagePic,
   onRefresh,
-  isRefresh
+  isRefresh,
+  threads
 }) {
   const [isFetching, setIsFetching] = useState(isRefresh);
 
@@ -111,7 +127,7 @@ function MessageList({
     setIsFetching(false);
   };
 
-  if (!lastMessage) {
+  if (!threads.length) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
         <ActivityIndicator size="large" color={colors.graphite} />
@@ -122,28 +138,18 @@ function MessageList({
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={[
-          {
-            id: Math.random(),
-            name: lastUserMessage,
-            request: item.attributes.title,
-            lastMessage,
-            lastUserMessagePic
-          }
-        ]}
+        data={threads}
         renderItem={({ item }) => (
           <Item
             {...item}
             navigation={navigation}
             imgSrc={imgSrc}
             createdAt={createdAt}
-            requestPublicId={requestPublicId}
-            threadId={threadId}
           />
         )}
-        keyExtractor={(item, index) => `${item.id}-${index}`}
-        onRefresh={handleRefresh}
-        refreshing={isFetching}
+        keyExtractor={(item, index) => `${item.threadId}-${index}`}
+        // onRefresh={handleRefresh}
+        // refreshing={isFetching}
       />
     </SafeAreaView>
   );

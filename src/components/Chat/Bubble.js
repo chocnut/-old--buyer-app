@@ -26,7 +26,6 @@ const { isSameUser, isSameDay } = utils;
 const Bubble = props => {
   const handleOpenFile = async src => {
     let result = await WebBrowser.openBrowserAsync(src);
-    setResult(result);
   };
 
   const isSameThread =
@@ -152,30 +151,14 @@ const Bubble = props => {
     const { currentMessage } = props;
 
     if (!currentMessage.file) return null;
-    const {
-      containerStyle,
-      wrapperStyle,
-      messageTextStyle,
-      ...messageTextProps
-    } = props;
 
     return (
-      <View style={styles.file}>
-        <TouchableOpacity onPress={() => handleOpenFile(currentMessage.file)}>
+      <TouchableOpacity onPress={() => handleOpenFile(currentMessage.file)}>
+        <View style={styles.file}>
           <Image source={require("../../../assets/images/pdf-file.png")} />
-        </TouchableOpacity>
-        <MessageText
-          {...messageTextProps}
-          textStyle={{
-            left: [
-              styles.standardFont,
-              styles.slackMessageText,
-              messageTextProps.textStyle,
-              messageTextStyle
-            ]
-          }}
-        />
-      </View>
+          <Text style={styles.standardFont}>{currentMessage.fileName}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 

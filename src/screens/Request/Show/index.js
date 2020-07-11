@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  KeyboardAvoidingView
-} from "react-native";
+import { StyleSheet, Dimensions, KeyboardAvoidingView } from "react-native";
 import Constants from "expo-constants";
 
-import { useSelector } from "react-redux";
 import { TabView, TabBar } from "react-native-tab-view";
-import { fetchRequestThread } from "../../../services/request";
 import HeaderSecondary from "../../../components/HeaderSecondary";
 import MessageList from "./MessageList";
 import RequestDetails from "./RequestDetails";
@@ -25,46 +18,16 @@ export default function Show({ route, navigation }) {
   const [lastUserMessage, setLastUserMessage] = useState(undefined);
   const [lastUserMessagePic, setLastUserMessagePic] = useState(undefined);
   const [isRefresh, setIsRefresh] = useState(false);
-  const { item, imgSrc, createdAt, requestPublicId } = route.params;
-  const selectorUser = useSelector(state => state.user);
-
-  //Temporary
-  const [threadPublicId, setThreadPublicId] = useState(undefined);
-  const [threadId, setThreadId] = useState(undefined);
-
-  const getThreads = async () => {
-    const threads = await fetchRequestThread(item.id);
-    if (threads.length > 0) {
-      const thread = threads[threads.length - 1];
-      setThreadId(thread.id);
-      setThreadPublicId(thread.public_id);
-      setIsRefresh(false);
-    }
-  };
+  const [threads, setThreads] = useState([]);
+  const { item, imgSrc, createdAt } = route.params;
 
   useEffect(() => {
-    getThreads();
-    // Fire.shared.onThread(thread => {
-    //   console.log("thread event", thread);
-    // });
+    Fire.shared.setRequestId(item.id);
+    Fire.shared.off();
+    Fire.shared.onThread(thread => {
+      setThreads(prevThread => [...prevThread, thread]);
+    });
   }, []);
-
-  useEffect(() => {
-    if (threadPublicId) {
-      Fire.shared.setPublicId(threadPublicId);
-      Fire.shared.setUserId(selectorUser.id);
-      Fire.shared.off();
-      Fire.shared.on(message => {
-        setLastUserMessagePic(message.user.avatar);
-        setLastUserMessage(message.user.name);
-        if (message.attachment) {
-          setLastMessage("A file attachment");
-        } else {
-          setLastMessage(message.text);
-        }
-      }, 1);
-    }
-  }, [threadPublicId, threadId]);
 
   const handleMessageRefresh = () => {
     setIsRefresh(true);
@@ -80,18 +43,16 @@ export default function Show({ route, navigation }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "messages":
-        if (!threadId) return null;
         return (
           <MessageList
             item={item}
+            threads={threads}
             navigation={navigation}
             lastMessage={lastMessage}
             lastUserMessage={lastUserMessage}
             lastUserMessagePic={lastUserMessagePic}
             createdAt={createdAt}
             imgSrc={imgSrc}
-            requestPublicId={threadPublicId}
-            threadId={threadId}
             onRefresh={handleMessageRefresh}
             isRefresh={isRefresh}
           />

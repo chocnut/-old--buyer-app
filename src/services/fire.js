@@ -59,11 +59,26 @@ class Fire {
       .on("child_added", snapshot => callback(this.parse(snapshot)));
 
   onThread = callback => {
-    // const request = this.threadRef.child("request");
     this.threadRef
-      .orderByChild("request")
-      .equalTo(69)
-      .on("child_added", snapshot => callback(snapshot));
+      .orderByChild("request_id")
+      .equalTo(parseInt(this.requestId))
+      .on("child_added", snapshot => callback(this.parseThread(snapshot)));
+  };
+
+  parseThread = snapshot => {
+    const {
+      id: threadId,
+      public_id: threadUid,
+      created_at: createdAt,
+      request
+    } = snapshot.val();
+
+    return {
+      threadId,
+      threadUid,
+      createdAt,
+      request
+    };
   };
 
   parse = snapshot => {
@@ -90,6 +105,10 @@ class Fire {
 
   setUserId(id) {
     this.userId = id;
+  }
+
+  setRequestId(id) {
+    this.requestId = id;
   }
 
   get uid() {

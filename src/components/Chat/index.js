@@ -16,15 +16,14 @@ import Fire from "./../../services/fire";
 import Message from "./Message";
 import colors from "../../constants/Colors";
 
-const Chat = ({ threadId, requestPublicId }) => {
+const Chat = ({ threadId, threadUid }) => {
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(undefined);
   const [fileToUpload, setFileToUpload] = useState(undefined);
   const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
-    Fire.shared.setPublicId(requestPublicId);
-    // Fire.shared.setUserId(selectorUser.id);
+    Fire.shared.setPublicId(threadUid);
     Fire.shared.off();
     Fire.shared.on(message => {
       setMessages(prevMessages => {
@@ -58,6 +57,7 @@ const Chat = ({ threadId, requestPublicId }) => {
               file: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
                 message.attachment.file_name
               )}`,
+              fileName: message.attachment.file_name,
               fileType: message.attachment.file_type
             })
           };
@@ -74,25 +74,17 @@ const Chat = ({ threadId, requestPublicId }) => {
       _id: Fire.shared.uid,
       isCurrentUser: true
     });
-  }, [threadId]);
+  }, [threadId, threadUid]);
 
   const handleSend = async data => {
-    if (fileToUpload) {
-      const response = await messageFileUpload(fileToUpload, threadId);
-      if (response && response.attachment) {
-        data[0]["attachment"] = response.attachment;
-        Fire.shared.send(data);
-      }
-    } else {
-      Fire.shared.send(data);
-    }
+    Fire.shared.send(data);
   };
 
   const renderMessage = props => {
     return <Message threadId={threadId} {...props} />;
   };
 
-  const handleUploadFile = async () => {
+  const handleUploadFile = async data => {
     let result = await DocumentPicker.getDocumentAsync({
       type: "*/*",
       copyToCacheDirectory: true
@@ -107,7 +99,15 @@ const Chat = ({ threadId, requestPublicId }) => {
         uri,
         type: `application/${fileType}`
       };
-      setFileToUpload(fileToUpload);
+      const response = await messageFileUpload(fileToUpload, threadId);
+      if (response && response.attachment) {
+        const payload = {
+          text: "",
+          user,
+          attachment: response.attachment
+        };
+        Fire.shared.send([payload]);
+      }
     }
     return false;
   };

@@ -8,10 +8,10 @@ import Chat from "../../components/Chat";
 import ChatRequestBtn from "../../components/ChatRequestBtn";
 import { format } from "date-fns";
 
-const requestData = ({ imgSrc, request, createdAt }) => ({
+const requestData = ({ imgSrc, requestTitle, createdAt }) => ({
   img: imgSrc,
   type: "request",
-  title: request,
+  title: requestTitle,
   date: format(new Date(createdAt), "dd MMMM Y")
 });
 
@@ -34,7 +34,7 @@ export default class ChatScreen extends React.Component {
         />
 
         <Chat
-          requestPublicId={this.props.route.params.requestPublicId}
+          threadUid={this.props.route.params.threadUid}
           threadId={this.props.route.params.threadId}
         />
       </View>
