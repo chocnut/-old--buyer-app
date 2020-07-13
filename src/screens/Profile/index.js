@@ -12,6 +12,7 @@ import HeaderSecondary from "../../components/HeaderSecondary";
 import CountryPicker from "react-native-country-picker-modal";
 import EewooInput from "../../components/EewooInput";
 import colors from "../../constants/Colors";
+import { useSelector } from "react-redux";
 
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -21,6 +22,7 @@ const Profile = ({ navigation }) => {
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [images, setImages] = useState([]);
   const [images64, setImages64] = useState([]);
+  const user = useSelector(state => state.user);
 
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -39,6 +41,10 @@ const Profile = ({ navigation }) => {
   const handleLogout = () => {
     logout();
     navigation.navigate("Welcome");
+  };
+
+  const handleChange = e => {
+    console.log(e);
   };
 
   const handleUpload = async () => {
@@ -72,8 +78,32 @@ const Profile = ({ navigation }) => {
       />
       <View style={styles.uploadButtonContainer}>
         <TouchableOpacity activeOpacity={1} onPress={handleUpload}>
-          <Image source={require("../../../assets/images/avatar-upload.png")} />
+          {user.image_path ? (
+            <Image
+              style={styles.avatar}
+              source={{
+                uri:
+                  "https://suppliers.eewoo.io/storage/media/App/User/238-face-facial-hair-fine-looking-guy-614810.jpg"
+              }}
+            />
+          ) : (
+            <Image
+              source={require("../../../assets/images/avatar-upload.png")}
+            />
+          )}
         </TouchableOpacity>
+        {user.image_path && (
+          <TouchableOpacity
+            style={styles.editIcon}
+            activeOpacity={1}
+            onPress={handleUpload}
+          >
+            <Image
+              style={styles.editPencil}
+              source={require("../../../assets/images/edit-icon.png")}
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView
         contentContainerStyle={styles.form}
@@ -82,14 +112,15 @@ const Profile = ({ navigation }) => {
         <EewooInput
           label="Full Name"
           placeholder="Full Name"
-          onChange={() => console.log("onChange")}
+          value={user.name}
+          onChange={handleChange}
           error={null}
         />
         <EewooInput
           label="Email"
           placeholder="Email address"
-          value={""}
-          onChange={() => console.log("onChange")}
+          value={user.email}
+          onChange={handleChange}
           keyboard="email-address"
           error={null}
           returnKeyType="next"
@@ -98,16 +129,17 @@ const Profile = ({ navigation }) => {
         <EewooInput
           label="Location"
           placeholder="Choose your country"
-          onChange={() => false}
+          onChange={handleChange}
           onFocus={() => setShowCountryPicker(true)}
           error={null}
-          value={""}
+          value={user.location}
         />
         <EewooInput
           label="Bio"
           multiline
           placeholder="Bio"
-          onChange={() => console.log("onChange")}
+          onChange={handleChange}
+          value={user.bio}
           error={null}
         />
 
@@ -142,17 +174,12 @@ const styles = StyleSheet.create({
   countryPicker: {
     opacity: 0
   },
-  button: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
   form: {
     flex: 1,
     paddingHorizontal: 16
   },
   uploadButtonContainer: {
-    flex: 0.4,
+    flex: 0.5,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -168,6 +195,29 @@ const styles = StyleSheet.create({
     color: colors.graphite,
     fontSize: 14,
     fontFamily: "Quicksand-Bold"
+  },
+  avatar: {
+    width: 150,
+    height: 150,
+    borderRadius: 150 / 2,
+    overflow: "hidden"
+  },
+  editIcon: {
+    borderWidth: 1,
+    borderColor: "#F03758",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+    backgroundColor: "#F03758",
+    borderRadius: 50,
+    position: "relative",
+    top: -50,
+    right: -50
+  },
+  editPencil: {
+    width: 26,
+    height: 26
   }
 });
 
