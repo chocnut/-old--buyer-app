@@ -134,7 +134,6 @@ function RequestCard({
         }}
       >
         <Text style={styles.title}>{title}</Text>
-        {/* WIP thread new messages count */}
         {unreadMessageCount === 0 && (
           <Text style={styles.newMessageCount}>No new messages</Text>
         )}

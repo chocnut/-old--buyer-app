@@ -3,8 +3,8 @@ import jwtDecode from "jwt-decode";
 
 export const signupUser = async ({ email, password, name }) => {
   try {
-    const result = await signUp({ email, password, name });
-    return result;
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return await signUp({ email, password, name, timezone });
   } catch (e) {
     return Promise.reject(result);
   }

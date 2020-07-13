@@ -190,6 +190,7 @@ export default class SignUpScreen extends React.Component {
             onChange={name => this.setState({ name })}
             error={this.state.errors.name}
             textContentType="name"
+            returnKeyType="next"
             autoCapitalize="words"
           />
 
@@ -200,6 +201,7 @@ export default class SignUpScreen extends React.Component {
             onChange={email => this.setState({ email })}
             keyboard="email-address"
             error={this.state.errors.email}
+            returnKeyType="next"
             textContentType="username"
           />
 
@@ -210,7 +212,9 @@ export default class SignUpScreen extends React.Component {
             onChange={password => this.setState({ password })}
             type="password"
             error={this.state.errors.password}
+            returnKeyType="go"
             textContentType="password"
+            onSubmitEditing={this.validateForm}
           />
         </ScrollView>
 
