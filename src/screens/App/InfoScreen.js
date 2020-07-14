@@ -29,11 +29,13 @@ export default class InfoScreen extends React.Component {
     const params = this.props.route.params;
 
     const bodyText = () => {
-      const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+      const emailRegex = /([a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+
       if (!params.body) {
         return false;
       }
       var words = params.body.split(emailRegex);
+
       var contents = words.map(function(word, i) {
         if (word.match(emailRegex)) {
           return (

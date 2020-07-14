@@ -5,6 +5,7 @@ const CLIENT_ID = "1";
 const CLIENT_SECRET = "wM4kEanawYxVOVdRiVU9AF8fgOEJ03RyTlC0L2ev";
 const signUpUrl = "/api/users";
 const loginUrl = "/oauth/token";
+const resetUrl = "/api/users/password-reset";
 
 import * as SecureStore from "expo-secure-store";
 
@@ -65,6 +66,28 @@ export const signUp = async ({ email, password, name }) => {
       },
       {
         headers: { "Content-Type": "application/vnd.api+json" }
+      }
+    );
+
+    return Promise.resolve(response);
+  } catch (e) {
+    console.log(e);
+    if (!e.response) {
+      throw { message: "Something went wrong" };
+    }
+  }
+};
+
+export const resetPassword = async email => {
+  try {
+    const response = await axios.getNewInstance().post(
+      resetUrl,
+      {
+        email,
+        url: "https://suppliers.eewoo.io"
+      },
+      {
+        headers: { "Content-Type": "application/json" }
       }
     );
 

@@ -16,6 +16,7 @@ import colors from "../../constants/Colors";
 import Btn from "../../components/Btn";
 import EewooInput from "../../components/EewooInput";
 import HeaderBtn from "../../components/HeaderBtn";
+import { resetPassword } from "../../services/auth";
 
 // @observer
 export default class ForgotPasswordScreen extends React.Component {
@@ -71,32 +72,33 @@ export default class ForgotPasswordScreen extends React.Component {
   sendResetPasswordRequest = async () => {
     const email = this.state.email.trim().toLowerCase();
 
-    // try {
-    //   const res = await this.store.resetPassword(email);
-    //   await
-    this.props.navigation.navigate("Info", {
-      title: "Check your email!",
-      body:
-        "We’ve sent an email to: " +
-        email +
-        " It has a magic link that’ll restore\n your password",
-      icon: require("../../../assets/images/check.png"),
-      btn: {
-        title: "OPEN EMAIL APP",
-        onPress: () => {
-          this.openMail();
-        }
-      },
-      btnLink: {
-        title: "I didn’t receive my email",
-        onPress: () => {
-          this.props.navigation.goBack();
-        }
+    try {
+      const response = await resetPassword(email);
+      if (response) {
+        await this.props.navigation.navigate("Info", {
+          title: "Check your email!",
+          body:
+            "We’ve sent an email to: " +
+            email +
+            " It has a magic link that’ll restore\n your password",
+          icon: require("../../../assets/images/check.png"),
+          btn: {
+            title: "OPEN EMAIL APP",
+            onPress: () => {
+              this.openMail();
+            }
+          },
+          btnLink: {
+            title: "I didn’t receive my email",
+            onPress: () => {
+              this.props.navigation.goBack();
+            }
+          }
+        });
       }
-    });
-    // } catch (e) {
-    //   this.handleError(e);
-    // }
+    } catch (e) {
+      this.handleError(e);
+    }
   };
 
   login = () => {
@@ -132,7 +134,9 @@ export default class ForgotPasswordScreen extends React.Component {
             onChange={email => this.setState({ email })}
             keyboard="email-address"
             error={this.state.errors}
-            textContentType="username"
+            textContentType="email"
+            returnKeyType="done"
+            onSubmitEditing={this.validateForm}
           />
         </ScrollView>
 

@@ -76,39 +76,38 @@ const Profile = ({ navigation }) => {
         }}
         title="Profile"
       />
-      <View style={styles.uploadButtonContainer}>
-        <TouchableOpacity activeOpacity={1} onPress={handleUpload}>
-          {user.image_path ? (
-            <Image
-              style={styles.avatar}
-              source={{
-                uri:
-                  "https://suppliers.eewoo.io/storage/media/App/User/238-face-facial-hair-fine-looking-guy-614810.jpg"
-              }}
-            />
-          ) : (
-            <Image
-              source={require("../../../assets/images/avatar-upload.png")}
-            />
-          )}
-        </TouchableOpacity>
-        {user.image_path && (
-          <TouchableOpacity
-            style={styles.editIcon}
-            activeOpacity={1}
-            onPress={handleUpload}
-          >
-            <Image
-              style={styles.editPencil}
-              source={require("../../../assets/images/edit-icon.png")}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
       <ScrollView
         contentContainerStyle={styles.form}
         keyboardShouldPersistTaps="handled"
       >
+        <View style={styles.uploadButtonContainer}>
+          <TouchableOpacity activeOpacity={1} onPress={handleUpload}>
+            {user.image_file ? (
+              <Image
+                style={styles.avatar}
+                source={{
+                  uri: `https://suppliers.eewoo.io/storage/media/App/User/${user.image_file}`
+                }}
+              />
+            ) : (
+              <Image
+                source={require("../../../assets/images/avatar-upload.png")}
+              />
+            )}
+          </TouchableOpacity>
+          {user.image_path && (
+            <TouchableOpacity
+              style={styles.editIcon}
+              activeOpacity={1}
+              onPress={handleUpload}
+            >
+              <Image
+                style={styles.editPencil}
+                source={require("../../../assets/images/edit-icon.png")}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
         <EewooInput
           label="Full Name"
           placeholder="Full Name"
@@ -179,7 +178,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   uploadButtonContainer: {
-    flex: 0.5,
+    position: "relative",
+    top: 30,
     justifyContent: "center",
     alignItems: "center"
   },
