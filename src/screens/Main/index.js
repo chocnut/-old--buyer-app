@@ -63,7 +63,7 @@ function RequestCard({
       Fire.shared.setPublicId(thread.threadUid);
       Fire.shared.off();
       Fire.shared.onAll(message => {
-        if (message && !message.seen.includes(userId)) {
+        if (Array.isArray(message.seen) && !message.seen.includes(userId)) {
           if (!item.isNewUnreadMessage) {
             handleNotify(true);
             dispatch(toggleInboxNewMessage());
@@ -76,7 +76,6 @@ function RequestCard({
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      console.log("focuss");
       handleNotify(false);
       getThreads();
     });

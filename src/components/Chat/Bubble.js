@@ -286,7 +286,7 @@ const Bubble = props => {
         >
           <View>
             {renderCustomView()}
-            {messageHeader}
+            {!props.currentMessage.user.isCurrentUser && messageHeader}
             <View
               style={{
                 flex: 1,
@@ -298,13 +298,7 @@ const Bubble = props => {
               {renderMessageVideo()}
               {renderMessageImage()}
               {renderFile()}
-              <View
-                style={{
-                  padding: 10
-                }}
-              >
-                {renderMessageText()}
-              </View>
+              <View>{renderMessageText()}</View>
             </View>
             <View
               style={{

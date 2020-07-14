@@ -31,7 +31,7 @@ function Item({ threadId, threadUid, createdAt, navigation, request, userId }) {
     }, 1);
 
     Fire.shared.onAll(message => {
-      if (message && !message.seen.includes(userId)) {
+      if (Array.isArray(message.seen) && !message.seen.includes(userId)) {
         setUnreadMessageCount(prev => prev + 1);
       }
     });

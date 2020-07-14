@@ -12,7 +12,8 @@ import HeaderSecondary from "../../components/HeaderSecondary";
 import CountryPicker from "react-native-country-picker-modal";
 import EewooInput from "../../components/EewooInput";
 import colors from "../../constants/Colors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUser } from "../../redux/user/user.actions";
 
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -23,6 +24,7 @@ const Profile = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const [images64, setImages64] = useState([]);
   const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -43,8 +45,8 @@ const Profile = ({ navigation }) => {
     navigation.navigate("Welcome");
   };
 
-  const handleChange = e => {
-    console.log(e);
+  const handleChange = (name, value) => {
+    dispatch(updateUser({ [name]: value }));
   };
 
   const handleUpload = async () => {
@@ -112,14 +114,14 @@ const Profile = ({ navigation }) => {
           label="Full Name"
           placeholder="Full Name"
           value={user.name}
-          onChange={handleChange}
+          onChange={e => handleChange("name", e)}
           error={null}
         />
         <EewooInput
           label="Email"
           placeholder="Email address"
           value={user.email}
-          onChange={handleChange}
+          onChange={e => handleChange("email", e)}
           keyboard="email-address"
           error={null}
           returnKeyType="next"
@@ -128,7 +130,7 @@ const Profile = ({ navigation }) => {
         <EewooInput
           label="Location"
           placeholder="Choose your country"
-          onChange={handleChange}
+          onChange={e => handleChange("location", e)}
           onFocus={() => setShowCountryPicker(true)}
           error={null}
           value={user.location}
@@ -137,7 +139,7 @@ const Profile = ({ navigation }) => {
           label="Bio"
           multiline
           placeholder="Bio"
-          onChange={handleChange}
+          onChange={e => handleChange("bio", e)}
           value={user.bio}
           error={null}
         />
@@ -150,8 +152,8 @@ const Profile = ({ navigation }) => {
             visible={showCountryPicker}
             onClose={() => setShowCountryPicker(false)}
             onSelect={({ name, cca2 }) => {
-              setValue("country", name);
-              setValue("countryCode", cca2);
+              dispatch(updateUser({ location: name }));
+              dispatch(updateUser({ countryCode: cca2 }));
             }}
           />
         </View>

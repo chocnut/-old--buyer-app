@@ -25,7 +25,10 @@ const Chat = ({ threadId, threadUid }) => {
     Fire.shared.setPublicId(threadUid);
     Fire.shared.off();
     Fire.shared.onAll(message => {
-      if (!message.seen[selectorUser.id]) {
+      if (
+        Array.isArray(message.seen) &&
+        !message.seen.includes(selectorUser.id)
+      ) {
         handleSeen(message);
       }
       setMessages(prevMessages => {
@@ -91,6 +94,7 @@ const Chat = ({ threadId, threadUid }) => {
 
   const handleSend = async data => {
     data[0]["seen"] = [selectorUser.id];
+    data[0]["user"]["avatar"] = selectorUser.image_path;
     Fire.shared.send(data);
   };
 
