@@ -48,7 +48,7 @@ export const login = async ({ email, password }) => {
   return response;
 };
 
-export const signUp = async ({ email, password, name }) => {
+export const signUp = async ({ email, password, name, timezone }) => {
   try {
     const response = await axios.getNewInstance().post(
       signUpUrl,
@@ -60,6 +60,7 @@ export const signUp = async ({ email, password, name }) => {
             email,
             password,
             bio: "Sample Bio",
+            timezone,
             location: "GB"
           }
         }

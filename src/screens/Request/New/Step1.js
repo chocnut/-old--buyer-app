@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import CountryPicker from "react-native-country-picker-modal";
+// import CountryPicker from "react-native-country-picker-modal";
+import CountryPicker from "@peterindiola/react-native-country-picker-modal-fork";
 import { useFormContext } from "react-hook-form";
 import { View, Text, StyleSheet } from "react-native";
 import Constants from "expo-constants";
@@ -45,14 +46,15 @@ export default function Step1() {
       <View style={styles.countryPicker}>
         <CountryPicker
           withFlag={false}
-          withFilter={true}
-          withLa
+          withFilter={false}
+          withAlphaFilter={false}
           visible={showCountryPicker}
           onClose={() => setShowCountryPicker(false)}
           onSelect={({ name, cca2 }) => {
             setValue("country", name);
             setValue("countryCode", cca2);
           }}
+          preferredCountries={["GB"]}
         />
       </View>
     </>

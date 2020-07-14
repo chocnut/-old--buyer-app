@@ -9,7 +9,8 @@ import {
 } from "react-native";
 import { logout } from "../../services/auth";
 import HeaderSecondary from "../../components/HeaderSecondary";
-import CountryPicker from "react-native-country-picker-modal";
+// import CountryPicker from "react-native-country-picker-modal";
+import CountryPicker from "@peterindiola/react-native-country-picker-modal-fork";
 import EewooInput from "../../components/EewooInput";
 import colors from "../../constants/Colors";
 import { useSelector, useDispatch } from "react-redux";
@@ -147,14 +148,15 @@ const Profile = ({ navigation }) => {
         <View style={styles.countryPicker}>
           <CountryPicker
             withFlag={false}
-            withFilter={true}
-            withLa
+            withFilter={false}
+            withAlphaFilter={false}
             visible={showCountryPicker}
             onClose={() => setShowCountryPicker(false)}
             onSelect={({ name, cca2 }) => {
               dispatch(updateUser({ location: name }));
               dispatch(updateUser({ countryCode: cca2 }));
             }}
+            preferredCountries={["GB"]}
           />
         </View>
         <View style={styles.logOut}>
