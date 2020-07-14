@@ -53,7 +53,7 @@ function Item({
   const { text, attachment } = newMessage;
   const { name, avatar } = newMessage.user;
 
-  if (avatar !== "") {
+  if (avatar !== "" && avatar) {
     const fileName = avatar.split("/");
     imagePath = `https://suppliers.eewoo.io/storage/media/App/User/${
       fileName[fileName.length - 1]

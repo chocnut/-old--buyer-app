@@ -14,14 +14,15 @@ export default function Step1() {
     <>
       <EewooInput
         label="Quantity"
-        placeholder="Quantity"
+        placeholder="Enter product quantity"
         onChange={text => setValue("quantity", text)}
         error={null}
         keyboard="numeric"
       />
       <EewooInput
+        icon="$"
         label="Target Price"
-        placeholder="Target Price"
+        placeholder="Indicate the desired price"
         onChange={text => setValue("targetPrice", text)}
         error={null}
         keyboard="numeric"

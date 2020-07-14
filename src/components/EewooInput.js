@@ -119,31 +119,37 @@ export default class EewooInput extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.label}>{this.props.label}</Text>
-        <TextInput
-          style={this.getInputStyles()}
-          onChangeText={this.onChanged}
-          value={this.props.value}
-          autoCapitalize={this.props.autoCapitalize || "none"}
-          placeholderTextColor={
-            this.props.placeholderError ? colors.red : colors.graphiteOpacity
-          }
-          placeholder={this.props.placeholder}
-          keyboardType={this.props.keyboard || "default"}
-          secureTextEntry={
-            this.props.type &&
-            this.props.type === "password" &&
-            !this.state.passwordVisible
-          }
-          onFocus={() => this.changeLabelPosition(true)}
-          onBlur={() => this.changeLabelPosition(false)}
-          onSubmitEditing={this.props.onSubmitEditing}
-          textAlignVertical="top"
-          multiline={this.props.multiline || false}
-          ref="TextInput"
-          returnKeyType={this.getReturnKeyType()}
-          inputAccessoryViewID={this.props.inputAccessoryViewID || null}
-          textContentType={this.props.textContentType || "none"}
-        />
+        <View style={styles.inputContainer}>
+          {this.props.icon && (
+            <Text style={styles.inputIcon}>{this.props.icon}</Text>
+          )}
+          <TextInput
+            style={this.getInputStyles()}
+            onChangeText={this.onChanged}
+            value={this.props.value}
+            autoCapitalize={this.props.autoCapitalize || "none"}
+            placeholderTextColor={
+              this.props.placeholderError ? colors.red : colors.graphiteOpacity
+            }
+            placeholder={this.props.placeholder}
+            keyboardType={this.props.keyboard || "default"}
+            secureTextEntry={
+              this.props.type &&
+              this.props.type === "password" &&
+              !this.state.passwordVisible
+            }
+            onFocus={() => this.changeLabelPosition(true)}
+            onBlur={() => this.changeLabelPosition(false)}
+            onSubmitEditing={this.props.onSubmitEditing}
+            textAlignVertical="top"
+            multiline={this.props.multiline || false}
+            ref="TextInput"
+            returnKeyType={this.getReturnKeyType()}
+            inputAccessoryViewID={this.props.inputAccessoryViewID || null}
+            textContentType={this.props.textContentType || "none"}
+          />
+        </View>
+
         <Image />
         {this.renderPasswordButton()}
         <Text style={styles.errorLabel}>{this.props.error}</Text>
@@ -221,6 +227,14 @@ const styles = StyleSheet.create({
   toggleBtnImg: {
     width: 20,
     height: 20
+  },
+  inputContainer: {
+    justifyContent: "center"
+  },
+  inputIcon: {
+    position: "absolute",
+    left: -10,
+    color: "#9996A2"
   }
 });
 
