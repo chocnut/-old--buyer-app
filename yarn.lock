@@ -4848,6 +4848,10 @@ react-native-loading-spinner-overlay@^1.1.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-picker-modal-view@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-picker-modal-view/-/react-native-picker-modal-view-1.3.2.tgz#bec389667be6e531d7c3e3b9e214888b33c02992"
+
 react-native-reanimated@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"

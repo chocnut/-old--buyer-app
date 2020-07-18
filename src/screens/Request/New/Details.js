@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
+import { format } from "date-fns";
 import HeaderSecondary from "../../../components/HeaderSecondary";
 import { useSelector, useDispatch } from "react-redux";
 import colors from "../../../constants/Colors";
@@ -11,6 +12,8 @@ const width = Dimensions.get("window").width; //full width
 export default function Details({ navigation }) {
   const { form, status } = useSelector(state => state.wizard);
   const dispatch = useDispatch();
+
+  const result = format(new Date(), "dd MMM yyyy");
 
   const {
     productName,
@@ -102,6 +105,10 @@ export default function Details({ navigation }) {
           >
             <Text style={styles.label}>Delivery</Text>
             <Text style={styles.unit}>{country}</Text>
+          </View>
+          <View style={{}}>
+            <Text style={styles.label}>Created</Text>
+            <Text style={styles.unit}>{result}</Text>
           </View>
         </View>
         <View style={styles.btnContainer}>

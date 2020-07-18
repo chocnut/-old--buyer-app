@@ -3,11 +3,11 @@ import {
   StyleSheet,
   View,
   Text,
-  SafeAreaView,
   FlatList,
   Image,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -149,6 +149,7 @@ const Main = ({ navigation }) => {
   const [requestType, setRequestType] = useState(["drafts", "open"]);
   const [isFetching, setIsFetching] = useState(false);
   const [isNotify, setIsNotify] = useState(false);
+  let width = Dimensions.get("screen").width / 2 - 8;
 
   const {
     user: { id },
@@ -243,17 +244,20 @@ const Main = ({ navigation }) => {
           <FlatList
             data={requests.requests}
             numColumns={2}
+            horizontal={false}
             renderItem={({ item }) => (
-              <RequestCard
-                navigation={navigation}
-                item={item}
-                title={item.attributes.title}
-                createdAt={item.attributes.created_at}
-                requestPublicId={item.attributes.public_id}
-                media={item.attributes.featured_image_url}
-                userId={id}
-                handleNotify={status => setIsNotify(status)}
-              />
+              <View style={{ flex: 0.5 }}>
+                <RequestCard
+                  navigation={navigation}
+                  item={item}
+                  title={item.attributes.title}
+                  createdAt={item.attributes.created_at}
+                  requestPublicId={item.attributes.public_id}
+                  media={item.attributes.featured_image_url}
+                  userId={id}
+                  handleNotify={status => setIsNotify(status)}
+                />
+              </View>
             )}
             onRefresh={onRefresh}
             refreshing={isFetching}
