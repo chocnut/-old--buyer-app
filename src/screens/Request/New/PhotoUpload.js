@@ -5,12 +5,13 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Dimensions } from "react-native";
+import { connectActionSheet } from "@expo/react-native-action-sheet";
 
 import { saveFormData } from "../../../redux/request/wizard/wizard.actions";
 
 const width = Dimensions.get("window").width; //full width
 
-export default function() {
+function PhotoUpload({ showActionSheetWithOptions }) {
   const { form } = useSelector(state => state.wizard);
   const [images, setImages] = useState(form.images || []);
   const [images64, setImages64] = useState(form.images64 || []);
@@ -18,10 +19,7 @@ export default function() {
 
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(
-        Permissions.CAMERA,
-        Permissions.CAMERA_ROLL
-      );
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
         alert("Sorry, we need camera roll permissions to make this work!");
         return Promise.reject();
@@ -30,7 +28,58 @@ export default function() {
     }
   };
 
-  const pickImage = async () => {
+  const getCameraPermissionAsync = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      if (status !== "granted") {
+        alert("Sorry, we need camera permissions to make this work!");
+        return Promise.reject();
+      }
+      return Promise.resolve;
+    }
+  };
+
+  const openCameraPicker = async () => {
+    try {
+      await getCameraPermissionAsync();
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        base64: true,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1
+      });
+      if (!result.cancelled) {
+        setImages(prevState => [result.uri, ...prevState]);
+        setImages64(prevState => [result.base64, ...prevState]);
+        dispatch(
+          saveFormData({
+            images: [result.uri, ...images],
+            images64: [result.base64, ...images64]
+          })
+        );
+      }
+
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleRemove = index => {
+    const newImages = images.splice(0, index);
+    const newImages64 = images64.splice(0, index);
+    setImages(newImages);
+    setImages64(newImages64);
+    dispatch(
+      saveFormData({
+        images,
+        images64
+      })
+    );
+  };
+
+  const openImagePicker = async () => {
     try {
       await getPermissionAsync();
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -57,15 +106,51 @@ export default function() {
     }
   };
 
+  const pickImage = async () => {
+    const options = ["Camera", "Photo & Video Library", "Cancel"];
+    const cancelButtonIndex = 2;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex
+      },
+      buttonIndex => {
+        if (buttonIndex === 1) {
+          openImagePicker();
+        } else if (buttonIndex == 0) {
+          openCameraPicker();
+        }
+      }
+    );
+  };
+
   return (
     <View style={styles.container}>
       {images &&
         images.map((image, i) => (
-          <Image
-            key={i}
-            source={{ uri: image }}
-            style={styles.imageContainer}
-          />
+          <>
+            <Image
+              key={i}
+              source={{ uri: image }}
+              style={styles.imageContainer}
+            />
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => handleRemove(i)}
+            >
+              <Image
+                source={require("../../../../assets/images/remove.png")}
+                style={{
+                  backgroundColor: "#ffffff",
+                  position: "absolute",
+                  left: -35,
+                  top: 30,
+                  borderRadius: 72 / 2
+                }}
+              />
+            </TouchableOpacity>
+          </>
         ))}
       <TouchableOpacity
         style={styles.btnUploadImage}
@@ -119,3 +204,5 @@ const styles = StyleSheet.create({
     height: 24.38
   }
 });
+
+export default connectActionSheet(PhotoUpload);

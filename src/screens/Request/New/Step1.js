@@ -27,6 +27,7 @@ export default function Step1() {
         placeholder="Enter your request name"
         onChange={text => setValue("productName", text)}
         error={null}
+        autoCapitalize="characters"
       />
       <EewooInput
         label="Description"
