@@ -7,8 +7,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
-  Dimensions
+  ActivityIndicator
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -30,9 +29,6 @@ import {
 } from "../../redux/request/request.actions";
 
 import Fire from "../../services/fire";
-
-const { width } = Dimensions.get("window");
-const itemWidth = (width - 15) / 2;
 
 function RequestCard({
   item,
@@ -109,7 +105,7 @@ function RequestCard({
             <Image
               onLoad={() => setImageLoading(false)}
               style={{
-                width: 176,
+                width: "100%",
                 height: 130,
                 borderTopLeftRadius: 4,
                 borderTopRightRadius: 4
@@ -118,7 +114,6 @@ function RequestCard({
               source={{
                 uri: media
               }}
-              resizeMode="cover"
             ></Image>
             <ActivityIndicator
               style={{ display: !imageLoading ? "none" : "flex" }}
@@ -245,28 +240,25 @@ const Main = ({ navigation }) => {
           <CreateNewRequestHelper />
         )}
         {Object.keys(requests.requests).length > 0 && (
-          <SafeAreaView style={{ flex: 1, marginLeft: 20 }}>
-            <FlatList
-              data={requests.requests}
-              numColumns={2}
-              style={{ flex: 1 }}
-              renderItem={({ item }) => (
-                <RequestCard
-                  navigation={navigation}
-                  item={item}
-                  title={item.attributes.title}
-                  createdAt={item.attributes.created_at}
-                  requestPublicId={item.attributes.public_id}
-                  media={item.attributes.featured_image_url}
-                  userId={id}
-                  handleNotify={status => setIsNotify(status)}
-                />
-              )}
-              onRefresh={onRefresh}
-              refreshing={isFetching}
-              keyExtractor={item => item.attributes.public_id}
-            />
-          </SafeAreaView>
+          <FlatList
+            data={requests.requests}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <RequestCard
+                navigation={navigation}
+                item={item}
+                title={item.attributes.title}
+                createdAt={item.attributes.created_at}
+                requestPublicId={item.attributes.public_id}
+                media={item.attributes.featured_image_url}
+                userId={id}
+                handleNotify={status => setIsNotify(status)}
+              />
+            )}
+            onRefresh={onRefresh}
+            refreshing={isFetching}
+            keyExtractor={item => item.attributes.public_id}
+          />
         )}
         <CreateNewRequestBtn
           onPress={() => {
@@ -329,6 +321,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   card: {
+    flex: 1,
     backgroundColor: "#FFFFFF",
     shadowOffset: { width: 0, height: 0 },
     borderWidth: 1,
@@ -337,8 +330,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
-    marginRight: 15,
-    marginTop: 20,
+    margin: 15,
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
