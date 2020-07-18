@@ -6,8 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
-  Dimensions
+  ActivityIndicator
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -38,7 +37,8 @@ function RequestCard({
   createdAt,
   requestPublicId,
   userId,
-  handleNotify
+  handleNotify,
+  style
 }) {
   const [imageLoading, setImageLoading] = useState(true);
   const [threads, setThreads] = useState([]);
@@ -88,7 +88,7 @@ function RequestCard({
   }, [threads]);
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, style]}>
       <View>
         <TouchableOpacity
           activeOpacity={1}
@@ -149,7 +149,6 @@ const Main = ({ navigation }) => {
   const [requestType, setRequestType] = useState(["drafts", "open"]);
   const [isFetching, setIsFetching] = useState(false);
   const [isNotify, setIsNotify] = useState(false);
-  let width = Dimensions.get("screen").width / 2 - 8;
 
   const {
     user: { id },
@@ -159,7 +158,9 @@ const Main = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserRequests(id));
+    navigation.addListener("focus", () => {
+      dispatch(getUserRequests(id));
+    });
   }, []);
 
   const onPressFilter = () => {
@@ -245,9 +246,10 @@ const Main = ({ navigation }) => {
             data={requests.requests}
             numColumns={2}
             horizontal={false}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <View style={{ flex: 0.5 }}>
                 <RequestCard
+                  style={index === 0 || index === 1 ? { marginTop: 20 } : {}}
                   navigation={navigation}
                   item={item}
                   title={item.attributes.title}
@@ -334,7 +336,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
-    margin: 15,
+    marginHorizontal: 10,
+    marginBottom: 15,
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
