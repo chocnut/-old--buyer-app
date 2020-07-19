@@ -38,7 +38,9 @@ export default function Step1() {
               onChange={() => false}
               onFocus={showModal}
               disabled
-              value={value.charAt(0).toUpperCase() + value.slice(1)}
+              value={
+                value ? value.charAt(0).toUpperCase() + value.slice(1) : ""
+              }
             />
           );
         }}
