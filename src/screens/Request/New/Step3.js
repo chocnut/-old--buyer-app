@@ -5,7 +5,7 @@ import PickerModal from "react-native-picker-modal-view";
 import { TouchableOpacity, View, Image, Text } from "react-native";
 
 export default function Step1() {
-  const { register, setValue } = useFormContext();
+  const { register, setValue, getValues } = useFormContext();
 
   useEffect(() => {
     register("targetPrice", { required: true, min: 1 });
@@ -13,18 +13,32 @@ export default function Step1() {
     register("metric", { required: true, min: 1 });
   }, [register]);
 
+  const getSelected = (value = null) => {
+    if (value) {
+      if (!Object.keys(value).length) {
+        const { metric } = getValues();
+        return metric;
+      } else {
+        return value.Name;
+      }
+    }
+    const { metric } = getValues();
+    return metric;
+  };
+
   return (
     <>
       <PickerModal
         renderSelectView={(disabled, selected, showModal) => {
+          const value = getSelected(selected);
           return (
             <EewooInput
               label="Metrics"
               placeholder="Select metric type"
               onChange={() => false}
               onFocus={showModal}
-              disabled={disabled}
-              value={selected.Name}
+              disabled
+              value={value.charAt(0).toUpperCase() + value.slice(1)}
             />
           );
         }}
@@ -44,19 +58,20 @@ export default function Step1() {
         sortingLanguage={"tr"}
         showToTopButton={true}
         backButtonDisabled
-        selected={""}
+        selected={getSelected()}
         showAlphabeticalIndex={false}
-        requireSelection={false}
+        requireSelection
         autoSort={false}
-        renderSearch={({ onClose }) => {
+        renderSearch={onClose => {
           return (
             <View style={{ marginTop: 10, marginBottom: 26 }}>
               <Text
                 style={{
                   position: "absolute",
+                  top: 5,
                   alignSelf: "center",
-                  fontSize: 24,
-                  fontFamily: "Quicksand-Medium",
+                  fontSize: 16,
+                  fontFamily: "Quicksand-Bold",
                   textAlign: "center"
                 }}
               >
@@ -65,7 +80,7 @@ export default function Step1() {
               <TouchableOpacity onPress={onClose}>
                 <Image
                   style={{
-                    top: 2,
+                    top: 10,
                     left: 20,
                     width: 14,
                     height: 14
@@ -73,6 +88,52 @@ export default function Step1() {
                   source={require("../../../../assets/images/close_dark.png")}
                 ></Image>
               </TouchableOpacity>
+            </View>
+          );
+        }}
+        renderListItem={(selected, item) => {
+          const mm = getSelected();
+          return (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                padding: 16,
+                borderWidth: 1,
+                borderColor: "#F4F4F4"
+              }}
+            >
+              <Text style={{ fontFamily: "Quicksand-Medium", fontSize: 14 }}>
+                {item.Name}
+              </Text>
+              <View
+                style={{
+                  position: "absolute",
+                  right: 10,
+                  top: 12,
+                  borderWidth: 1,
+                  borderColor: "#F4F4F4",
+                  width: 22,
+                  height: 22,
+                  borderRadius: 22 / 2
+                }}
+              >
+                {mm && item.Value === mm && (
+                  <View
+                    style={{
+                      position: "relative",
+                      top: 3,
+                      left: 3,
+                      backgroundColor: "#F03758",
+                      borderWidth: 1,
+                      borderColor: "#F03758",
+                      width: 14,
+                      height: 14,
+                      borderRadius: 16 / 2
+                    }}
+                  ></View>
+                )}
+              </View>
             </View>
           );
         }}
