@@ -28,39 +28,24 @@ function PhotoUpload({ showActionSheetWithOptions }) {
     }
   };
 
-  const getCameraPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA);
-      if (status !== "granted") {
-        alert("Sorry, we need camera permissions to make this work!");
-        return Promise.reject();
-      }
-      return Promise.resolve;
-    }
-  };
-
   const openCameraPicker = async () => {
     try {
-      await getCameraPermissionAsync();
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        base64: true,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1
+      await Permissions.askAsync(Permissions.CAMERA);
+      const { cancelled, uri, base64 } = await ImagePicker.launchCameraAsync({
+        allowsEditing: false,
+        base64: true
       });
-      if (!result.cancelled) {
-        setImages(prevState => [result.uri, ...prevState]);
-        setImages64(prevState => [result.base64, ...prevState]);
+
+      if (!cancelled) {
+        setImages(prevState => [uri, ...prevState]);
+        setImages64(prevState => [base64, ...prevState]);
         dispatch(
           saveFormData({
-            images: [result.uri, ...images],
-            images64: [result.base64, ...images64]
+            images: [uri, ...images],
+            images64: [base64, ...images64]
           })
         );
       }
-
-      console.log(result);
     } catch (e) {
       console.log(e);
     }
