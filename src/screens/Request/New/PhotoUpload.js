@@ -67,25 +67,26 @@ function PhotoUpload({ showActionSheetWithOptions }) {
   const openImagePicker = async () => {
     try {
       await getPermissionAsync();
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+      const {
+        uri,
+        base64,
+        cancelled
+      } = await ImagePicker.launchImageLibraryAsync({
         base64: true,
         allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1
+        aspect: 1
       });
-      if (!result.cancelled) {
-        setImages(prevState => [result.uri, ...prevState]);
-        setImages64(prevState => [result.base64, ...prevState]);
+
+      if (!cancelled) {
+        setImages(prevState => [uri, ...prevState]);
+        setImages64(prevState => [base64, ...prevState]);
         dispatch(
           saveFormData({
-            images: [result.uri, ...images],
-            images64: [result.base64, ...images64]
+            images: [uri, ...images],
+            images64: [base64, ...images64]
           })
         );
       }
-
-      console.log(result);
     } catch (e) {
       console.log(e);
     }
