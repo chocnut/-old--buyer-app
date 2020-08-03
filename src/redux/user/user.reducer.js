@@ -9,7 +9,8 @@ const initialState = {
   image_file: undefined,
   image_path: undefined,
   bio: undefined,
-  verified: undefined
+  verified: undefined,
+  expoToken: undefined
 };
 
 export default (state = initialState, action) => {
@@ -24,6 +25,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload
+      };
+    }
+    case actionTypes.SET_EXPO_TOKEN: {
+      return {
+        ...state,
+        expoToken: action.payload
       };
     }
     default:

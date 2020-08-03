@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Notifications } from "expo";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import WelcomeScreen from "../screens/WelcomeScreen";
@@ -20,11 +24,59 @@ import InboxScreen from "../screens/App/Inbox";
 import { useSelector, useDispatch } from "react-redux";
 import { TouchableOpacity, StyleSheet, Image } from "react-native";
 import { setNextStep } from "../redux/request/wizard/wizard.actions";
+import { setExpoToken } from "../redux/user/user.actions";
 
 const MainStack = createStackNavigator();
 const RequestModalStack = createStackNavigator();
 
 function MainStackScreen() {
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const dispatch = useDispatch();
+
+  const notificationListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+    notificationListener.current = Notifications.addListener(response => {
+      Vibration.vibrate();
+      console.log(response);
+    });
+  }, []);
+
+  registerForPushNotificationsAsync = async () => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+      token = await Notifications.getExpoPushTokenAsync();
+      console.log(token);
+      setExpoPushToken(token);
+      dispatch(setExpoToken(token));
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+
+    if (Platform.OS === "android") {
+      Notifications.createChannelAndroidAsync("default", {
+        name: "default",
+        sound: true,
+        priority: "max",
+        vibrate: [0, 250, 250, 250]
+      });
+    }
+  };
+
   return (
     <MainStack.Navigator headerMode={null}>
       <MainStack.Screen name="AuthLoading" component={AuthLoadingScreen} />

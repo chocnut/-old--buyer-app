@@ -28,7 +28,7 @@ export const submitRequest = ({
   quantity,
   countryCode,
   images64,
-  state
+  status
 }) => async dispatch => {
   const payload = {
     title: productName,
@@ -36,7 +36,7 @@ export const submitRequest = ({
     target_price: targetPrice,
     quantity,
     delivery_country: countryCode,
-    state
+    status
   };
 
   try {

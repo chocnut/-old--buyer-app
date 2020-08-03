@@ -77,7 +77,9 @@ const Chat = ({ threadId, threadUid }) => {
       avatar: "",
       id: selectorUser.id,
       _id: Fire.shared.uid,
-      isCurrentUser: true
+      isCurrentUser: true,
+      expoToken: selectorUser.expoToken,
+      type: "Buyer"
     });
   }, [threadId, threadUid]);
 
