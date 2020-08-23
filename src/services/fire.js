@@ -42,6 +42,12 @@ class Fire {
     return firebase.database().ref(`threads`);
   }
 
+  get pushNotificationRef() {
+    return firebase
+      .database()
+      .ref(`threads/${this.publicId}/pushNotificationTokens`);
+  }
+
   get messageRef() {
     return firebase
       .database()

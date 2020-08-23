@@ -22,7 +22,7 @@ import RequestShowScreen from "../screens/Request/Show";
 import InboxScreen from "../screens/App/Inbox";
 
 import { useSelector, useDispatch } from "react-redux";
-import { TouchableOpacity, StyleSheet, Image } from "react-native";
+import { TouchableOpacity, StyleSheet, Image, Vibration } from "react-native";
 import { setNextStep } from "../redux/request/wizard/wizard.actions";
 import { setExpoToken } from "../redux/user/user.actions";
 
@@ -39,7 +39,7 @@ function MainStackScreen() {
     registerForPushNotificationsAsync();
     notificationListener.current = Notifications.addListener(response => {
       Vibration.vibrate();
-      console.log(response);
+      console.log("Push Notif Message", response);
     });
   }, []);
 
@@ -60,7 +60,6 @@ function MainStackScreen() {
         return;
       }
       token = await Notifications.getExpoPushTokenAsync();
-      console.log(token);
       setExpoPushToken(token);
       dispatch(setExpoToken(token));
     } else {

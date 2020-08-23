@@ -23,6 +23,8 @@ const Chat = ({ threadId, threadUid }) => {
 
   useEffect(() => {
     Fire.shared.setPublicId(threadUid);
+    const expoTokens = [selectorUser.expoToken];
+    Fire.shared.pushNotificationRef.set(expoTokens);
     Fire.shared.off();
     Fire.shared.onAll(message => {
       if (
@@ -78,7 +80,6 @@ const Chat = ({ threadId, threadUid }) => {
       id: selectorUser.id,
       _id: Fire.shared.uid,
       isCurrentUser: true,
-      expoToken: selectorUser.expoToken,
       type: "Buyer"
     });
   }, [threadId, threadUid]);
