@@ -28,7 +28,7 @@
       "buildNumber": "1"
     },
     "notification": {
-      "icon": "assets/images/icon96.png",
+      "icon": "./assets/images/icon96.png",
       "color": "#000000"
     }
   }
