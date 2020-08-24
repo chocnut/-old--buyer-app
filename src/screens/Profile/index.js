@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Spinner from "react-native-loading-spinner-overlay";
 import {
   StyleSheet,
   View,
@@ -15,18 +16,18 @@ import HeaderSecondary from "../../components/HeaderSecondary";
 import EewooInput from "../../components/EewooInput";
 import colors from "../../constants/Colors";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUser } from "../../redux/user/user.actions";
+import { updateUser, storeUser } from "../../redux/user/user.actions";
+import { uploadAvatar, getUser } from "../../services/user";
 
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 
 const Profile = ({ navigation }) => {
-  const [showCountryPicker, setShowCountryPicker] = useState(false);
-  const [images, setImages] = useState([]);
-  const [images64, setImages64] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState("");
   const user = useSelector(state => state.user);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [showCountryPicker, setShowCountryPicker] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("");
   const dispatch = useDispatch();
 
   const findCountryName = code => {
@@ -91,11 +92,22 @@ const Profile = ({ navigation }) => {
         quality: 1
       });
       if (!result.cancelled) {
-        setImages(prevState => [result.uri, ...prevState]);
-        setImages64(prevState => [result.base64, ...prevState]);
-      }
+        setShowSpinner(true);
+        const { uri } = result;
+        const nameParts = uri.split(".");
+        const fileType = nameParts[nameParts.length - 1];
 
-      console.log(result);
+        const fileToUpload = {
+          name: "avatar",
+          uri,
+          type: `application/${fileType}`
+        };
+        await uploadAvatar(fileToUpload);
+
+        const { data } = await getUser();
+        dispatch(storeUser(data));
+        setShowSpinner(false);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -113,6 +125,11 @@ const Profile = ({ navigation }) => {
         contentContainerStyle={styles.form}
         keyboardShouldPersistTaps="handled"
       >
+        <Spinner
+          visible={showSpinner}
+          textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
         <View style={styles.uploadButtonContainer}>
           <TouchableOpacity activeOpacity={1} onPress={handleUpload}>
             {user.image_file ? (
@@ -271,7 +288,8 @@ const Profile = ({ navigation }) => {
           label="Bio"
           multiline
           placeholder="Bio"
-          onChange={e => handleChange("bio", e)}
+          // onChange={e => handleChange("bio", e)}
+          onChange={() => null}
           value={user.bio}
           error={null}
         />
@@ -339,6 +357,9 @@ const styles = StyleSheet.create({
   editPencil: {
     width: 26,
     height: 26
+  },
+  spinnerTextStyle: {
+    color: "#FFF"
   }
 });
 
