@@ -34,7 +34,7 @@ export default function Details({ navigation }) {
     dispatch(
       submitRequest({
         ...form,
-        status: 1
+        status: 0
       })
     );
     navigation.push("Main");
@@ -44,7 +44,7 @@ export default function Details({ navigation }) {
     dispatch(
       submitRequest({
         ...form,
-        status: 2
+        status: 1
       })
     );
   };
