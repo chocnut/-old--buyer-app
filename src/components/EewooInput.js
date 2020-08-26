@@ -62,6 +62,10 @@ export default class EewooInput extends React.Component {
       inputStyles.push(styles.hasError);
     }
 
+    if (this.props.icon) {
+      inputStyles.push(styles.hasIcon);
+    }
+
     return inputStyles;
   };
 
@@ -233,8 +237,11 @@ const styles = StyleSheet.create({
   },
   inputIcon: {
     position: "absolute",
-    left: -10,
+    left: 0,
     color: "#9996A2"
+  },
+  hasIcon: {
+    paddingLeft: 15
   }
 });
 
