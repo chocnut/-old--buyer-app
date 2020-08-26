@@ -183,10 +183,10 @@ const Main = ({ navigation }) => {
   };
 
   const filterRequest = value => {
-    if (!value) return requests.requests;
+    if (!value || !value.length) return requests.requests;
 
     return requests.requests.filter(request =>
-      request.attributes.title.match(value)
+      request.attributes.title.toLowerCase().match(value.toLowerCase())
     );
   };
 
