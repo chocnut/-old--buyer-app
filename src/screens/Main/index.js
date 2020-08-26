@@ -182,6 +182,14 @@ const Main = ({ navigation }) => {
     dispatch(getUserRequests(id));
   };
 
+  const filterRequest = value => {
+    if (!value) return requests.requests;
+
+    return requests.requests.filter(request =>
+      request.attributes.title.match(value)
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -198,7 +206,9 @@ const Main = ({ navigation }) => {
         <View style={styles.searchFilterContainer}>
           <SearchInput
             value={search}
-            onChangeText={value => setSearch(value)}
+            onChangeText={value => {
+              setSearch(value);
+            }}
           />
           <SearchFilterBtn active={false} onPress={onPressFilter} />
           <SearchFilterModal
@@ -254,7 +264,7 @@ const Main = ({ navigation }) => {
         )}
         {Object.keys(requests.requests).length > 0 && (
           <FlatList
-            data={requests.requests}
+            data={filterRequest(search)}
             numColumns={2}
             horizontal={false}
             renderItem={({ item, index }) => (
