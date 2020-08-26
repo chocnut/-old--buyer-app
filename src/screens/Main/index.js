@@ -30,6 +30,7 @@ import {
 import Fire from "../../services/fire";
 
 function RequestCard({
+  status,
   item,
   title,
   media,
@@ -102,6 +103,16 @@ function RequestCard({
           }
         >
           <View>
+            {status === 1 && (
+              <View style={styles.draftStatusContainer}>
+                <Text style={styles.draftStatusText}>Draft</Text>
+              </View>
+            )}
+            {status === 2 && (
+              <View style={styles.newStatusContainer}>
+                <Text style={styles.newStatusText}>New</Text>
+              </View>
+            )}
             <Image
               onLoad={() => setImageLoading(false)}
               style={{
@@ -256,6 +267,7 @@ const Main = ({ navigation }) => {
                   createdAt={item.attributes.created_at}
                   requestPublicId={item.attributes.public_id}
                   media={item.attributes.featured_image_url}
+                  status={item.attributes.status}
                   userId={id}
                   handleNotify={status => setIsNotify(status)}
                 />
@@ -350,6 +362,38 @@ const styles = StyleSheet.create({
     fontFamily: "Quicksand-Medium",
     fontSize: 13,
     color: "#F03758"
+  },
+  draftStatusContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 70,
+    position: "absolute",
+    zIndex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: "#F4F4F4"
+  },
+  draftStatusText: {
+    color: "#555064",
+    textTransform: "uppercase",
+    fontFamily: "Quicksand-Medium"
+  },
+  newStatusContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 70,
+    position: "absolute",
+    zIndex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: "#F03758"
+  },
+  newStatusText: {
+    color: "#FFFFFF",
+    textTransform: "uppercase",
+    fontFamily: "Quicksand-Medium"
   }
 });
 
