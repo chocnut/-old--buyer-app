@@ -1,6 +1,5 @@
 {
   "expo": {
-    "scheme": "buyer-app",
     "name": "Eewo Buyer App",
     "slug": "buyer-app",
     "sdkVersion": "36.0.0",
