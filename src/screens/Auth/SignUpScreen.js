@@ -9,6 +9,7 @@ import {
   Platform,
   Linking
 } from "react-native";
+import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import CloudFooter from "../../components/CloudFooter";
 import Layout from "../../constants/Layout";
@@ -28,7 +29,7 @@ const titleBottom = () => {
   return Layout.window.height >= 667 ? (Layout.window.height / 100) * 3 : 0;
 };
 
-export default class SignUpScreen extends React.Component {
+class SignUpScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -111,9 +112,14 @@ export default class SignUpScreen extends React.Component {
     const name = trimmedName;
     const email = this.state.email.trim().toLowerCase();
     const password = this.state.password.trim();
+    const { expoToken } = this.props;
+
+    const metadata = {
+      expoToken
+    };
 
     try {
-      const response = await signupUser({ email, password, name });
+      const response = await signupUser({ email, password, name, metadata });
       if (response) {
         this.setState({ showSpinner: false });
         this.props.navigation.navigate("Info", {
@@ -243,6 +249,10 @@ export default class SignUpScreen extends React.Component {
     );
   }
 }
+
+export default connect(state => ({
+  expoToken: state.user.expoToken
+}))(SignUpScreen);
 
 const styles = StyleSheet.create({
   container: {

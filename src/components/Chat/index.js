@@ -24,8 +24,9 @@ const Chat = ({ threadId, threadUid }) => {
   useEffect(() => {
     Fire.shared.setPublicId(threadUid);
     const expoTokens = [selectorUser.expoToken];
-    console.log("zzz", expoTokens);
-    // Fire.shared.pushNotificationRef.set(expoTokens);
+    if (expoTokens) {
+      Fire.shared.pushNotificationRef.set(expoTokens);
+    }
     Fire.shared.off();
     Fire.shared.onAll(message => {
       if (

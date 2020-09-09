@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import Spinner from "react-native-loading-spinner-overlay";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
   Text,
@@ -42,6 +42,7 @@ const LogInScreen = ({ navigation }) => {
   });
   const [serverError, setServerError] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
+  const { expoToken } = useSelector(state => state.user);
 
   const dispatch = useDispatch();
 
@@ -83,7 +84,10 @@ const LogInScreen = ({ navigation }) => {
     try {
       const loginResponse = await loginUser({
         email: emailTrimmed,
-        password: passwordTrimmed
+        password: passwordTrimmed,
+        metadata: {
+          pushNotificationTokens: [expoToken]
+        }
       });
 
       if (loginResponse) {

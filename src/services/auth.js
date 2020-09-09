@@ -26,7 +26,7 @@ export const removeToken = async () => {
 
 export const logout = async () => await removeToken();
 
-export const login = async ({ email, password }) => {
+export const login = async ({ email, password, metadata }) => {
   const response = await axios.getNewInstance().post(
     loginUrl,
     {
@@ -35,7 +35,8 @@ export const login = async ({ email, password }) => {
       client_secret: CLIENT_SECRET,
       username: email,
       password,
-      scope: "*"
+      scope: "*",
+      metadata
     },
     {
       headers: { "Content-Type": "application/json" }
@@ -48,7 +49,7 @@ export const login = async ({ email, password }) => {
   return response;
 };
 
-export const signUp = async ({ email, password, name, timezone }) => {
+export const signUp = async ({ email, password, name, timezone, metadata }) => {
   try {
     const response = await axios.getNewInstance().post(
       signUpUrl,
@@ -61,7 +62,8 @@ export const signUp = async ({ email, password, name, timezone }) => {
             password,
             bio: "Sample Bio",
             timezone,
-            location: "GB"
+            location: "GB",
+            metadata
           }
         }
       },
