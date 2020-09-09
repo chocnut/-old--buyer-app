@@ -49,16 +49,10 @@ function Item({
 
   const { title } = request;
 
-  let imagePath = "";
   const { text, attachment } = newMessage;
   const { name, avatar } = newMessage.user;
 
-  if (avatar !== "" && avatar) {
-    const fileName = avatar.split("/");
-    imagePath = `https://suppliers.eewoo.io/storage/media/App/User/${
-      fileName[fileName.length - 1]
-    }`;
-  }
+  console.log("avatar", avatar);
 
   return (
     <TouchableOpacity
@@ -85,7 +79,7 @@ function Item({
           marginRight: 12,
           marginVertical: 18
         }}
-        source={{ uri: imagePath }}
+        source={{ uri: avatar }}
       />
       <View
         style={{
@@ -117,7 +111,7 @@ function Item({
               color: "#555064"
             }}
           >
-            {text || attachment.file_name}
+            {text || attachment.original_file_name}
           </Text>
         </View>
       </View>

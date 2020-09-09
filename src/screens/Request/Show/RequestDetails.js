@@ -25,7 +25,7 @@ function RequestDetails({ attributes, relationships }) {
 
   const fetchImages = async () => {
     const response = await fetchMedias(related, true);
-    console.log(response);
+    console.log("request details", response);
     setImages(response);
   };
 

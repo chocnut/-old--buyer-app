@@ -132,11 +132,11 @@ const Profile = ({ navigation }) => {
         />
         <View style={styles.uploadButtonContainer}>
           <TouchableOpacity activeOpacity={1} onPress={handleUpload}>
-            {user.image_file ? (
+            {user.image_path ? (
               <Image
                 style={styles.avatar}
                 source={{
-                  uri: `https://suppliers.eewoo.io/storage/media/App/User/${user.image_file}`
+                  uri: user.image_path
                 }}
               />
             ) : (

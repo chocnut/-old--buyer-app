@@ -35,12 +35,7 @@ const Message = props => {
   };
 
   const handleProfilePicPath = path => {
-    if (path) {
-      const fileName = path.split("/");
-      return `https://suppliers.eewoo.io/storage/media/App/User/${
-        fileName[fileName.length - 1]
-      }`;
-    }
+    return path;
   };
 
   const renderAvatar = () => {

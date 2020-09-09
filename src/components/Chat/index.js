@@ -24,7 +24,8 @@ const Chat = ({ threadId, threadUid }) => {
   useEffect(() => {
     Fire.shared.setPublicId(threadUid);
     const expoTokens = [selectorUser.expoToken];
-    Fire.shared.pushNotificationRef.set(expoTokens);
+    console.log("zzz", expoTokens);
+    // Fire.shared.pushNotificationRef.set(expoTokens);
     Fire.shared.off();
     Fire.shared.onAll(message => {
       if (
@@ -34,6 +35,7 @@ const Chat = ({ threadId, threadUid }) => {
         handleSeen(message);
       }
       setMessages(prevMessages => {
+        console.log("message.attachment", message.attachment);
         if (message.attachment) {
           message = {
             _id: message._id,
@@ -42,28 +44,16 @@ const Chat = ({ threadId, threadUid }) => {
               message.text.length > 0 && { text: message.text }),
             user: message.user,
             ...(message.attachment.file_type.includes("video") && {
-              video:
-                message.attachment.file_name.substr(
-                  0,
-                  message.attachment.file_name.lastIndexOf(".")
-                ) + ".mp4"
+              video: message.attachment.media_path
             }),
             ...(message.attachment.file_type.includes("audio") && {
-              audio:
-                message.attachment.file_name.substr(
-                  0,
-                  message.attachment.file_name.lastIndexOf(".")
-                ) + ".mp3"
+              audio: message.attachment.media_path
             }),
             ...(message.attachment.file_type.includes("image") && {
-              image: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
-                message.attachment.file_name
-              )}`
+              image: message.attachment.media_path
             }),
             ...(message.attachment.file_type.includes("application") && {
-              file: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
-                message.attachment.file_name
-              )}`,
+              file: message.attachment.media_path,
               fileName: message.attachment.file_name,
               fileType: message.attachment.file_type
             })

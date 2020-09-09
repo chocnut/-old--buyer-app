@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Notifications } from "expo";
+import { Notifications, Linking } from "expo";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 
@@ -31,9 +31,23 @@ const RequestModalStack = createStackNavigator();
 
 function MainStackScreen() {
   const [expoPushToken, setExpoPushToken] = useState("");
+  const [activationToken, setActivationToken] = useState("");
   const dispatch = useDispatch();
 
   const notificationListener = useRef();
+
+  const _handleUrl = url => {
+    const { queryParams } = Linking.parse(url);
+    setActivationToken({
+      path: Object.keys(queryParams)[0],
+      value: Object.values(queryParams)[0]
+    });
+  };
+
+  const getInitialUrl = async () => {
+    const url = await Linking.getInitialURL();
+    _handleUrl(url);
+  };
 
   useEffect(() => {
     registerForPushNotificationsAsync();
@@ -41,6 +55,10 @@ function MainStackScreen() {
       Vibration.vibrate();
       console.log("Push Notif Message", response);
     });
+
+    Linking.removeAllListeners("url");
+    Linking.addEventListener("url", _handleUrl);
+    getInitialUrl();
   }, []);
 
   registerForPushNotificationsAsync = async () => {

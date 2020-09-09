@@ -70,9 +70,7 @@ const Bubble = props => {
     const loadAudio = async () => {
       try {
         await soundObject.loadAsync({
-          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
-            currentMessage.audio
-          )}`
+          uri: currentMessage.audio
         });
       } catch (e) {
         console.log("ERROR Loading Audio", e);
@@ -131,9 +129,7 @@ const Bubble = props => {
     return (
       <Video
         source={{
-          uri: `https://suppliers.eewoo.io/storage/media/App//Models//RequestThreadAttachment/${threadId}/${encodeURI(
-            currentMessage.video
-          )}`
+          uri: currentMessage.video
         }}
         useNativeControls
         rate={1.0}
