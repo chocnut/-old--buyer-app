@@ -34,9 +34,7 @@ const titleBottom = () => {
 };
 
 const LogInScreen = ({ navigation, route }) => {
-  const {
-    params: { accountActivated }
-  } = route;
+  const { params } = route;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -105,7 +103,7 @@ const LogInScreen = ({ navigation, route }) => {
         dispatch(storeUser(data));
         setShowSpinner(false);
 
-        if (accountActivated) {
+        if (params && params.accountActivated) {
           navigation.push("Profile");
           navigation.reset({
             index: 0,
