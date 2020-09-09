@@ -38,7 +38,6 @@ function MainStackScreen({ navigation }) {
   const notificationListener = useRef();
 
   const _handleUrl = url => {
-    alert("queryParams", JSON.stringify(queryParams));
     const { queryParams } = Linking.parse(url);
     alert("queryParams", JSON.stringify(queryParams));
     setVerified(queryParams.verified);
