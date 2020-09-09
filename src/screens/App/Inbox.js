@@ -47,13 +47,6 @@ function Item({ threadId, threadUid, createdAt, navigation, request, userId }) {
   const { text, attachment } = newMessage;
   const { name, avatar } = newMessage.user;
 
-  if (avatar !== "") {
-    const fileName = avatar.split("/");
-    imagePath = `https://suppliers.eewoo.io/storage/media/App/User/${
-      fileName[fileName.length - 1]
-    }`;
-  }
-
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -79,7 +72,7 @@ function Item({ threadId, threadUid, createdAt, navigation, request, userId }) {
           marginRight: 12,
           marginVertical: 18
         }}
-        source={{ uri: imagePath }}
+        source={{ uri: avatar }}
       />
       <View
         style={{
@@ -111,7 +104,7 @@ function Item({ threadId, threadUid, createdAt, navigation, request, userId }) {
               color: "#555064"
             }}
           >
-            {text || attachment.file_name}
+            {text || attachment.original_file_name}
           </Text>
         </View>
       </View>
