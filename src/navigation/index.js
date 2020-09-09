@@ -39,6 +39,7 @@ function MainStackScreen({ navigation }) {
 
   const _handleUrl = url => {
     const { queryParams } = Linking.parse(url);
+    alert("queryParams", JSON.stringify(queryParams));
     setVerified(queryParams.verified);
   };
 
