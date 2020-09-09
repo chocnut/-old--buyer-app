@@ -33,7 +33,11 @@ const titleBottom = () => {
     : (Layout.window.height / 100) * 6;
 };
 
-const LogInScreen = ({ navigation }) => {
+const LogInScreen = ({ navigation, route }) => {
+  const {
+    params: { accountActivated }
+  } = route;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -42,12 +46,18 @@ const LogInScreen = ({ navigation }) => {
   });
   const [serverError, setServerError] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
-  const { expoToken } = useSelector(state => state.user);
+  const { user } = useSelector(state => state);
 
   const dispatch = useDispatch();
 
   const imgWidth = Layout.window.width;
   const imgHeight = Math.round(imgWidth * (837 / 1500));
+
+  useEffect(() => {
+    if (user.verified && user.id && user.email) {
+      navigation.navigate("Main");
+    }
+  }, [user]);
 
   const emailIsValid = email => {
     if (!email) return false;
@@ -86,7 +96,7 @@ const LogInScreen = ({ navigation }) => {
         email: emailTrimmed,
         password: passwordTrimmed,
         metadata: {
-          pushNotificationTokens: [expoToken]
+          pushNotificationTokens: [user.expoToken]
         }
       });
 
@@ -94,7 +104,16 @@ const LogInScreen = ({ navigation }) => {
         const { data } = await getUser();
         dispatch(storeUser(data));
         setShowSpinner(false);
-        navigation.push("Main");
+
+        if (accountActivated) {
+          navigation.push("Profile");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Main" }, { name: "Profile" }]
+          });
+        } else {
+          navigation.push("Main");
+        }
       }
     } catch (e) {
       setShowSpinner(false);

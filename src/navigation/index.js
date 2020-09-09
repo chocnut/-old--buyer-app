@@ -20,6 +20,7 @@ import RequestDetailsScreen from "../screens/Request/New/Details";
 import RequestDoneScreen from "../screens/Request/New/RequestDone";
 import RequestShowScreen from "../screens/Request/Show";
 import InboxScreen from "../screens/App/Inbox";
+import AccountActivation from "../screens/App/AccountActivation";
 
 import { useSelector, useDispatch } from "react-redux";
 import { TouchableOpacity, StyleSheet, Image, Vibration } from "react-native";
@@ -29,25 +30,30 @@ import { setExpoToken } from "../redux/user/user.actions";
 const MainStack = createStackNavigator();
 const RequestModalStack = createStackNavigator();
 
-function MainStackScreen() {
+function MainStackScreen({ navigation }) {
   const [expoPushToken, setExpoPushToken] = useState("");
-  const [activationToken, setActivationToken] = useState("");
+  const [verified, setVerified] = useState("");
   const dispatch = useDispatch();
 
   const notificationListener = useRef();
 
   const _handleUrl = url => {
     const { queryParams } = Linking.parse(url);
-    setActivationToken({
-      path: Object.keys(queryParams)[0],
-      value: Object.values(queryParams)[0]
-    });
+    setVerified(queryParams.verified);
   };
 
   const getInitialUrl = async () => {
     const url = await Linking.getInitialURL();
     _handleUrl(url);
   };
+
+  useEffect(() => {
+    if (verified) {
+      navigation.navigate("AccountActivation", {
+        verified
+      });
+    }
+  }, [verified]);
 
   useEffect(() => {
     registerForPushNotificationsAsync();
@@ -102,6 +108,10 @@ function MainStackScreen() {
       <MainStack.Screen name="Main" component={MainScreen} />
       <MainStack.Screen name="Signup" component={SignUpScreen} />
       <MainStack.Screen name="Info" component={InfoScreen} />
+      <MainStack.Screen
+        name="AccountActivation"
+        component={AccountActivation}
+      />
       <MainStack.Screen
         name="ForgotPassword"
         component={ForgotPasswordScreen}

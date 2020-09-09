@@ -102,3 +102,8 @@ export const resetPassword = async email => {
     }
   }
 };
+
+export const activateAccountToken = async token => {
+  console.log("activateAccount", token);
+  return Promise.resolve(true);
+};
