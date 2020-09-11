@@ -47,7 +47,6 @@ function MainStackScreen({ navigation }) {
         queryParams
       )}`
     );
-    const { queryParams } = Linking.parse(url);
     setVerified(queryParams.verified);
   };
 
