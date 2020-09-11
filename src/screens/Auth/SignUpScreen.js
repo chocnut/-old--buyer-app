@@ -115,7 +115,7 @@ class SignUpScreen extends React.Component {
     const { expoToken } = this.props;
 
     const metadata = {
-      expoToken
+      pushNotificationTokens: [expoToken]
     };
 
     try {
