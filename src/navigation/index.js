@@ -38,6 +38,15 @@ function MainStackScreen({ navigation }) {
   const notificationListener = useRef();
 
   const _handleUrl = url => {
+    alert("URL navigation", JSON.stringify(url));
+
+    let { path, queryParams } = Linking.parse(url);
+
+    alert(
+      `Linked to app with path - navigation: ${path} and data: ${JSON.stringify(
+        queryParams
+      )}`
+    );
     const { queryParams } = Linking.parse(url);
     setVerified(queryParams.verified);
   };

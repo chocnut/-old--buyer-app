@@ -25,7 +25,15 @@ const InfoScreen = ({ navigation, route }) => {
   const { params } = route;
 
   const _handleUrl = url => {
+    alert("URL", JSON.stringify(url));
+
     let { path, queryParams } = Linking.parse(url);
+
+    alert(
+      `Linked to app with path: ${path} and data: ${JSON.stringify(
+        queryParams
+      )}`
+    );
 
     if (Object.keys(queryParams).length > 0) {
       setVerified(queryParams.verified);
