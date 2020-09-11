@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Linking } from "expo";
 import {
   StyleSheet,
   View,
@@ -13,79 +14,108 @@ import Btn from "../../components/Btn";
 import DashedCloud from "../../components/DashedCloud";
 import Layout from "../../constants/Layout";
 
-// import { YellowBox } from 'react-native';
-// YellowBox.ignoreWarnings([
-//   'Non-serializable values were found in the navigation state',
-// ]);
-
 const titleTop = () => {
   return Layout.window.height >= 667
     ? (Layout.window.height / 100) * 8
     : (Layout.window.height / 100) * 6;
 };
 
-export default class InfoScreen extends React.Component {
-  render() {
-    const params = this.props.route.params;
+const InfoScreen = ({ navigation, route }) => {
+  const [verified, setVerified] = useState("");
+  const { params } = route;
 
-    const bodyText = () => {
-      const emailRegex = /([a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+  const _handleUrl = url => {
+    let { path, queryParams } = Linking.parse(url);
 
-      if (!params.body) {
-        return false;
-      }
-      var words = params.body.split(emailRegex);
+    if (Object.keys(queryParams).length > 0) {
+      setVerified(queryParams.verified);
+    } else if (
+      typeof url === "object" &&
+      url.url &&
+      url.url.includes("?verified=true")
+    ) {
+      setVerified(true);
+    }
+  };
 
-      var contents = words.map(function(word, i) {
-        if (word.match(emailRegex)) {
-          return (
-            <Text key={i} style={[styles.text, styles.email]}>
-              {word}
-            </Text>
-          );
-        }
+  const getInitialUrl = async () => {
+    const url = await Linking.getInitialURL();
+    _handleUrl(url);
+  };
+
+  useEffect(() => {
+    Linking.addEventListener("url", _handleUrl);
+    getInitialUrl();
+  }, []);
+
+  useEffect(() => {
+    if (verified) {
+      console.log("verified");
+      navigation.navigate("AccountActivation", {
+        verified
+      });
+    }
+  }, [verified]);
+
+  const bodyText = () => {
+    const emailRegex = /([a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+
+    if (!params.body) {
+      return false;
+    }
+
+    const words = params.body.split(emailRegex);
+
+    const contents = words.map(function(word, i) {
+      if (word.match(emailRegex)) {
         return (
-          <Text key={i} style={[styles.text]}>
+          <Text key={i} style={[styles.text, styles.email]}>
             {word}
           </Text>
         );
-      });
-      return contents;
-    };
+      }
+      return (
+        <Text key={i} style={[styles.text]}>
+          {word}
+        </Text>
+      );
+    });
 
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
+    return contents;
+  };
 
-        <Text style={styles.title}>{params.title}</Text>
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
 
-        {bodyText()}
+      <Text style={styles.title}>{params.title}</Text>
 
-        <DashedCloud style={styles.cloud}>
-          {params.icon && <Image style={styles.icon} source={params.icon} />}
-        </DashedCloud>
+      {bodyText()}
 
-        <SafeAreaView style={styles.footer}>
-          {params.btn && params.btn.onPress && (
-            <Btn
-              onPress={params.btn.onPress}
-              title={params.btn.title}
-              primary
-              width={190}
-            >
-              {params.btn.title}
-            </Btn>
-          )}
-          {params.btnLink && params.btnLink.onPress && (
-            <Text style={styles.btnLink} onPress={params.btnLink.onPress}>
-              {params.btnLink.title}
-            </Text>
-          )}
-        </SafeAreaView>
-      </View>
-    );
-  }
-}
+      <DashedCloud style={styles.cloud}>
+        {params.icon && <Image style={styles.icon} source={params.icon} />}
+      </DashedCloud>
+
+      <SafeAreaView style={styles.footer}>
+        {params.btn && params.btn.onPress && (
+          <Btn
+            onPress={params.btn.onPress}
+            title={params.btn.title}
+            primary
+            width={190}
+          >
+            {params.btn.title}
+          </Btn>
+        )}
+        {params.btnLink && params.btnLink.onPress && (
+          <Text style={styles.btnLink} onPress={params.btnLink.onPress}>
+            {params.btnLink.title}
+          </Text>
+        )}
+      </SafeAreaView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -135,3 +165,5 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline"
   }
 });
+
+export default InfoScreen;

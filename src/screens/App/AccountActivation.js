@@ -7,8 +7,7 @@ const AccountActivation = ({ navigation, route }) => {
     params: { verified }
   } = route;
 
-  if (verified !== "true") {
-    console.log("verified", verified);
+  if (verified === false) {
     navigation.navigate("Welcome");
   }
 
