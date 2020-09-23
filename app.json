@@ -2,6 +2,7 @@
   "expo": {
     "name": "eewo",
     "slug": "buyer-app",
+    "scheme": "eewo",
     "sdkVersion": "36.0.0",
     "privacy": "public",
     "platforms": [
