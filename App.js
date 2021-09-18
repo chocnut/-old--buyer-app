@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./src/redux/store";

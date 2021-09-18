@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Notifications, Linking } from "expo";
-import * as Permissions from "expo-permissions";
-import Constants from "expo-constants";
+// import * as Notifications from "expo-notifications";
+
+// import { Linking } from "expo";
+// import * as Permissions from "expo-permissions";
+// import Constants from "expo-constants";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -31,22 +33,22 @@ const MainStack = createStackNavigator();
 const RequestModalStack = createStackNavigator();
 
 function MainStackScreen({ navigation }) {
-  const [expoPushToken, setExpoPushToken] = useState("");
+  // const [expoPushToken, setExpoPushToken] = useState("");
   const [verified, setVerified] = useState("");
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const notificationListener = useRef();
+  // const notificationListener = useRef();
 
-  const _handleUrl = url => {
-    let { queryParams } = Linking.parse(url);
+  // const _handleUrl = url => {
+  //   let { queryParams } = Linking.parse(url);
 
-    setVerified(queryParams.verified);
-  };
+  //   setVerified(queryParams.verified);
+  // };
 
-  const getInitialUrl = async () => {
-    const url = await Linking.getInitialURL();
-    _handleUrl(url);
-  };
+  // const getInitialUrl = async () => {
+  //   const url = await Linking.getInitialURL();
+  //   _handleUrl(url);
+  // };
 
   useEffect(() => {
     if (verified) {
@@ -57,50 +59,49 @@ function MainStackScreen({ navigation }) {
   }, [verified]);
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
-    notificationListener.current = Notifications.addListener(response => {
-      Vibration.vibrate();
-      console.log("Push Notif Message", response);
-    });
-
-    Linking.removeAllListeners("url");
-    Linking.addEventListener("url", _handleUrl);
-    getInitialUrl();
+    // registerForPushNotificationsAsync();
+    // notificationListener.current = Notifications.addListener(response => {
+    //   Vibration.vibrate();
+    //   console.log("Push Notif Message", response);
+    // });
+    // Linking.removeAllListeners("url");
+    // Linking.addEventListener("url", _handleUrl);
+    // getInitialUrl();
   }, []);
 
-  registerForPushNotificationsAsync = async () => {
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(
-        Permissions.NOTIFICATIONS
-      );
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
-        const { status } = await Permissions.askAsync(
-          Permissions.NOTIFICATIONS
-        );
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notification!");
-        return;
-      }
-      token = await Notifications.getExpoPushTokenAsync();
-      setExpoPushToken(token);
-      dispatch(setExpoToken(token));
-    } else {
-      console.log("Must use physical device for Push Notifications");
-      //alert("Must use physical device for Push Notifications");
-    }
+  // registerForPushNotificationsAsync = async () => {
+  //   if (Constants.isDevice) {
+  //     const { status: existingStatus } = await Permissions.getAsync(
+  //       Permissions.NOTIFICATIONS
+  //     );
+  //     let finalStatus = existingStatus;
+  //     if (existingStatus !== "granted") {
+  //       const { status } = await Permissions.askAsync(
+  //         Permissions.NOTIFICATIONS
+  //       );
+  //       finalStatus = status;
+  //     }
+  //     if (finalStatus !== "granted") {
+  //       alert("Failed to get push token for push notification!");
+  //       return;
+  //     }
+  //     token = await Notifications.getExpoPushTokenAsync();
+  //     setExpoPushToken(token);
+  //     dispatch(setExpoToken(token));
+  //   } else {
+  //     console.log("Must use physical device for Push Notifications");
+  //     //alert("Must use physical device for Push Notifications");
+  //   }
 
-    if (Platform.OS === "android") {
-      Notifications.createChannelAndroidAsync("default", {
-        name: "default",
-        sound: true,
-        priority: "max",
-        vibrate: [0, 250, 250, 250]
-      });
-    }
-  };
+  //   if (Platform.OS === "android") {
+  //     Notifications.createChannelAndroidAsync("default", {
+  //       name: "default",
+  //       sound: true,
+  //       priority: "max",
+  //       vibrate: [0, 250, 250, 250]
+  //     });
+  //   }
+  // };
 
   return (
     <MainStack.Navigator headerMode={null}>
