@@ -40,21 +40,36 @@ export const submitRequest = ({
   };
 
   try {
-    const result = await createRequest(payload);
+    // const result = await createRequest(payload);
+    const result = {
+      data: {
+        data: {
+          attributes: {
+            id: 10,
+            title: payload.title,
+            created_at: new Date(),
+            public_id: "1",
+            featured_image_url:
+              "https://images.unsplash.com/photo-1499708544652-0e4c43899071?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+            status: 2
+          }
+        }
+      }
+    };
     const { data } = result;
 
     const { id } = data.data;
 
-    images64.forEach(async image => {
-      await uploadRequestPhotos({
-        requestId: id,
-        file: image
-      });
-    });
+    // images64.forEach(async image => {
+    // await uploadRequestPhotos({
+    //   requestId: id,
+    //   file: image
+    // });
+    // });
 
-    dispatch({ type: CREATE_REQUEST_SUCCESS });
-    dispatch({ type: CLEAR_FORM });
     dispatch({ type: STORE_USER_REQUESTS, payload: [data.data] });
+    dispatch({ type: CLEAR_FORM });
+    dispatch({ type: CREATE_REQUEST_SUCCESS });
   } catch (e) {
     console.log(e);
     dispatch({ type: CREATE_REQUEST_FAIL });

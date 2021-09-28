@@ -46,46 +46,46 @@ function RequestCard({
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
   const dispatch = useDispatch();
 
-  const getThreads = () => {
-    Fire.shared.setRequestId(item.id);
-    Fire.shared.off();
-    Fire.shared.onThread(thread => {
-      setThreads(prevThread => [...prevThread, thread]);
-    });
-  };
+  // const getThreads = () => {
+  //   Fire.shared.setRequestId(item.id);
+  //   Fire.shared.off();
+  //   Fire.shared.onThread(thread => {
+  //     setThreads(prevThread => [...prevThread, thread]);
+  //   });
+  // };
 
-  const getUnreadMessage = () => {
-    for (const thread of threads) {
-      setUnreadMessageCount(0);
-      Fire.shared.setPublicId(thread.threadUid);
-      Fire.shared.off();
-      Fire.shared.onAll(message => {
-        if (Array.isArray(message.seen) && !message.seen.includes(userId)) {
-          if (!item.isNewUnreadMessage) {
-            handleNotify(true);
-            dispatch(toggleInboxNewMessage());
-          }
-          setUnreadMessageCount(prev => prev + 1);
-        }
-      });
-    }
-  };
+  // const getUnreadMessage = () => {
+  //   for (const thread of threads) {
+  //     setUnreadMessageCount(0);
+  //     Fire.shared.setPublicId(thread.threadUid);
+  //     Fire.shared.off();
+  //     Fire.shared.onAll(message => {
+  //       if (Array.isArray(message.seen) && !message.seen.includes(userId)) {
+  //         if (!item.isNewUnreadMessage) {
+  //           handleNotify(true);
+  //           dispatch(toggleInboxNewMessage());
+  //         }
+  //         setUnreadMessageCount(prev => prev + 1);
+  //       }
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       handleNotify(false);
-      getThreads();
+      // getThreads();
     });
 
     return unsubscribe;
   }, [navigation]);
 
   useEffect(() => {
-    getThreads();
+    // getThreads();
   }, []);
 
   useEffect(() => {
-    getUnreadMessage();
+    // getUnreadMessage();
   }, [threads]);
 
   return (
@@ -197,11 +197,11 @@ const Main = ({ navigation }) => {
         onPressMessages={() => navigation.push("Inbox")}
         notify={isNotify}
       />
-      <Spinner
+      {/* <Spinner
         visible={requests.isRefreshing}
         textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
-      />
+      /> */}
       <View style={styles.body}>
         <View style={styles.searchFilterContainer}>
           <SearchInput

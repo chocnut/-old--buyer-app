@@ -24,17 +24,25 @@ function Item({ threadId, threadUid, createdAt, navigation, request, userId }) {
 
   const getThreads = () => {
     setUnreadMessageCount(0);
-    Fire.shared.setPublicId(threadUid);
-    Fire.shared.off();
-    Fire.shared.on(message => {
-      setNewMessage(message);
-    }, 1);
-
-    Fire.shared.onAll(message => {
-      if (Array.isArray(message.seen) && !message.seen.includes(userId)) {
-        setUnreadMessageCount(prev => prev + 1);
+    // Fire.shared.setPublicId(threadUid);
+    // Fire.shared.off();
+    // Fire.shared.on(message => {
+    setNewMessage({
+      text: "Sample Message",
+      attachment: null,
+      user: {
+        name: "Sample Name",
+        avatar:
+          "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"
       }
     });
+    // }, 1);
+
+    // Fire.shared.onAll(message => {
+    //   if (Array.isArray(message.seen) && !message.seen.includes(userId)) {
+    //     setUnreadMessageCount(prev => prev + 1);
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -119,18 +127,29 @@ function Item({ threadId, threadUid, createdAt, navigation, request, userId }) {
 
 function Inbox({ navigation }) {
   const [search, setSearch] = useState("");
-  const [threads, setThreads] = useState([]);
+  const [threads, setThreads] = useState([
+    {
+      threadId: 1,
+      threadUid: 1,
+      createdAt: new Date(),
+      request: {
+        title: "Sample Inbox",
+        featured_image_url: ""
+      },
+      userId: 1
+    }
+  ]);
   const selectorUser = useSelector(state => state.user);
 
   const getThreads = () => {
-    Fire.shared.off();
-    Fire.shared.onThreadByBuyerId(thread => {
-      setThreads(prevThread => [...prevThread, thread]);
-    }, selectorUser.id);
+    // Fire.shared.off();
+    // Fire.shared.onThreadByBuyerId(thread => {
+    //   setThreads(prevThread => [...prevThread, thread]);
+    // }, selectorUser.id);
   };
 
   useEffect(() => {
-    getThreads();
+    // getThreads();
   }, []);
 
   // if (!threads.length) {

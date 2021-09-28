@@ -17,113 +17,121 @@ import Message from "./Message";
 import colors from "../../constants/Colors";
 
 const Chat = ({ threadId, threadUid }) => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      _id: Math.random(),
+      createdAt: new Date(),
+      text: "Sample Message",
+      user: "Peter Indiola"
+    }
+  ]);
   const [user, setUser] = useState(undefined);
-  const selectorUser = useSelector(state => state.user);
+  // const selectorUser = useSelector(state => state.user);
 
   useEffect(() => {
-    Fire.shared.setPublicId(threadUid);
-    const expoTokens = [selectorUser.expoToken];
-    if (expoTokens) {
-      Fire.shared.pushNotificationRef.set(expoTokens);
-    }
-    Fire.shared.off();
-    Fire.shared.onAll(message => {
-      if (
-        Array.isArray(message.seen) &&
-        !message.seen.includes(selectorUser.id)
-      ) {
-        handleSeen(message);
-      }
-      setMessages(prevMessages => {
-        console.log("message.attachment", message.attachment);
-        if (message.attachment) {
-          message = {
-            _id: message._id,
-            createdAt: message.createdAt,
-            ...(message.text &&
-              message.text.length > 0 && { text: message.text }),
-            user: message.user,
-            ...(message.attachment.file_type.includes("video") && {
-              video: message.attachment.media_path
-            }),
-            ...(message.attachment.file_type.includes("audio") && {
-              audio: message.attachment.media_path
-            }),
-            ...(message.attachment.file_type.includes("image") && {
-              image: message.attachment.media_path
-            }),
-            ...(message.attachment.file_type.includes("application") && {
-              file: message.attachment.media_path,
-              fileName: message.attachment.file_name,
-              fileType: message.attachment.file_type
-            })
-          };
-        }
-        return GiftedChat.append(prevMessages, message);
-      });
-    });
+    // Fire.shared.setPublicId(threadUid);
+    // const expoTokens = [selectorUser.expoToken];
+    // if (expoTokens) {
+    //   Fire.shared.pushNotificationRef.set(expoTokens);
+    // }
+    // Fire.shared.off();
+    // Fire.shared.onAll(message => {
+    //   if (
+    //     Array.isArray(message.seen) &&
+    //     !message.seen.includes(selectorUser.id)
+    //   ) {
+    //     handleSeen(message);
+    //   }
+    // setMessages(prevMessages => {
+    //   console.log("message.attachment", message.attachment);
+    //   if (message.attachment) {
+    //     message = {
+    //       _id: message._id,
+    //       createdAt: message.createdAt,
+    //       ...(message.text &&
+    //         message.text.length > 0 && { text: message.text }),
+    //       user: message.user,
+    //       ...(message.attachment.file_type.includes("video") && {
+    //         video: message.attachment.media_path
+    //       }),
+    //       ...(message.attachment.file_type.includes("audio") && {
+    //         audio: message.attachment.media_path
+    //       }),
+    //       ...(message.attachment.file_type.includes("image") && {
+    //         image: message.attachment.media_path
+    //       }),
+    //       ...(message.attachment.file_type.includes("application") && {
+    //         file: message.attachment.media_path,
+    //         fileName: message.attachment.file_name,
+    //         fileType: message.attachment.file_type
+    //       })
+    //     };
+    //   }
+    //   return GiftedChat.append(prevMessages, message);
+    // });
+    // });
 
     setUser({
-      name: selectorUser.name,
-      email: selectorUser.email,
+      name: "Main User", //selectorUser.name,
+      email: "email@sample.com", //selectorUser.email,
       avatar: "",
-      id: selectorUser.id,
-      _id: Fire.shared.uid,
+      id: 10, //selectorUser.id,
+      _id: Math.random(), //Fire.shared.uid,
       isCurrentUser: true,
       type: "Buyer"
     });
   }, [threadId, threadUid]);
 
-  const handleSeen = message => {
-    console.log(message);
-    const payload = {
-      timestamp: message.timestamp,
-      seen: [...message.seen, selectorUser.id]
-    };
-    Fire.shared.setMessageId(message._id);
-    Fire.shared.setPublicId(threadUid);
-    Fire.shared.update(payload);
-  };
+  // const handleSeen = message => {
+  //   console.log(message);
+  //   const payload = {
+  //     timestamp: message.timestamp,
+  //     seen: [...message.seen, selectorUser.id]
+  //   };
+  //   Fire.shared.setMessageId(message._id);
+  //   Fire.shared.setPublicId(threadUid);
+  //   Fire.shared.update(payload);
+  // };
 
   const handleSend = async data => {
-    data[0]["seen"] = [selectorUser.id];
-    data[0]["user"]["avatar"] = selectorUser.image_path;
-    Fire.shared.send(data);
+    // data[0]["seen"] = [selectorUser.id];
+    // data[0]["user"]["avatar"] = selectorUser.image_path;
+    // Fire.shared.send(data);
+    console.log("data", data);
   };
 
   const renderMessage = props => {
-    return <Message threadId={threadId} {...props} />;
+    return <Message threadId={1} {...props} />;
   };
 
-  const handleUploadFile = async data => {
-    let result = await DocumentPicker.getDocumentAsync({
-      type: "*/*",
-      copyToCacheDirectory: true
-    });
+  // const handleUploadFile = async data => {
+  //   let result = await DocumentPicker.getDocumentAsync({
+  //     type: "*/*",
+  //     copyToCacheDirectory: true
+  //   });
 
-    if (result.type == "success") {
-      let { name, uri } = result;
-      let nameParts = name.split(".");
-      let fileType = nameParts[nameParts.length - 1];
-      var fileToUpload = {
-        name,
-        uri,
-        type: `application/${fileType}`
-      };
-      const response = await messageFileUpload(fileToUpload, threadId);
-      if (response && response.attachment) {
-        const payload = {
-          text: "",
-          user,
-          attachment: response.attachment,
-          seen: [selectorUser.id]
-        };
-        Fire.shared.send([payload]);
-      }
-    }
-    return false;
-  };
+  //   if (result.type == "success") {
+  //     let { name, uri } = result;
+  //     let nameParts = name.split(".");
+  //     let fileType = nameParts[nameParts.length - 1];
+  //     var fileToUpload = {
+  //       name,
+  //       uri,
+  //       type: `application/${fileType}`
+  //     };
+  //     const response = await messageFileUpload(fileToUpload, threadId);
+  //     if (response && response.attachment) {
+  //       const payload = {
+  //         text: "",
+  //         user,
+  //         attachment: response.attachment,
+  //         seen: [selectorUser.id]
+  //       };
+  //       Fire.shared.send([payload]);
+  //     }
+  //   }
+  //   return false;
+  // };
 
   if (!messages.length) {
     return (
@@ -153,7 +161,8 @@ const Chat = ({ threadId, threadUid }) => {
             <View style={styles.btnContainer}>
               <TouchableOpacity
                 style={styles.fileUpload}
-                onPress={handleUploadFile}
+                // onPress={handleUploadFile}
+                onPress={() => console.log("Upload File")}
               >
                 <Image
                   source={require("../../../assets/images/add-file.png")}

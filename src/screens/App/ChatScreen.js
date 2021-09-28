@@ -38,8 +38,10 @@ export default class ChatScreen extends React.Component {
         />
 
         <Chat
-          threadUid={this.props.route.params.threadUid}
-          threadId={this.props.route.params.threadId}
+          // threadUid={this.props.route.params.threadUid}
+          // threadId={this.props.route.params.threadId}
+          threadUid={1}
+          threadId={1}
         />
       </View>
     );

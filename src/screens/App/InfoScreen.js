@@ -24,28 +24,28 @@ const InfoScreen = ({ navigation, route }) => {
   const [verified, setVerified] = useState("");
   const { params } = route;
 
-  const _handleUrl = url => {
-    let { path, queryParams } = Linking.parse(url);
+  // const _handleUrl = url => {
+  //   let { path, queryParams } = Linking.parse(url);
 
-    if (Object.keys(queryParams).length > 0) {
-      setVerified(queryParams.verified);
-    } else if (
-      typeof url === "object" &&
-      url.url &&
-      url.url.includes("?verified=true")
-    ) {
-      setVerified(true);
-    }
-  };
+  //   if (Object.keys(queryParams).length > 0) {
+  //     setVerified(queryParams.verified);
+  //   } else if (
+  //     typeof url === "object" &&
+  //     url.url &&
+  //     url.url.includes("?verified=true")
+  //   ) {
+  //     setVerified(true);
+  //   }
+  // };
 
-  const getInitialUrl = async () => {
-    const url = await Linking.getInitialURL();
-    _handleUrl(url);
-  };
+  // const getInitialUrl = async () => {
+  //   const url = await Linking.getInitialURL();
+  //   _handleUrl(url);
+  // };
 
   useEffect(() => {
-    Linking.addEventListener("url", _handleUrl);
-    getInitialUrl();
+    // Linking.addEventListener("url", _handleUrl);
+    // getInitialUrl();
   }, []);
 
   useEffect(() => {

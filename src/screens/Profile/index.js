@@ -24,7 +24,14 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 
 const Profile = ({ navigation }) => {
-  const user = useSelector(state => state.user);
+  // const user = useSelector(state => state.user);
+  const user = {
+    email: "pindiola@gmail.com",
+    location: "Singapore, Singapore",
+    bio: "Male",
+    image_path:
+      "https://images.unsplash.com/photo-1497551060073-4c5ab6435f12?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=726&q=80"
+  };
   const [showSpinner, setShowSpinner] = useState(false);
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -125,11 +132,11 @@ const Profile = ({ navigation }) => {
         contentContainerStyle={styles.form}
         keyboardShouldPersistTaps="handled"
       >
-        <Spinner
+        {/* <Spinner
           visible={showSpinner}
           textContent={"Loading..."}
           textStyle={styles.spinnerTextStyle}
-        />
+        /> */}
         <View style={styles.uploadButtonContainer}>
           <TouchableOpacity activeOpacity={1} onPress={handleUpload}>
             {user.image_path ? (

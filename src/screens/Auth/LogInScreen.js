@@ -90,29 +90,29 @@ const LogInScreen = ({ navigation, route }) => {
     let passwordTrimmed = password.trim();
 
     try {
-      const loginResponse = await loginUser({
-        email: emailTrimmed,
-        password: passwordTrimmed,
-        metadata: {
-          pushNotificationTokens: [user.expoToken]
-        }
-      });
+      // const loginResponse = await loginUser({
+      //   email: emailTrimmed,
+      //   password: passwordTrimmed,
+      //   metadata: {
+      //     pushNotificationTokens: [user.expoToken]
+      //   }
+      // });
 
-      if (loginResponse) {
-        const { data } = await getUser();
-        dispatch(storeUser(data));
-        setShowSpinner(false);
+      // if (loginResponse) {
+      //   const { data } = await getUser();
+      //   dispatch(storeUser(data));
+      //   setShowSpinner(false);
 
-        if (params && params.accountActivated) {
-          navigation.push("Profile");
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Main" }, { name: "Profile" }]
-          });
-        } else {
-          navigation.push("Main");
-        }
-      }
+      //   if (params && params.accountActivated) {
+      //     navigation.push("Profile");
+      //     navigation.reset({
+      //       index: 0,
+      //       routes: [{ name: "Main" }, { name: "Profile" }]
+      //     });
+      //   } else {
+      navigation.push("Main");
+      // }
+      // }
     } catch (e) {
       setShowSpinner(false);
       console.log(e);
@@ -122,11 +122,11 @@ const LogInScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <Spinner
+      {/* <Spinner
         visible={showSpinner}
         textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
-      />
+      /> */}
       <Formik
         initialValues={{
           email,
